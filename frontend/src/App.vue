@@ -3,82 +3,64 @@ import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <body class="bg-silk text-slate-900 min-h-screen">
+    <div class="flex h-screen overflow-hidden">
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <!-- Sidebar -->
+      <aside class="w-64 flex flex-col bg-cascade text-white">
+        <!-- Logo and Title -->
+        <div class="p-6 flex items-center gap-3">
+          <div class="bg-cinnamon rounded-lg p-1.5 shadow-lg">
+            <i class="fas fa-plane-up material-symbols-outlined text-white text-2xl"></i>
+          </div>
+          <div>
+            <h1 class="text-base font-bold leading-none text-white">SkyControl</h1>
+            <p class="text-[10px] text-white/60 mt-1 uppercase tracking-widest font-bold">
+              Fleet Management
+            </p>
+          </div>
+        </div>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+        <!-- Navigation Links -->
+        <nav class="flex-1 px-4 space-y-1 mt-4">
+          <RouterLink
+            to="/"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/10 text-apricot"
+          >
+            <i class="fas fa-home material-symbols-outlined"></i>
+            <span class="text-sm font-medium">Home</span>
+          </RouterLink>
+
+          <RouterLink
+            to="/aircrafts"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+          >
+            <i class="fas fa-plane material-symbols-outlined"></i>
+            <span class="text-sm font-medium">Aircrafts</span>
+          </RouterLink>
+
+          <RouterLink
+            to="/airlines"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+          >
+            <i class="fas fa-building material-symbols-outlined"></i>
+            <span class="text-sm font-medium">Airlines</span>
+          </RouterLink>
+
+          <RouterLink
+            to="/manufacturers"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+          >
+            <i class="fas fa-industry material-symbols-outlined"></i>
+            <span class="text-sm font-medium">Manufacturers</span>
+          </RouterLink>
+        </nav>
+      </aside>
+
+      <main class="flex-1 flex flex-col overflow-hidden">
+        <RouterView />
+      </main>
+
     </div>
-  </header>
-
-  <RouterView />
+  </body>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>

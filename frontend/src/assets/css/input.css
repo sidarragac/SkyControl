@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+@theme {
+  --color-silk: #F3F0EA;
+  --color-cascade: #273E3E;
+  --color-cinnamon: #D26911;
+  --color-apricot: #E8A760;
+
+  --font-display: "Inter", sans-serif;
+
+  --radius: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+}
