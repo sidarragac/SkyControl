@@ -1,8 +1,11 @@
+<!-- Desarrollado por Mateo Pineda -->
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 
 const isOpen = ref(false);
+const activeLink = ref('home');
 </script>
 
 <template>
@@ -44,7 +47,13 @@ const isOpen = ref(false);
         <nav class="flex-1 px-4 space-y-1 mt-4">
           <RouterLink
             to="/"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/10 text-apricot"
+            @click="activeLink = 'home'"
+            :class="[
+              'flex items-center gap-3 px-3 py-2 rounded-lg',
+              activeLink === 'home'
+                ? ' bg-white/10 text-apricot'
+                : 'text-white/70 hover:bg-white/5 hover:text-white transition-colors',
+            ]"
           >
             <i class="fas fa-home material-symbols-outlined"></i>
             <span class="text-sm font-medium">Home</span>
@@ -52,7 +61,13 @@ const isOpen = ref(false);
 
           <RouterLink
             to="/aircrafts"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+            @click="activeLink = 'aircrafts'"
+            :class="[
+              'flex items-center gap-3 px-3 py-2 rounded-lg',
+              activeLink === 'aircrafts'
+                ? ' bg-white/10 text-apricot'
+                : 'text-white/70 hover:bg-white/5 hover:text-white transition-colors',
+            ]"
           >
             <i class="fas fa-plane material-symbols-outlined"></i>
             <span class="text-sm font-medium">Aircrafts</span>
@@ -60,7 +75,13 @@ const isOpen = ref(false);
 
           <RouterLink
             to="/airlines"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+            @click="activeLink = 'airlines'"
+            :class="[
+              'flex items-center gap-3 px-3 py-2 rounded-lg',
+              activeLink === 'airlines'
+                ? ' bg-white/10 text-apricot'
+                : 'text-white/70 hover:bg-white/5 hover:text-white transition-colors',
+            ]"
           >
             <i class="fas fa-building material-symbols-outlined"></i>
             <span class="text-sm font-medium">Airlines</span>
@@ -68,26 +89,44 @@ const isOpen = ref(false);
 
           <RouterLink
             to="/manufacturers"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+            @click="activeLink = 'manufacturers'"
+            :class="[
+              'flex items-center gap-3 px-3 py-2 rounded-lg',
+              activeLink === 'manufacturers'
+                ? ' bg-white/10 text-apricot'
+                : 'text-white/70 hover:bg-white/5 hover:text-white transition-colors',
+            ]"
           >
             <i class="fas fa-industry material-symbols-outlined"></i>
             <span class="text-sm font-medium">Manufacturers</span>
           </RouterLink>
 
           <RouterLink
-            to="/aircrafts/create"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+            to="/admin/create"
+            @click="activeLink = 'admin-create'"
+            :class="[
+              'flex items-center gap-3 px-3 py-2 rounded-lg',
+              activeLink === 'admin-create'
+                ? ' bg-white/10 text-apricot'
+                : 'text-white/70 hover:bg-white/5 hover:text-white transition-colors',
+            ]"
           >
             <i class="fas fa-plus material-symbols-outlined"></i>
-            <span class="text-sm font-medium">Add Aircraft</span>
+            <span class="text-sm font-medium">Add Elements</span>
           </RouterLink>
 
           <RouterLink
-            to="/aircrafts/edit"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+            to="/admin/edit"
+            @click="activeLink = 'admin-edit'"
+            :class="[
+              'flex items-center gap-3 px-3 py-2 rounded-lg',
+              activeLink === 'admin-edit'
+                ? ' bg-white/10 text-apricot'
+                : 'text-white/70 hover:bg-white/5 hover:text-white transition-colors',
+            ]"
           >
             <i class="fas fa-edit material-symbols-outlined"></i>
-            <span class="text-sm font-medium">Edit Aircrafts</span>
+            <span class="text-sm font-medium">Edit Elements</span>
           </RouterLink>
         </nav>
 
