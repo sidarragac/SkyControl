@@ -54,7 +54,32 @@ import { RouterLink, RouterView } from 'vue-router';
             <i class="fas fa-industry material-symbols-outlined"></i>
             <span class="text-sm font-medium">Manufacturers</span>
           </RouterLink>
+
+          <RouterLink
+            to="/aircrafts/create"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+          >
+            <i class="fas fa-plus material-symbols-outlined"></i>
+            <span class="text-sm font-medium">Add Aircraft</span>
+          </RouterLink>
+
+          <RouterLink
+            to="/aircrafts/edit"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-colors"
+          >
+            <i class="fas fa-edit material-symbols-outlined"></i>
+            <span class="text-sm font-medium">Edit Aircrafts</span>
+          </RouterLink>
         </nav>
+
+        <div class="p-4 border-t border-white/10">
+          <RouterLink
+            to="/login"
+            class="w-full bg-cinnamon hover:bg-[#b85a0d] text-white rounded-lg py-2.5 px-4 text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md">
+            <i class="fas fa-user material-symbols-outlined"></i>
+            Login
+          </RouterLink>
+        </div>
       </aside>
 
       <main class="flex-1 flex flex-col overflow-hidden">
