@@ -1,12 +1,12 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-silk: #F3F0EA;
-  --color-cascade: #273E3E;
-  --color-cinnamon: #D26911;
-  --color-apricot: #E8A760;
+  --color-silk: #f3f0ea;
+  --color-cascade: #273e3e;
+  --color-cinnamon: #d26911;
+  --color-apricot: #e8a760;
 
-  --font-display: "Inter", sans-serif;
+  --font-display: 'Inter', sans-serif;
 
   --radius: 0.25rem;
   --radius-lg: 0.5rem;

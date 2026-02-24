@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 
-const isOpen = ref(false)
+const isOpen = ref(false);
 </script>
 
 <template>
   <body class="bg-silk text-slate-900 min-h-screen">
     <div class="flex h-screen overflow-hidden">
-      <button 
+      <button
         @click="isOpen = !isOpen"
         class="md:hidden pr-4 py-3 pl-1 mt-auto mb-auto rounded-r-4xl bg-cascade text-white"
       >
@@ -20,8 +20,9 @@ const isOpen = ref(false)
         :class="[
           'fixed md:static flex flex-col inset-y-0 left-0 z-50 w-64 transform bg-cascade text-white transition-transform duration-300 ease-in-out',
           isOpen ? 'translate-x-0' : '-translate-x-full',
-          'md:translate-x-0 md:flex md:flex-col'
-        ]">
+          'md:translate-x-0 md:flex md:flex-col',
+        ]"
+      >
         <!-- Logo and Title -->
         <div class="p-6 flex items-center gap-3">
           <div class="bg-cinnamon rounded-lg p-1.5 shadow-lg">
@@ -35,10 +36,7 @@ const isOpen = ref(false)
           </div>
         </div>
 
-        <button
-          @click="isOpen = false"
-          class="absolute top-4 right-4 md:hidden text-white"
-        >
+        <button @click="isOpen = false" class="absolute top-4 right-4 md:hidden text-white">
           <i class="fas fa-caret-left material-symbols-outlined"></i>
         </button>
 
@@ -96,7 +94,8 @@ const isOpen = ref(false)
         <div class="p-4 border-t border-white/10">
           <RouterLink
             to="/login"
-            class="w-full bg-cinnamon hover:bg-[#b85a0d] text-white rounded-lg py-2.5 px-4 text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md">
+            class="w-full bg-cinnamon hover:bg-[#b85a0d] text-white rounded-lg py-2.5 px-4 text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md"
+          >
             <i class="fas fa-user material-symbols-outlined"></i>
             Login
           </RouterLink>
