@@ -60,15 +60,15 @@ const activeTab = ref('aircraft');
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold">Aircraft Name</label>
+            <label class="text-sm text-punch-50 font-semibold">Aircraft Registry</label>
             <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="e.g. Boeing 737-800" type="text" />
+              placeholder="e.g. N123AA" type="text" />
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold">Model Number</label>
+            <label class="text-sm text-punch-50 font-semibold">Aircraft Model</label>
             <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="e.g. B738" type="text" />
+              placeholder="e.g. Boeing 737-800" type="text" />
           </div>
 
           <div class="space-y-2">
@@ -83,9 +83,14 @@ const activeTab = ref('aircraft');
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold">Registration Date</label>
-              <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-                type="date" />
+            <label class="text-sm text-punch-50 font-semibold">Airline</label>
+            <select
+              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary">
+              <option>Boeing Commercial Airplanes</option>
+              <option>Airbus</option>
+              <option>Embraer</option>
+              <option>Bombardier</option>
+            </select>
           </div>
         </div>
       </section>
@@ -138,17 +143,20 @@ const activeTab = ref('aircraft');
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold">Max Range (km)</label>
-            <input
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="0" type="number" />
+            <label class="text-sm text-punch-50 font-semibold">First Flight Date</label>
+              <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+                type="date" />
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold">Engine Type</label>
-            <input
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="Turbofan" type="text" />
+            <label class="text-sm text-punch-50 font-semibold">Status</label>
+            <select
+              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary">
+              <option>Active</option>
+              <option>Maintenance</option>
+              <option>Inactive</option>
+              <option>Retired</option>
+            </select>
           </div>
         </div>
       </section>
