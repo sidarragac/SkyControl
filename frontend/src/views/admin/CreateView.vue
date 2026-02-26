@@ -168,6 +168,7 @@ const activeTab = ref('aircraft');
       </div>
     </form>
 
+    <!-- Airline Form -->
     <form
       :class="['space-y-8',
         activeTab === 'airline' ? 'block' : 'hidden'
@@ -289,6 +290,7 @@ const activeTab = ref('aircraft');
       </div>
     </form>
 
+    <!-- Manufacturer Form -->
     <form
       :class="['space-y-8',
         activeTab === 'manufacturer' ? 'block' : 'hidden'
