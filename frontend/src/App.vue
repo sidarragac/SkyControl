@@ -1,4 +1,4 @@
-<!-- Desarrollado por Mateo Pineda -->
+<!-- Developed by Mateo Pineda -->
 
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -10,7 +10,7 @@ const activeLink = ref('home');
 
 <template>
   <body class="bg-punch-50 text-slate-900 min-h-screen">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex h-screen bg-light-black">
       <button
         @click="isOpen = !isOpen"
         class="md:hidden pr-4 py-3 pl-1 mt-auto mb-auto rounded-r-4xl bg-deep-black text-punch-50"
@@ -141,7 +141,7 @@ const activeLink = ref('home');
         </div>
       </aside>
 
-      <main class="flex-1 flex flex-col overflow-hidden">
+      <main class="flex-1 flex flex-col overflow-y-auto overflow-x-hidden bg-light-black">
         <RouterView />
       </main>
     </div>
