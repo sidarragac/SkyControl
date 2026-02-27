@@ -1,8 +1,11 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
+import { COUNTRIES, type Country } from '../../types/SharedTypes';
 import { ref } from 'vue';
 
 const activeTab = ref('aircraft');
+const selectedAirlineCountry = ref<Country | ''>('');
+const selectedManufacturerCountry = ref<Country | ''>('');
 </script>
 
 <template>
@@ -10,8 +13,9 @@ const activeTab = ref('aircraft');
     <!-- Header -->
     <header class="mb-8">
       <h2 class="text-3xl text-punch-50 font-black tracking-tight mb-2">Create New Entry</h2>
-      <p class="text-punch-50">Add a new aircraft, airline, or manufacturer record to the global
-        registry.</p>
+      <p class="text-punch-50">
+        Add a new aircraft, airline, or manufacturer record to the global registry.
+      </p>
     </header>
 
     <!-- Tabs Navigation -->
@@ -19,8 +23,11 @@ const activeTab = ref('aircraft');
       <div class="flex gap-4">
         <button
           @click="activeTab = 'aircraft'"
-          :class="['group relative p-4 text-sm font-bold rounded-t-xl cursor-pointer',
-            activeTab === 'aircraft' ? 'text-punch-50 bg-punch-900' : 'text-punch-800 bg-punch-50 hover:text-punch-900'
+          :class="[
+            'group relative p-4 text-sm font-bold rounded-t-xl cursor-pointer',
+            activeTab === 'aircraft'
+              ? 'text-punch-50 bg-punch-900'
+              : 'text-punch-800 bg-punch-50 hover:text-punch-900',
           ]"
         >
           <span>Aircraft</span>
@@ -28,8 +35,11 @@ const activeTab = ref('aircraft');
 
         <button
           @click="activeTab = 'airline'"
-          :class="['group relative p-4 text-sm font-bold rounded-t-xl cursor-pointer',
-            activeTab === 'airline' ? 'text-punch-50 bg-punch-900' : 'text-punch-800 bg-punch-50 hover:text-punch-900'
+          :class="[
+            'group relative p-4 text-sm font-bold rounded-t-xl cursor-pointer',
+            activeTab === 'airline'
+              ? 'text-punch-50 bg-punch-900'
+              : 'text-punch-800 bg-punch-50 hover:text-punch-900',
           ]"
         >
           <span>Airline</span>
@@ -37,8 +47,11 @@ const activeTab = ref('aircraft');
 
         <button
           @click="activeTab = 'manufacturer'"
-          :class="['group relative p-4 text-sm font-bold rounded-t-xl cursor-pointer',
-            activeTab === 'manufacturer' ? 'text-punch-50 bg-punch-900' : 'text-punch-800 bg-punch-50 hover:text-punch-900'
+          :class="[
+            'group relative p-4 text-sm font-bold rounded-t-xl cursor-pointer',
+            activeTab === 'manufacturer'
+              ? 'text-punch-50 bg-punch-900'
+              : 'text-punch-800 bg-punch-50 hover:text-punch-900',
           ]"
         >
           <span>Manufacturer</span>
@@ -47,12 +60,7 @@ const activeTab = ref('aircraft');
     </nav>
 
     <!-- Aircraft Form -->
-    <form
-      method="POST"
-      :class="['space-y-8',
-        activeTab === 'aircraft' ? 'block' : 'hidden'
-      ]"
-    >
+    <form method="POST" :class="['space-y-8', activeTab === 'aircraft' ? 'block' : 'hidden']">
       <!-- Section: General Information -->
       <section class="bg-punch-900 p-6 rounded-xl border">
         <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
@@ -62,20 +70,27 @@ const activeTab = ref('aircraft');
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Registry</label>
-            <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="e.g. N123AA" type="text" />
+            <input
+              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              placeholder="e.g. N123AA"
+              type="text"
+            />
           </div>
 
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Model</label>
-            <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="e.g. Boeing 737-800" type="text" />
+            <input
+              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              placeholder="e.g. Boeing 737-800"
+              type="text"
+            />
           </div>
 
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Manufacturer</label>
             <select
-              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary">
+              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+            >
               <option>Boeing Commercial Airplanes</option>
               <option>Airbus</option>
               <option>Embraer</option>
@@ -86,7 +101,8 @@ const activeTab = ref('aircraft');
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Airline</label>
             <select
-              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary">
+              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+            >
               <option>Boeing Commercial Airplanes</option>
               <option>Airbus</option>
               <option>Embraer</option>
@@ -105,7 +121,8 @@ const activeTab = ref('aircraft');
         <div class="space-y-4">
           <label class="text-sm text-punch-50 font-semibold">Photo</label>
           <div
-            class="border-2 border-dashed border-deep-black rounded-xl p-10 flex flex-col items-center justify-center bg-punch-50 group cursor-pointer hover:border-punch-700 transition-colors">
+            class="border-2 border-dashed border-deep-black rounded-xl p-10 flex flex-col items-center justify-center bg-punch-50 group cursor-pointer hover:border-punch-700 transition-colors"
+          >
             <div class="bg-primary/10 p-4 rounded-full mb-4">
               <i class="fas fa-file material-symbols-outlined text-deep-black text-3xl"></i>
             </div>
@@ -115,9 +132,10 @@ const activeTab = ref('aircraft');
 
           <!-- Upload Preview Placeholder -->
           <div class="flex items-center gap-4 p-3 bg-punch-50 rounded-lg">
-            <div class="size-12 rounded bg-punch-50 bg-cover bg-center"
-              data-alt="Small thumbnail preview of uploaded aircraft image">
-            </div>
+            <div
+              class="size-12 rounded bg-punch-50 bg-cover bg-center"
+              data-alt="Small thumbnail preview of uploaded aircraft image"
+            ></div>
             <div class="flex-1 min-w-0">
               <p class="text-xs text-deep-black font-bold truncate">B738_Final_Render.jpg</p>
               <p class="text-[10px] text-deep-black/80">2.4 MB • Complete</p>
@@ -140,19 +158,24 @@ const activeTab = ref('aircraft');
             <label class="text-sm text-punch-50 font-semibold">Passenger Capacity</label>
             <input
               class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="0" type="number" />
+              placeholder="0"
+              type="number"
+            />
           </div>
 
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">First Flight Date</label>
-              <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-                type="date" />
+            <input
+              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              type="date"
+            />
           </div>
 
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Status</label>
             <select
-              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary">
+              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+            >
               <option>Active</option>
               <option>Maintenance</option>
               <option>Retired</option>
@@ -165,24 +188,21 @@ const activeTab = ref('aircraft');
       <div class="flex items-center justify-end gap-4 pt-4">
         <button
           class="px-6 py-3 text-sm font-bold text-punch-50 bg-punch-800 hover:bg-punch-900 rounded-lg transition-colors cursor-pointer"
-          type="button">
+          type="button"
+        >
           Discard Changes
         </button>
         <button
           class="px-8 py-3 text-sm font-bold text-deep-black bg-punch-50 hover:text-light-black/50 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
-          type="submit">
+          type="submit"
+        >
           Save Aircraft Entry
         </button>
       </div>
     </form>
 
     <!-- Airline Form -->
-    <form
-      method="POST"
-      :class="['space-y-8',
-        activeTab === 'airline' ? 'block' : 'hidden'
-      ]"
-    >
+    <form method="POST" :class="['space-y-8', activeTab === 'airline' ? 'block' : 'hidden']">
       <!-- Section: General Information -->
       <section class="bg-punch-900 p-6 rounded-xl border">
         <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
@@ -192,20 +212,34 @@ const activeTab = ref('aircraft');
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Name</label>
-            <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="Name" type="text" />
+            <input
+              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              placeholder="Name"
+              type="text"
+            />
           </div>
 
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Country</label>
-            <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="Country" type="text" />
+            <select
+              v-model="selectedAirlineCountry"
+              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+            >
+              <option disabled value="">Select a country</option>
+
+              <option v-for="country in COUNTRIES" :key="country" :value="country">
+                {{ country }}
+              </option>
+            </select>
           </div>
 
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Destinations</label>
-            <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="List of cities" type="text" />
+            <input
+              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              placeholder="List of cities"
+              type="text"
+            />
           </div>
         </div>
       </section>
@@ -219,7 +253,8 @@ const activeTab = ref('aircraft');
         <div class="space-y-4">
           <label class="text-sm text-punch-50 font-semibold">Photo</label>
           <div
-            class="border-2 border-dashed border-deep-black rounded-xl p-10 flex flex-col items-center justify-center bg-punch-50 group cursor-pointer hover:border-punch-700 transition-colors">
+            class="border-2 border-dashed border-deep-black rounded-xl p-10 flex flex-col items-center justify-center bg-punch-50 group cursor-pointer hover:border-punch-700 transition-colors"
+          >
             <div class="bg-primary/10 p-4 rounded-full mb-4">
               <i class="fas fa-file material-symbols-outlined text-deep-black text-3xl"></i>
             </div>
@@ -229,9 +264,10 @@ const activeTab = ref('aircraft');
 
           <!-- Upload Preview Placeholder -->
           <div class="flex items-center gap-4 p-3 bg-punch-50 rounded-lg">
-            <div class="size-12 rounded bg-punch-50 bg-cover bg-center"
-              data-alt="Small thumbnail preview of uploaded airline image">
-            </div>
+            <div
+              class="size-12 rounded bg-punch-50 bg-cover bg-center"
+              data-alt="Small thumbnail preview of uploaded airline image"
+            ></div>
             <div class="flex-1 min-w-0">
               <p class="text-xs text-deep-black font-bold truncate">B738_Final_Render.jpg</p>
               <p class="text-[10px] text-deep-black/80">2.4 MB • Complete</p>
@@ -247,24 +283,21 @@ const activeTab = ref('aircraft');
       <div class="flex items-center justify-end gap-4 pt-4">
         <button
           class="px-6 py-3 text-sm font-bold text-punch-50 bg-punch-800 hover:bg-punch-900 rounded-lg transition-colors cursor-pointer"
-          type="button">
+          type="button"
+        >
           Discard Changes
         </button>
         <button
           class="px-8 py-3 text-sm font-bold text-deep-black bg-punch-50 hover:text-light-black/50 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
-          type="submit">
+          type="submit"
+        >
           Save Airline Entry
         </button>
       </div>
     </form>
 
     <!-- Manufacturer Form -->
-    <form
-      method="POST"
-      :class="['space-y-8',
-        activeTab === 'manufacturer' ? 'block' : 'hidden'
-      ]"
-    >
+    <form method="POST" :class="['space-y-8', activeTab === 'manufacturer' ? 'block' : 'hidden']">
       <!-- Section: General Information -->
       <section class="bg-punch-900 p-6 rounded-xl border">
         <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
@@ -274,20 +307,33 @@ const activeTab = ref('aircraft');
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Name</label>
-            <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="Name" type="text" />
+            <input
+              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              placeholder="Name"
+              type="text"
+            />
           </div>
 
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Country</label>
-            <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="Country" type="text" />
+            <select
+              v-model="selectedManufacturerCountry"
+              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+            >
+              <option disabled value="">Select a country</option>
+
+              <option v-for="country in COUNTRIES" :key="country" :value="country">
+                {{ country }}
+              </option>
+            </select>
           </div>
 
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold">Foundation Date</label>
-              <input class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-                type="date" />
+            <input
+              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              type="date"
+            />
           </div>
         </div>
       </section>
@@ -301,7 +347,8 @@ const activeTab = ref('aircraft');
         <div class="space-y-4">
           <label class="text-sm text-punch-50 font-semibold">Photo</label>
           <div
-            class="border-2 border-dashed border-deep-black rounded-xl p-10 flex flex-col items-center justify-center bg-punch-50 group cursor-pointer hover:border-punch-700 transition-colors">
+            class="border-2 border-dashed border-deep-black rounded-xl p-10 flex flex-col items-center justify-center bg-punch-50 group cursor-pointer hover:border-punch-700 transition-colors"
+          >
             <div class="bg-primary/10 p-4 rounded-full mb-4">
               <i class="fas fa-file material-symbols-outlined text-deep-black text-3xl"></i>
             </div>
@@ -311,9 +358,10 @@ const activeTab = ref('aircraft');
 
           <!-- Upload Preview Placeholder -->
           <div class="flex items-center gap-4 p-3 bg-punch-50 rounded-lg">
-            <div class="size-12 rounded bg-punch-50 bg-cover bg-center"
-              data-alt="Small thumbnail preview of uploaded manufacturer image">
-            </div>
+            <div
+              class="size-12 rounded bg-punch-50 bg-cover bg-center"
+              data-alt="Small thumbnail preview of uploaded manufacturer image"
+            ></div>
             <div class="flex-1 min-w-0">
               <p class="text-xs text-deep-black font-bold truncate">B738_Final_Render.jpg</p>
               <p class="text-[10px] text-deep-black/80">2.4 MB • Complete</p>
@@ -329,12 +377,14 @@ const activeTab = ref('aircraft');
       <div class="flex items-center justify-end gap-4 pt-4">
         <button
           class="px-6 py-3 text-sm font-bold text-punch-50 bg-punch-800 hover:bg-punch-900 rounded-lg transition-colors cursor-pointer"
-          type="button">
+          type="button"
+        >
           Discard Changes
         </button>
         <button
           class="px-8 py-3 text-sm font-bold text-deep-black bg-punch-50 hover:text-light-black/50 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
-          type="submit">
+          type="submit"
+        >
           Save Manufacturer Entry
         </button>
       </div>

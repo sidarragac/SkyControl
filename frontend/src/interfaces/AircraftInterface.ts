@@ -1,7 +1,7 @@
 import type { Status } from '../types/AircraftTypes';
 
 export interface AircraftInterface {
-  id:string;
+  id: string;
   registry: string;
   model: string;
   passengerCapacity: number;

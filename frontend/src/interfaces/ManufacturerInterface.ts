@@ -1,7 +1,7 @@
 import type { Country } from '../types/SharedTypes';
 
 export interface AirlineInterface {
-  id:string;
+  id: string;
   name: string;
   country: Country;
   foundationDate: Date;
