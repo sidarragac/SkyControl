@@ -4,7 +4,7 @@ export interface AirlineInterface {
   id: string;
   name: string;
   country: Country;
-  destinations: string[];
+  destinations: Country[];
   imageURL: string;
   createdAt: Date;
   updatedAt: Date;
