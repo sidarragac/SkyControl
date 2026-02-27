@@ -1,3 +1,4 @@
+// Developed by Mateo Pineda
 export const COUNTRIES = [
   'AF',
   'AL',

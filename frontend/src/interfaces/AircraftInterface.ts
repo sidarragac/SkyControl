@@ -1,4 +1,5 @@
-import type { Status } from '../types/AircraftTypes';
+// Developed by Mateo Pineda
+import type { Status } from '@/types/AircraftTypes';
 
 export interface AircraftInterface {
   id: string;

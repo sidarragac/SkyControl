@@ -1,4 +1,5 @@
-import type { Role } from '../types/UserTypes';
+// Developed by Mateo Pineda
+import type { Role } from '@/types/UserTypes';
 
 export interface UserInterface {
   id: string;

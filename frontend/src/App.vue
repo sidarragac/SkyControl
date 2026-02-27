@@ -1,5 +1,4 @@
 <!-- Developed by Mateo Pineda -->
-
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';

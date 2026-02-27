@@ -1,6 +1,6 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
-import { COUNTRIES, type Country } from '../../types/SharedTypes';
+import { COUNTRIES, type Country } from '@/types/SharedTypes';
 import { ref } from 'vue';
 
 const activeTab = ref('aircraft');

@@ -1,4 +1,5 @@
-import type { Country } from '../types/SharedTypes';
+// Developed by Mateo Pineda
+import type { Country } from '@/types/SharedTypes';
 
 export interface AirlineInterface {
   id: string;
