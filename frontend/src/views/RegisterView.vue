@@ -10,13 +10,13 @@ import { RouterLink } from 'vue-router';
       class="relative min-h-screen w-full flex items-center justify-center bg-cover bg-center"
       data-alt="Aircraft wing flying through sunset clouds"
       style="
-        background-image: url('https://images.unsplash.com/photo-1549298385-f62e042575a8?q=80&w=2428&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        background-image: url('https://images.unsplash.com/photo-1585445283296-91fdde699e26?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
       "
     >
       <!-- Dark Overlay -->
       <div class="absolute inset-0 bg-black/10 backdrop-brightness-75"></div>
 
-      <!-- Login Container -->
+      <!-- Register Container -->
       <div class="relative z-10 w-full max-w-120 px-6">
         <div
           class="bg-primary-900/85 backdrop-blur-md border border-primary-900/10 rounded-xl shadow-2xl p-8 md:p-12"
@@ -38,8 +38,29 @@ import { RouterLink } from 'vue-router';
             </p>
           </div>
 
-          <!-- Login Form -->
+          <!-- Register Form -->
           <form class="flex flex-col gap-5">
+             <!-- Name Field -->
+            <div class="flex flex-col gap-2">
+              <label class="text-white-100 text-sm font-medium leading-normal px-1" for="name"
+                >Name</label
+              >
+              <div
+                class="flex w-full items-stretch rounded-lg group border border-black-800/50 bg-primary-700/90 transition-all focus-within:ring-2 focus-within:ring-primary-700/50 focus-within:border-primary-700"
+              >
+                <input
+                  class="flex-1 bg-transparent text-white placeholder:text-neutral-400 focus:outline-none h-14 px-4 rounded-l-lg"
+                  type="text"
+                  placeholder="Enter your name"
+                  name="name"
+                  id="name"
+                />
+                <div class="flex items-center justify-center px-4">
+                  <i class="fas fa-user material-symbols-outlined text-neutral-400"></i>
+                </div>
+              </div>
+            </div>
+
             <!-- Email Field -->
             <div class="flex flex-col gap-2">
               <label class="text-white-100 text-sm font-medium leading-normal px-1" for="email"
@@ -56,7 +77,7 @@ import { RouterLink } from 'vue-router';
                   id="email"
                 />
                 <div class="flex items-center justify-center px-4">
-                  <i class="fas fa-user material-symbols-outlined text-neutral-400"></i>
+                  <i class="fas fa-envelope material-symbols-outlined text-neutral-400"></i>
                 </div>
               </div>
             </div>
@@ -82,23 +103,23 @@ import { RouterLink } from 'vue-router';
               </div>
             </div>
 
-            <!-- Sign In -->
+            <!-- Sign Up -->
             <button
               class="mt-4 flex h-14 w-full items-center justify-center rounded-lg bg-accent-500 text-black-800 text-base font-bold tracking-wide shadow-lg hover:bg-accent-500/80 active:scale-[0.98] transition-all cursor-pointer"
               type="submit"
             >
-              Sign In
+              Sign Up
             </button>
           </form>
 
           <!-- Register Link -->
           <div class="mt-10 pt-6 border-t border-white-100/10 flex flex-col items-center gap-4">
             <p class="text-white-100/50 text-sm">
-              Don't have an account?
+              Already have an account?
               <RouterLink
-                to="/register"
+                to="/login"
                 class="text-primary text-accent-500/90 font-semibold hover:underline"
-                >Sign Up</RouterLink
+                >Sign In</RouterLink
               >
             </p>
           </div>
