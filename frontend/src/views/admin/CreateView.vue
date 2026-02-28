@@ -9,6 +9,7 @@ import { AircraftService } from '@/services/AircraftService';
 import { AirlineService } from '@/services/AirlineService';
 import { ManufacturerService } from '@/services/ManufacturerService';
 import { COUNTRIES, type Country } from '@/types/SharedTypes';
+import { CountryFormatUtil } from '@/utils/CountryFormatUtil';
 import type { Status } from '@/types/AircraftTypes';
 
 // States for interactivity
@@ -46,12 +47,12 @@ function submitAircraftForm(): void {
     }, 3000);
 
     clearAircraftForm();
-  } catch (error: Error | unknown){
+  } catch (error: Error | unknown) {
     aircraftErrorMessage.value = `An error occurred while creating the aircraft entry. Please try again.\nError details:${(error as Error).message}`;
     setTimeout(() => {
       aircraftErrorMessage.value = '';
     }, 3000);
-  };
+  }
 }
 
 function clearAircraftForm(): void {
@@ -72,11 +73,11 @@ const airlineSuccessMessage = ref('');
 const airlineErrorMessage = ref('');
 
 function submitAirlineForm(): void {
-  try{
+  try {
     const newAirline: CreateAirlineDTO = {
       name: airlineName.value,
       country: airlineCountry.value,
-      destinations: formatDestinations(destinations.value),
+      destinations: CountryFormatUtil.formatDestinations(destinations.value),
       imageURL: airlineImageURL.value,
     };
 
@@ -87,20 +88,12 @@ function submitAirlineForm(): void {
     }, 3000);
 
     clearAirlineForm();
-  } catch (error: Error | unknown){
+  } catch (error: Error | unknown) {
     airlineErrorMessage.value = `An error occurred while creating the airline entry. Please try again.\nError details:${(error as Error).message}`;
     setTimeout(() => {
       airlineErrorMessage.value = '';
     }, 3000);
-  };
-
-}
-
-function formatDestinations(destinations: string): Country[] {
-  return destinations
-    .split(',')
-    .map((dest) => dest.trim().toUpperCase())
-    .filter((dest): dest is Country => COUNTRIES.includes(dest as Country));
+  }
 }
 
 function clearAirlineForm(): void {
@@ -134,12 +127,12 @@ function submitManufacturerForm(): void {
     }, 3000);
 
     clearManufacturerForm();
-  } catch (error: Error | unknown){
+  } catch (error: Error | unknown) {
     manufacturerErrorMessage.value = `An error occurred while creating the manufacturer entry. Please try again.\nError details:${(error as Error).message}`;
     setTimeout(() => {
       manufacturerErrorMessage.value = '';
     }, 3000);
-  };
+  }
 }
 
 function clearManufacturerForm(): void {
