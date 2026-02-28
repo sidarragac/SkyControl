@@ -23,27 +23,35 @@ const aircraftImageURL = ref('');
 const passengerCapacity = ref(0);
 const firstFlightDate = ref('');
 const status = ref<Status>('active');
-const aircraftSuccessMessage = ref('');
 const manufacturers = ManufacturerService.getManufacturers();
 const airlines = AirlineService.getAirlines();
+const aircraftSuccessMessage = ref('');
+const aircraftErrorMessage = ref('');
 
 function submitAircraftForm(): void {
-  const newAircraft: CreateAircraftDTO = {
-    registry: registry.value,
-    model: model.value,
-    passengerCapacity: passengerCapacity.value,
-    status: status.value,
-    firstFlightDate: new Date(firstFlightDate.value),
-    imageURL: aircraftImageURL.value,
+  try {
+    const newAircraft: CreateAircraftDTO = {
+      registry: registry.value,
+      model: model.value,
+      passengerCapacity: passengerCapacity.value,
+      status: status.value,
+      firstFlightDate: new Date(firstFlightDate.value),
+      imageURL: aircraftImageURL.value,
+    };
+
+    AircraftService.createAircraft(newAircraft);
+    aircraftSuccessMessage.value = 'Aircraft entry created succesfully!';
+    setTimeout(() => {
+      aircraftSuccessMessage.value = '';
+    }, 3000);
+
+    clearAircraftForm();
+  } catch (error: Error | unknown){
+    aircraftErrorMessage.value = `An error occurred while creating the aircraft entry. Please try again.\nError details:${(error as Error).message}`;
+    setTimeout(() => {
+      aircraftErrorMessage.value = '';
+    }, 3000);
   };
-
-  AircraftService.createAircraft(newAircraft);
-  aircraftSuccessMessage.value = 'Aircraft entry created succesfully!';
-  setTimeout(() => {
-    aircraftSuccessMessage.value = '';
-  }, 3000);
-
-  clearAircraftForm();
 }
 
 function clearAircraftForm(): void {
@@ -61,22 +69,31 @@ const airlineCountry = ref<Country>('AF');
 const destinations = ref('');
 const airlineImageURL = ref('');
 const airlineSuccessMessage = ref('');
+const airlineErrorMessage = ref('');
 
 function submitAirlineForm(): void {
-  const newAirline: CreateAirlineDTO = {
-    name: airlineName.value,
-    country: airlineCountry.value,
-    destinations: formatDestinations(destinations.value),
-    imageURL: airlineImageURL.value,
+  try{
+    const newAirline: CreateAirlineDTO = {
+      name: airlineName.value,
+      country: airlineCountry.value,
+      destinations: formatDestinations(destinations.value),
+      imageURL: airlineImageURL.value,
+    };
+
+    AirlineService.createAirline(newAirline);
+    airlineSuccessMessage.value = 'Airline entry created succesfully!';
+    setTimeout(() => {
+      airlineSuccessMessage.value = '';
+    }, 3000);
+
+    clearAirlineForm();
+  } catch (error: Error | unknown){
+    airlineErrorMessage.value = `An error occurred while creating the airline entry. Please try again.\nError details:${(error as Error).message}`;
+    setTimeout(() => {
+      airlineErrorMessage.value = '';
+    }, 3000);
   };
 
-  AirlineService.createAirline(newAirline);
-  airlineSuccessMessage.value = 'Airline entry created succesfully!';
-  setTimeout(() => {
-    airlineSuccessMessage.value = '';
-  }, 3000);
-
-  clearAirlineForm();
 }
 
 function formatDestinations(destinations: string): Country[] {
@@ -99,22 +116,30 @@ const manufacturerCountry = ref<Country>('AF');
 const foundationDate = ref('');
 const manufacturerImageURL = ref('');
 const manufacturerSuccessMessage = ref('');
+const manufacturerErrorMessage = ref('');
 
 function submitManufacturerForm(): void {
-  const newManufacturer: CreateManufacturerDTO = {
-    name: manufacturerName.value,
-    country: manufacturerCountry.value,
-    foundationDate: new Date(foundationDate.value),
-    imageURL: manufacturerImageURL.value,
+  try {
+    const newManufacturer: CreateManufacturerDTO = {
+      name: manufacturerName.value,
+      country: manufacturerCountry.value,
+      foundationDate: new Date(foundationDate.value),
+      imageURL: manufacturerImageURL.value,
+    };
+
+    ManufacturerService.createManufacturer(newManufacturer);
+    manufacturerSuccessMessage.value = 'Manufacturer entry created succesfully!';
+    setTimeout(() => {
+      manufacturerSuccessMessage.value = '';
+    }, 3000);
+
+    clearManufacturerForm();
+  } catch (error: Error | unknown){
+    manufacturerErrorMessage.value = `An error occurred while creating the manufacturer entry. Please try again.\nError details:${(error as Error).message}`;
+    setTimeout(() => {
+      manufacturerErrorMessage.value = '';
+    }, 3000);
   };
-
-  ManufacturerService.createManufacturer(newManufacturer);
-  manufacturerSuccessMessage.value = 'Manufacturer entry created succesfully!';
-  setTimeout(() => {
-    manufacturerSuccessMessage.value = '';
-  }, 3000);
-
-  clearManufacturerForm();
 }
 
 function clearManufacturerForm(): void {
@@ -190,6 +215,24 @@ function clearManufacturerForm(): void {
           <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
           <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
             {{ aircraftSuccessMessage }}
+          </p>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Error Message -->
+    <Transition name="fade">
+      <div
+        v-if="aircraftErrorMessage && activeTab === 'aircraft'"
+        class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
+      >
+        <i
+          class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
+        ></i>
+        <div>
+          <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
+          <p class="text-xs text-red-700 dark:text-red-400/80">
+            {{ aircraftErrorMessage }}
           </p>
         </div>
       </div>
@@ -368,6 +411,24 @@ function clearManufacturerForm(): void {
       </div>
     </Transition>
 
+    <!-- Error Message -->
+    <Transition name="fade">
+      <div
+        v-if="airlineErrorMessage && activeTab === 'airline'"
+        class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
+      >
+        <i
+          class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
+        ></i>
+        <div>
+          <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
+          <p class="text-xs text-red-700 dark:text-red-400/80">
+            {{ airlineErrorMessage }}
+          </p>
+        </div>
+      </div>
+    </Transition>
+
     <form
       method="POST"
       :class="['space-y-8', activeTab === 'airline' ? 'block' : 'hidden']"
@@ -462,6 +523,24 @@ function clearManufacturerForm(): void {
           <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
           <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
             {{ manufacturerSuccessMessage }}
+          </p>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Error Message -->
+    <Transition name="fade">
+      <div
+        v-if="manufacturerErrorMessage && activeTab === 'manufacturer'"
+        class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
+      >
+        <i
+          class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
+        ></i>
+        <div>
+          <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
+          <p class="text-xs text-red-700 dark:text-red-400/80">
+            {{ manufacturerErrorMessage }}
           </p>
         </div>
       </div>
