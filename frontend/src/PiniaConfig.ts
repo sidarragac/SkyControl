@@ -2,6 +2,8 @@
 import { createPinia } from 'pinia';
 import { watch } from 'vue';
 import { aircraftSeeder } from '@/stores/aircraftSeeder.js';
+import { airlineSeeder } from '@/stores/airlineSeeder.js';
+import { manufacturerSeeder } from '@/stores/manufacturerSeeder.js';
 
 export default class PiniaConfig {
   public static init() {
@@ -15,6 +17,12 @@ export default class PiniaConfig {
       pinia.state.value = {
         aircraft: {
           aircrafts: aircraftSeeder,
+        },
+        airline: {
+          airlines: airlineSeeder,
+        },
+        manufacturer: {
+          manufacturers: manufacturerSeeder,
         },
       };
 

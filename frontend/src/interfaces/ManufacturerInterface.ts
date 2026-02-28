@@ -1,7 +1,7 @@
 // Developed by Mateo Pineda
 import type { Country } from '@/types/SharedTypes';
 
-export interface AirlineInterface {
+export interface ManufacturerInterface {
   id: string;
   name: string;
   country: Country;

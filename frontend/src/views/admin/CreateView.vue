@@ -2,15 +2,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import UploadFile from '@/components/UploadFile.vue';
-import { COUNTRIES, type Country } from '@/types/SharedTypes';
-import type { CreateAirCraftDTO } from '@/dtos/CreateAircraftDTO';
-import type { Status } from '@/types/AircraftTypes';
+import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
+import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
+import type { CreateManufacturerDTO } from '@/dtos/CreateManufacturerDTO';
 import { AircraftService } from '@/services/AircraftService';
+import { AirlineService } from '@/services/AirlineService';
+import { ManufacturerService } from '@/services/ManufacturerService';
+import { COUNTRIES, type Country } from '@/types/SharedTypes';
+import type { Status } from '@/types/AircraftTypes';
 
 // States for interactivity
 const activeTab = ref('aircraft');
-const selectedAirlineCountry = ref<Country | ''>('');
-const selectedManufacturerCountry = ref<Country | ''>('');
+const selectedManufacturer = ref('');
+const selectedAirline = ref('');
 
 // Aricraft creation form
 const registry = ref('');
@@ -18,11 +22,13 @@ const model = ref('');
 const aircraftImageURL = ref('');
 const passengerCapacity = ref(0);
 const firstFlightDate = ref('');
-const status = ref('active' as Status);
+const status = ref<Status>('active');
 const aircraftSuccessMessage = ref('');
+const manufacturers = ManufacturerService.getManufacturers();
+const airlines = AirlineService.getAirlines();
 
 function submitAircraftForm(): void {
-  const newAircraft: CreateAirCraftDTO = {
+  const newAircraft: CreateAircraftDTO = {
     registry: registry.value,
     model: model.value,
     passengerCapacity: passengerCapacity.value,
@@ -33,6 +39,9 @@ function submitAircraftForm(): void {
 
   AircraftService.createAircraft(newAircraft);
   aircraftSuccessMessage.value = 'Aircraft entry created succesfully!';
+  setTimeout(() => {
+    aircraftSuccessMessage.value = '';
+  }, 3000);
 
   clearAircraftForm();
 }
@@ -44,6 +53,75 @@ function clearAircraftForm(): void {
   status.value = 'active';
   firstFlightDate.value = '';
   aircraftImageURL.value = '';
+}
+
+// Ariline creation form
+const airlineName = ref('');
+const airlineCountry = ref<Country>('AF');
+const destinations = ref('');
+const airlineImageURL = ref('');
+const airlineSuccessMessage = ref('');
+
+function submitAirlineForm(): void {
+  const newAirline: CreateAirlineDTO = {
+    name: airlineName.value,
+    country: airlineCountry.value,
+    destinations: formatDestinations(destinations.value),
+    imageURL: airlineImageURL.value,
+  };
+
+  AirlineService.createAirline(newAirline);
+  airlineSuccessMessage.value = 'Airline entry created succesfully!';
+  setTimeout(() => {
+    airlineSuccessMessage.value = '';
+  }, 3000);
+
+  clearAirlineForm();
+}
+
+function formatDestinations(destinations: string): Country[] {
+  return destinations
+    .split(',')
+    .map((dest) => dest.trim().toUpperCase())
+    .filter((dest): dest is Country => COUNTRIES.includes(dest as Country));
+}
+
+function clearAirlineForm(): void {
+  airlineName.value = '';
+  airlineCountry.value = 'AF';
+  destinations.value = '';
+  airlineImageURL.value = '';
+}
+
+// Manufacturer creation form
+const manufacturerName = ref('');
+const manufacturerCountry = ref<Country>('AF');
+const foundationDate = ref('');
+const manufacturerImageURL = ref('');
+const manufacturerSuccessMessage = ref('');
+
+function submitManufacturerForm(): void {
+  const newManufacturer: CreateManufacturerDTO = {
+    name: manufacturerName.value,
+    country: manufacturerCountry.value,
+    foundationDate: new Date(foundationDate.value),
+    imageURL: manufacturerImageURL.value,
+  };
+
+  ManufacturerService.createManufacturer(newManufacturer);
+  manufacturerSuccessMessage.value = 'Manufacturer entry created succesfully!';
+  setTimeout(() => {
+    manufacturerSuccessMessage.value = '';
+  }, 3000);
+
+  clearManufacturerForm();
+}
+
+function clearManufacturerForm(): void {
+  manufacturerName.value = '';
+  manufacturerCountry.value = 'AF';
+  foundationDate.value = '';
+  manufacturerImageURL.value = '';
 }
 </script>
 
@@ -99,6 +177,24 @@ function clearAircraftForm(): void {
     </nav>
 
     <!-- Aircraft Form -->
+    <!-- Success Message -->
+    <Transition name="fade">
+      <div
+        v-if="aircraftSuccessMessage && activeTab === 'aircraft'"
+        class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
+      >
+        <i
+          class="fas fa-check-circle material-symbols-outlined text-emerald-600 dark:text-emerald-400"
+        ></i>
+        <div>
+          <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
+          <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
+            {{ aircraftSuccessMessage }}
+          </p>
+        </div>
+      </div>
+    </Transition>
+
     <form
       method="POST"
       :class="['space-y-8', activeTab === 'aircraft' ? 'block' : 'hidden']"
@@ -142,32 +238,38 @@ function clearAircraftForm(): void {
               >Manufacturer</label
             >
             <select
+              v-model="selectedManufacturer"
               class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
               name="manufacturer"
               id="manufacturer"
               required
             >
               <option disabled value="">Select Manufacturer</option>
-              <option>Boeing Commercial Airplanes</option>
-              <option>Airbus</option>
-              <option>Embraer</option>
-              <option>Bombardier</option>
+
+              <option
+                v-for="manufacturer in manufacturers"
+                :key="manufacturer.id"
+                :value="manufacturer.name"
+              >
+                {{ manufacturer.name }}
+              </option>
             </select>
           </div>
 
           <div class="space-y-2">
             <label class="text-sm text-punch-50 font-semibold" for="airline">Airline</label>
             <select
+              v-model="selectedAirline"
               class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
               name="airline"
               id="airline"
               required
             >
               <option disabled value="">Select Airline</option>
-              <option>Boeing Commercial Airplanes</option>
-              <option>Airbus</option>
-              <option>Embraer</option>
-              <option>Bombardier</option>
+
+              <option v-for="airline in airlines" :key="airline.id" :value="airline.name">
+                {{ airline.name }}
+              </option>
             </select>
           </div>
         </div>
@@ -192,7 +294,6 @@ function clearAircraftForm(): void {
               name="passengerCapacity"
               id="passengerCapacity"
               class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              placeholder="0"
               type="number"
               required
             />
@@ -221,9 +322,9 @@ function clearAircraftForm(): void {
               class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
               required
             >
-              <option>Active</option>
-              <option>Maintenance</option>
-              <option>Retired</option>
+              <option value="active">Active</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="retired">Retired</option>
             </select>
           </div>
         </div>
@@ -249,7 +350,29 @@ function clearAircraftForm(): void {
     </form>
 
     <!-- Airline Form -->
-    <form method="POST" :class="['space-y-8', activeTab === 'airline' ? 'block' : 'hidden']">
+    <!-- Success Message -->
+    <Transition name="fade">
+      <div
+        v-if="airlineSuccessMessage && activeTab === 'airline'"
+        class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
+      >
+        <i
+          class="fas fa-check-circle material-symbols-outlined text-emerald-600 dark:text-emerald-400"
+        ></i>
+        <div>
+          <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
+          <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
+            {{ airlineSuccessMessage }}
+          </p>
+        </div>
+      </div>
+    </Transition>
+
+    <form
+      method="POST"
+      :class="['space-y-8', activeTab === 'airline' ? 'block' : 'hidden']"
+      @submit.prevent="submitAirlineForm()"
+    >
       <!-- Section: General Information -->
       <section class="bg-punch-900 p-6 rounded-xl border">
         <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
@@ -258,24 +381,25 @@ function clearAircraftForm(): void {
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="name">Name</label>
+            <label class="text-sm text-punch-50 font-semibold" for="airlineName">Name</label>
             <input
+              v-model="airlineName"
               class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
               placeholder="Name"
               type="text"
-              name="name"
-              id="name"
+              name="airlineName"
+              id="airlineName"
               required
             />
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="country">Country</label>
+            <label class="text-sm text-punch-50 font-semibold" for="airlineCountry">Country</label>
             <select
-              v-model="selectedAirlineCountry"
+              v-model="airlineCountry"
               class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              name="country"
-              id="country"
+              name="airlineCountry"
+              id="airlineCountry"
               required
             >
               <option disabled value="">Select a country</option>
@@ -291,6 +415,7 @@ function clearAircraftForm(): void {
               >Destinations</label
             >
             <input
+              v-model="destinations"
               class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
               placeholder="List of cities separated by commas"
               type="text"
@@ -303,45 +428,14 @@ function clearAircraftForm(): void {
       </section>
 
       <!-- Section: Media & Documentation -->
-      <section class="bg-punch-900 p-6 rounded-xl border">
-        <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
-          Media &amp; Assets
-        </h3>
-
-        <div class="space-y-4">
-          <label class="text-sm text-punch-50 font-semibold">Photo</label>
-          <div
-            class="border-2 border-dashed border-deep-black rounded-xl p-10 flex flex-col items-center justify-center bg-punch-50 group cursor-pointer hover:border-punch-700 transition-colors"
-          >
-            <div class="bg-primary/10 p-4 rounded-full mb-4">
-              <i class="fas fa-file material-symbols-outlined text-deep-black text-3xl"></i>
-            </div>
-            <p class="text-sm text-deep-black font-bold mb-1">Click to upload or drag and drop</p>
-            <p class="text-xs text-deep-black/80">SVG, PNG, JPG or GIF (max. 800x400px)</p>
-          </div>
-
-          <!-- Upload Preview Placeholder -->
-          <div class="flex items-center gap-4 p-3 bg-punch-50 rounded-lg">
-            <div
-              class="size-12 rounded bg-punch-50 bg-cover bg-center"
-              data-alt="Small thumbnail preview of uploaded airline image"
-            ></div>
-            <div class="flex-1 min-w-0">
-              <p class="text-xs text-deep-black font-bold truncate">B738_Final_Render.jpg</p>
-              <p class="text-[10px] text-deep-black/80">2.4 MB • Complete</p>
-            </div>
-            <button class="p-1 hover:text-punch-900 transition-colors cursor-pointer" type="button">
-              <i class="fas fa-trash material-symbols-outlined text-xl"></i>
-            </button>
-          </div>
-        </div>
-      </section>
+      <UploadFile v-model:imageURL="airlineImageURL" />
 
       <!-- Form Actions -->
       <div class="flex items-center justify-end gap-4 pt-4">
         <button
           class="px-6 py-3 text-sm font-bold text-punch-50 bg-punch-800 hover:bg-punch-900 rounded-lg transition-colors cursor-pointer"
           type="button"
+          @click="clearAirlineForm()"
         >
           Discard Changes
         </button>
@@ -355,7 +449,29 @@ function clearAircraftForm(): void {
     </form>
 
     <!-- Manufacturer Form -->
-    <form method="POST" :class="['space-y-8', activeTab === 'manufacturer' ? 'block' : 'hidden']">
+    <!-- Success Message -->
+    <Transition name="fade">
+      <div
+        v-if="manufacturerSuccessMessage && activeTab === 'manufacturer'"
+        class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
+      >
+        <i
+          class="fas fa-check-circle material-symbols-outlined text-emerald-600 dark:text-emerald-400"
+        ></i>
+        <div>
+          <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
+          <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
+            {{ manufacturerSuccessMessage }}
+          </p>
+        </div>
+      </div>
+    </Transition>
+
+    <form
+      method="POST"
+      :class="['space-y-8', activeTab === 'manufacturer' ? 'block' : 'hidden']"
+      @submit.prevent="submitManufacturerForm()"
+    >
       <!-- Section: General Information -->
       <section class="bg-punch-900 p-6 rounded-xl border">
         <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
@@ -364,24 +480,27 @@ function clearAircraftForm(): void {
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="name">Name</label>
+            <label class="text-sm text-punch-50 font-semibold" for="manufacturerName">Name</label>
             <input
+              v-model="manufacturerName"
               class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
               placeholder="Name"
               type="text"
-              name="name"
-              id="name"
+              name="manufacturerName"
+              id="manufacturerName"
               required
             />
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="country">Country</label>
+            <label class="text-sm text-punch-50 font-semibold" for="manufacturerCountry"
+              >Country</label
+            >
             <select
-              v-model="selectedManufacturerCountry"
+              v-model="manufacturerCountry"
               class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
-              name="country"
-              id="country"
+              name="manufacturerCountry"
+              id="manufacturerCountry"
               required
             >
               <option disabled value="">Select a country</option>
@@ -397,6 +516,7 @@ function clearAircraftForm(): void {
               >Foundation Date</label
             >
             <input
+              v-model="foundationDate"
               class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
               type="date"
               name="foundationDate"
@@ -408,45 +528,14 @@ function clearAircraftForm(): void {
       </section>
 
       <!-- Section: Media & Documentation -->
-      <section class="bg-punch-900 p-6 rounded-xl border">
-        <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
-          Media &amp; Assets
-        </h3>
-
-        <div class="space-y-4">
-          <label class="text-sm text-punch-50 font-semibold">Photo</label>
-          <div
-            class="border-2 border-dashed border-deep-black rounded-xl p-10 flex flex-col items-center justify-center bg-punch-50 group cursor-pointer hover:border-punch-700 transition-colors"
-          >
-            <div class="bg-primary/10 p-4 rounded-full mb-4">
-              <i class="fas fa-file material-symbols-outlined text-deep-black text-3xl"></i>
-            </div>
-            <p class="text-sm text-deep-black font-bold mb-1">Click to upload or drag and drop</p>
-            <p class="text-xs text-deep-black/80">SVG, PNG, JPG or GIF (max. 800x400px)</p>
-          </div>
-
-          <!-- Upload Preview Placeholder -->
-          <div class="flex items-center gap-4 p-3 bg-punch-50 rounded-lg">
-            <div
-              class="size-12 rounded bg-punch-50 bg-cover bg-center"
-              data-alt="Small thumbnail preview of uploaded manufacturer image"
-            ></div>
-            <div class="flex-1 min-w-0">
-              <p class="text-xs text-deep-black font-bold truncate">B738_Final_Render.jpg</p>
-              <p class="text-[10px] text-deep-black/80">2.4 MB • Complete</p>
-            </div>
-            <button class="p-1 hover:text-punch-900 transition-colors cursor-pointer" type="button">
-              <i class="fas fa-trash material-symbols-outlined text-xl"></i>
-            </button>
-          </div>
-        </div>
-      </section>
+      <UploadFile v-model:imageURL="manufacturerImageURL" />
 
       <!-- Form Actions -->
       <div class="flex items-center justify-end gap-4 pt-4">
         <button
           class="px-6 py-3 text-sm font-bold text-punch-50 bg-punch-800 hover:bg-punch-900 rounded-lg transition-colors cursor-pointer"
           type="button"
+          @click="clearManufacturerForm()"
         >
           Discard Changes
         </button>
@@ -460,3 +549,15 @@ function clearAircraftForm(): void {
     </form>
   </div>
 </template>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

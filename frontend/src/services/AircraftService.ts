@@ -1,6 +1,6 @@
 // Developed by Mateo Pineda
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
-import type { CreateAirCraftDTO } from '@/dtos/CreateAircraftDTO';
+import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
 import { useAircraftStore } from '@/stores/AircraftStore';
 
 export class AircraftService {
@@ -8,7 +8,7 @@ export class AircraftService {
     return useAircraftStore().aircrafts;
   }
 
-  static createAircraft(aircraft: CreateAirCraftDTO): void {
+  static createAircraft(aircraft: CreateAircraftDTO): void {
     const id = crypto.randomUUID();
     const createdAt = new Date();
     const updatedAt = new Date();
