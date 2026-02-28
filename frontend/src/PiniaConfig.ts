@@ -13,7 +13,7 @@ export default class PiniaConfig {
     } else {
       // initialize the state with the seeders
       pinia.state.value = {
-        SkyControl: {
+        aircraft: {
           aircrafts: aircraftSeeder,
         },
       };
