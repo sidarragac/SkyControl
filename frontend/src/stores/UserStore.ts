@@ -5,6 +5,7 @@ import type { UserInterface } from '@/interfaces/UserInterface';
 
 export const useUserStore = defineStore('user', () => {
   const users = ref<UserInterface[]>([]);
+  const loggedInUser = ref<UserInterface | null>(null);
 
-  return { users };
+  return { users, loggedInUser };
 });

@@ -1,6 +1,40 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { UserService } from '@/services/UserService';
+
+const router = useRouter();
+
+const email = ref('');
+const password = ref('');
+const loginErrorMessage = ref('');
+
+function submitLoginForm(): void {
+  try{
+    UserService.logInUser(email.value, password.value);
+
+    if(UserService.getLoggedInUser()) {
+      clearLoginForm();
+      router.push('home');
+    } else {
+      loginErrorMessage.value = 'Invalid email or password. Please try again.';
+      setTimeout(() => {
+        loginErrorMessage.value = '';
+      }, 5000);
+    }
+  } catch(error: Error | unknown) {
+    loginErrorMessage.value = `An error occurred while logging in. Please try again.<br>Error details: ${(error as Error).message}`;
+    setTimeout(() => {
+      loginErrorMessage.value = '';
+    }, 5000);
+  }
+};
+
+function clearLoginForm(): void {
+  email.value = '';
+  password.value = '';
+}
 </script>
 
 <template>
@@ -39,7 +73,23 @@ import { RouterLink } from 'vue-router';
           </div>
 
           <!-- Login Form -->
-          <form class="flex flex-col gap-5">
+          <form method="POST" class="flex flex-col gap-5" @submit.prevent="submitLoginForm()">
+            <!-- Error Message -->
+            <Transition name="fade">
+              <div
+                v-if="loginErrorMessage"
+                class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
+              >
+                <i
+                  class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
+                ></i>
+                <div>
+                  <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
+                  <p class="text-xs text-red-700 dark:text-red-400/80" v-html="loginErrorMessage"></p>
+                </div>
+              </div>
+            </Transition>
+
             <!-- Email Field -->
             <div class="flex flex-col gap-2">
               <label class="text-white-100 text-sm font-medium leading-normal px-1" for="email"
@@ -49,11 +99,13 @@ import { RouterLink } from 'vue-router';
                 class="flex w-full items-stretch rounded-lg group border border-black-800/50 bg-primary-700/90 transition-all focus-within:ring-2 focus-within:ring-primary-700/50 focus-within:border-primary-700"
               >
                 <input
+                  v-model="email"
                   class="flex-1 bg-transparent text-white placeholder:text-neutral-400 focus:outline-none h-14 px-4 rounded-l-lg"
                   type="email"
                   placeholder="Enter your email"
                   name="email"
                   id="email"
+                  required
                 />
                 <div class="flex items-center justify-center px-4">
                   <i class="fas fa-user material-symbols-outlined text-neutral-400"></i>
@@ -70,11 +122,13 @@ import { RouterLink } from 'vue-router';
                 class="flex w-full items-stretch rounded-lg group border border-black-800/50 bg-primary-700/90 transition-all focus-within:ring-2 focus-within:ring-primary-700/50 focus-within:border-primary-700"
               >
                 <input
+                  v-model="password"
                   class="flex-1 bg-transparent text-white placeholder:text-neutral-400 focus:outline-none h-14 px-4 rounded-l-lg"
                   type="password"
                   placeholder="Enter your password"
                   name="password"
                   id="password"
+                  required
                 />
                 <div class="flex items-center justify-center px-4">
                   <i class="fas fa-lock material-symbols-outlined text-neutral-400"></i>

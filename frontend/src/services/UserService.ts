@@ -8,6 +8,10 @@ export class UserService {
     return useUserStore().users;
   }
 
+  static getLoggedInUser(): UserInterface | null {
+    return useUserStore().loggedInUser;
+  }
+
   static createUser(user: CreateUserDTO): void {
     const id = crypto.randomUUID();
     const role = 'user';
@@ -15,5 +19,16 @@ export class UserService {
     const updatedAt = new Date();
 
     useUserStore().users.push({ id, ...user, role, createdAt, updatedAt });
+  }
+
+  static logInUser(email: string, password: string): void {
+    const user = useUserStore().users.find((u) => u.email === email && u.password === password);
+    if (user) {
+      useUserStore().loggedInUser = user;
+    }
+  }
+
+  static validateExistingEmail(email: string): boolean {
+    return useUserStore().users.some((u) => u.email === email);
   }
 }

@@ -20,9 +20,20 @@ function submitRegisterForm(): void {
       password: password.value,
     };
 
+    const existingUser = UserService.validateExistingEmail(email.value);
+    if (existingUser) {
+      registrationErrorMessage.value = 'The email address is already in use. Please use a different email.';
+      setTimeout(() => {
+        registrationErrorMessage.value = '';
+      }, 5000);
+      return;
+    }
+
     UserService.createUser(newUser);
+    UserService.logInUser(email.value, password.value);
     clearRegisterForm();
     router.push('home');
+
   } catch (error: Error | unknown) {
     registrationErrorMessage.value = `An error occurred while creating the user. Please try again.<br>Error details: ${(error as Error).message}`;
     setTimeout(() => {
@@ -75,7 +86,7 @@ function clearRegisterForm(): void {
 
           <!-- Register Form -->
           <form method="POST" class="flex flex-col gap-5" @submit.prevent="submitRegisterForm()">
-             <!-- Error Message -->
+            <!-- Error Message -->
             <Transition name="fade">
               <div
                 v-if="registrationErrorMessage"
