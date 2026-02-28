@@ -1,18 +1,20 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink, RouterView, useRoute } from 'vue-router';
 
 const isOpen = ref(false);
 const activeLink = ref('home');
+const route = useRoute();
 </script>
 
 <template>
-  <body class="bg-punch-50 text-slate-900 min-h-screen">
+  <div class="bg-punch-50 text-slate-900 min-h-screen">
     <div class="flex h-screen bg-light-black">
       <button
         @click="isOpen = !isOpen"
         class="md:hidden pr-4 py-3 pl-1 mt-auto mb-auto rounded-r-4xl bg-deep-black text-punch-50"
+        v-if="route.meta.layout !== 'none'"
       >
         <i class="fas fa-caret-right material-symbols-outlined"></i>
       </button>
@@ -24,6 +26,7 @@ const activeLink = ref('home');
           isOpen ? 'translate-x-0' : '-translate-x-full',
           'md:translate-x-0 md:flex md:flex-col',
         ]"
+        v-if="route.meta.layout !== 'none'"
       >
         <!-- Logo and Title -->
         <div class="p-6 flex items-center gap-3">
@@ -144,5 +147,5 @@ const activeLink = ref('home');
         <RouterView />
       </main>
     </div>
-  </body>
+  </div>
 </template>
