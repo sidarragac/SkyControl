@@ -4,6 +4,7 @@ import { watch } from 'vue';
 import { aircraftSeeder } from '@/stores/aircraftSeeder.js';
 import { airlineSeeder } from '@/stores/airlineSeeder.js';
 import { manufacturerSeeder } from '@/stores/manufacturerSeeder.js';
+import { userSeeder } from '@/stores/userSeeder.js';
 
 export default class PiniaConfig {
   public static init() {
@@ -24,6 +25,10 @@ export default class PiniaConfig {
         manufacturer: {
           manufacturers: manufacturerSeeder,
         },
+        user: {
+          users: userSeeder,
+          loggedInUser: null,
+        }
       };
 
       // save the initial state to localStorage
