@@ -1,7 +1,7 @@
 // Developed by Mateo Pineda
 import { COUNTRIES, type Country } from '@/types/SharedTypes';
 
-export class CountryFormatUtil {
+export class CountryFormatterUtil {
   static formatDestinations(destinations: string): Country[] {
     return destinations
       .split(',')

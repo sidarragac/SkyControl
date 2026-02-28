@@ -9,7 +9,7 @@ import { AircraftService } from '@/services/AircraftService';
 import { AirlineService } from '@/services/AirlineService';
 import { ManufacturerService } from '@/services/ManufacturerService';
 import { COUNTRIES, type Country } from '@/types/SharedTypes';
-import { CountryFormatUtil } from '@/utils/CountryFormatUtil';
+import { CountryFormatterUtil } from '@/utils/CountryFormatterUtil';
 import type { Status } from '@/types/AircraftTypes';
 
 // States for interactivity
@@ -77,7 +77,7 @@ function submitAirlineForm(): void {
     const newAirline: CreateAirlineDTO = {
       name: airlineName.value,
       country: airlineCountry.value,
-      destinations: CountryFormatUtil.formatDestinations(destinations.value),
+      destinations: CountryFormatterUtil.formatDestinations(destinations.value),
       imageURL: airlineImageURL.value,
     };
 
