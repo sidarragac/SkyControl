@@ -1,6 +1,41 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { UserService } from '@/services/UserService';
+import type { CreateUserDTO } from '@/dtos/CreateUserDTO';
+
+const router = useRouter();
+
+const name = ref('');
+const email = ref('');
+const password = ref('');
+const registrationErrorMessage = ref('');
+
+function submitRegisterForm(): void {
+  try{
+    const newUser: CreateUserDTO = {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+    };
+
+    UserService.createUser(newUser);
+    clearRegisterForm();
+    router.push('home');
+  } catch (error: Error | unknown) {
+    registrationErrorMessage.value = `An error occurred while creating the user. Please try again.<br>Error details: ${(error as Error).message}`;
+    setTimeout(() => {
+      registrationErrorMessage.value = '';
+    }, 5000);
+  }
+};
+
+function clearRegisterForm(): void {
+  name.value = '';
+  email.value = '';
+  password.value = '';
+};
 </script>
 
 <template>
@@ -39,7 +74,23 @@ import { RouterLink } from 'vue-router';
           </div>
 
           <!-- Register Form -->
-          <form class="flex flex-col gap-5">
+          <form method="POST" class="flex flex-col gap-5" @submit.prevent="submitRegisterForm()">
+             <!-- Error Message -->
+            <Transition name="fade">
+              <div
+                v-if="registrationErrorMessage"
+                class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
+              >
+                <i
+                  class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
+                ></i>
+                <div>
+                  <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
+                  <p class="text-xs text-red-700 dark:text-red-400/80" v-html="registrationErrorMessage"></p>
+                </div>
+              </div>
+            </Transition>
+
              <!-- Name Field -->
             <div class="flex flex-col gap-2">
               <label class="text-white-100 text-sm font-medium leading-normal px-1" for="name"
@@ -49,11 +100,13 @@ import { RouterLink } from 'vue-router';
                 class="flex w-full items-stretch rounded-lg group border border-black-800/50 bg-primary-700/90 transition-all focus-within:ring-2 focus-within:ring-primary-700/50 focus-within:border-primary-700"
               >
                 <input
+                  v-model="name"
                   class="flex-1 bg-transparent text-white placeholder:text-neutral-400 focus:outline-none h-14 px-4 rounded-l-lg"
                   type="text"
                   placeholder="Enter your name"
                   name="name"
                   id="name"
+                  required
                 />
                 <div class="flex items-center justify-center px-4">
                   <i class="fas fa-user material-symbols-outlined text-neutral-400"></i>
@@ -70,11 +123,13 @@ import { RouterLink } from 'vue-router';
                 class="flex w-full items-stretch rounded-lg group border border-black-800/50 bg-primary-700/90 transition-all focus-within:ring-2 focus-within:ring-primary-700/50 focus-within:border-primary-700"
               >
                 <input
+                  v-model="email"
                   class="flex-1 bg-transparent text-white placeholder:text-neutral-400 focus:outline-none h-14 px-4 rounded-l-lg"
                   type="email"
                   placeholder="Enter your email"
                   name="email"
                   id="email"
+                  required
                 />
                 <div class="flex items-center justify-center px-4">
                   <i class="fas fa-envelope material-symbols-outlined text-neutral-400"></i>
@@ -91,11 +146,13 @@ import { RouterLink } from 'vue-router';
                 class="flex w-full items-stretch rounded-lg group border border-black-800/50 bg-primary-700/90 transition-all focus-within:ring-2 focus-within:ring-primary-700/50 focus-within:border-primary-700"
               >
                 <input
+                  v-model="password"
                   class="flex-1 bg-transparent text-white placeholder:text-neutral-400 focus:outline-none h-14 px-4 rounded-l-lg"
                   type="password"
                   placeholder="Enter your password"
                   name="password"
                   id="password"
+                  required
                 />
                 <div class="flex items-center justify-center px-4">
                   <i class="fas fa-lock material-symbols-outlined text-neutral-400"></i>
@@ -112,7 +169,7 @@ import { RouterLink } from 'vue-router';
             </button>
           </form>
 
-          <!-- Register Link -->
+          <!-- Login Link -->
           <div class="mt-10 pt-6 border-t border-white-100/10 flex flex-col items-center gap-4">
             <p class="text-white-100/50 text-sm">
               Already have an account?
