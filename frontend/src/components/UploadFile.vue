@@ -64,6 +64,7 @@ function emitImageUrl() {
 
 function removeImage() {
   imageFile.value = null;
+  emit('update:imageURL', '');
 }
 
 watch(
@@ -77,29 +78,32 @@ watch(
 </script>
 
 <template>
-  <section class="bg-punch-900 p-6 rounded-xl border">
-    <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">Media</h3>
+  <section class="bg-neutral-100 p-6 rounded-xl border border-neutral-100">
+    <h3 class="text-lg text-primary-900 font-bold mb-6 flex items-center gap-2">Media</h3>
 
     <div class="space-y-4">
-      <span class="text-sm text-punch-50 font-semibold">Photo</span>
+      <span class="text-sm text-primary-700 font-semibold">Photo</span>
 
       <!-- Upload Area -->
       <div
-        class="border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center bg-punch-50 group cursor-pointer transition-colors"
+        class="border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center group cursor-pointer transition-colors"
         :class="
-          isDragging ? 'border-punch-700 bg-punch-100' : 'border-deep-black hover:border-punch-700'
+          isDragging
+            ? 'border-accent-500 bg-accent-500/8'
+            : 'border-primary-700 bg-white-100 hover:bg-accent-500/8 hover:border-accent-500'
         "
         @click="openFileDialog"
-        @dragover.prevent="isDragging = true"
-        @dragleave="isDragging = false"
-        @drop="handleDrop"
+        @dragenter.prevent="isDragging = true"
+        @dragover.prevent
+        @dragleave.prevent="isDragging = false"
+        @drop.prevent="handleDrop"
       >
-        <div class="bg-primary/10 p-4 rounded-full mb-4">
-          <i class="fas fa-file material-symbols-outlined text-deep-black text-3xl"></i>
+        <div class="p-4 rounded-full mb-4">
+          <i class="fas fa-file material-symbols-outlined text-black-800 text-3xl"></i>
         </div>
 
-        <p class="text-sm text-deep-black font-bold mb-1">Click to upload or drag and drop</p>
-        <p class="text-xs text-deep-black/80">Only image files (PNG, JPG)</p>
+        <p class="text-sm text-black-800 font-bold mb-1">Click to upload or drag and drop</p>
+        <p class="text-xs text-black-800">Only image files (PNG, JPG)</p>
 
         <!-- Hidden Input -->
         <input
@@ -114,7 +118,7 @@ watch(
       <!-- Preview -->
       <div
         v-if="imageFile || props.imageURL"
-        class="flex items-center gap-4 p-3 bg-punch-50 rounded-lg"
+        class="flex items-center gap-4 p-3 bg-primary-700/5 border-primary-700/10 rounded-lg"
       >
         <div
           class="size-12 rounded bg-cover bg-center"
@@ -122,16 +126,16 @@ watch(
         ></div>
 
         <div class="flex-1 min-w-0">
-          <p class="text-xs text-deep-black font-bold truncate">
+          <p class="text-xs text-primary-900 font-semibold truncate">
             {{ imageFile?.name }}
           </p>
-          <p class="text-[10px] text-deep-black/80">
+          <p class="text-[10px] text-black-800/70">
             {{ formattedSize }}
           </p>
         </div>
 
         <button
-          class="p-1 hover:text-punch-900 transition-colors cursor-pointer"
+          class="p-1 text-black-800/60 hover:text-secondary-700 transition-colors cursor-pointer"
           type="button"
           @click="removeImage"
         >

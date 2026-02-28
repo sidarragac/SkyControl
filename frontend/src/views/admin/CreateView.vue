@@ -30,6 +30,11 @@ const aircraftSuccessMessage = ref('');
 const aircraftErrorMessage = ref('');
 
 function submitAircraftForm(): void {
+  if (!aircraftImageURL.value) {
+    alert('Please upload an image before submitting the form.');
+    return;
+  }
+
   try {
     const newAircraft: CreateAircraftDTO = {
       registry: registry.value,
@@ -48,10 +53,10 @@ function submitAircraftForm(): void {
 
     clearAircraftForm();
   } catch (error: Error | unknown) {
-    aircraftErrorMessage.value = `An error occurred while creating the aircraft entry. Please try again.\nError details:${(error as Error).message}`;
+    aircraftErrorMessage.value = `An error occurred while creating the aircraft entry. Please try again.<br>Error details: ${(error as Error).message}`;
     setTimeout(() => {
       aircraftErrorMessage.value = '';
-    }, 3000);
+    }, 10000);
   }
 }
 
@@ -73,6 +78,11 @@ const airlineSuccessMessage = ref('');
 const airlineErrorMessage = ref('');
 
 function submitAirlineForm(): void {
+  if (!airlineImageURL.value) {
+    alert('Please upload an image before submitting the form.');
+    return;
+  }
+
   try {
     const newAirline: CreateAirlineDTO = {
       name: airlineName.value,
@@ -89,10 +99,10 @@ function submitAirlineForm(): void {
 
     clearAirlineForm();
   } catch (error: Error | unknown) {
-    airlineErrorMessage.value = `An error occurred while creating the airline entry. Please try again.\nError details:${(error as Error).message}`;
+    airlineErrorMessage.value = `An error occurred while creating the airline entry. Please try again.<br>Error details: ${(error as Error).message}`;
     setTimeout(() => {
       airlineErrorMessage.value = '';
-    }, 3000);
+    }, 10000);
   }
 }
 
@@ -112,6 +122,11 @@ const manufacturerSuccessMessage = ref('');
 const manufacturerErrorMessage = ref('');
 
 function submitManufacturerForm(): void {
+  if (!manufacturerImageURL.value) {
+    alert('Please upload an image before submitting the form.');
+    return;
+  }
+
   try {
     const newManufacturer: CreateManufacturerDTO = {
       name: manufacturerName.value,
@@ -128,10 +143,10 @@ function submitManufacturerForm(): void {
 
     clearManufacturerForm();
   } catch (error: Error | unknown) {
-    manufacturerErrorMessage.value = `An error occurred while creating the manufacturer entry. Please try again.\nError details:${(error as Error).message}`;
+    manufacturerErrorMessage.value = `An error occurred while creating the manufacturer entry. Please try again.<br>Error details: ${(error as Error).message}`;
     setTimeout(() => {
       manufacturerErrorMessage.value = '';
-    }, 3000);
+    }, 10000);
   }
 }
 
@@ -144,25 +159,23 @@ function clearManufacturerForm(): void {
 </script>
 
 <template>
-  <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+  <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
     <!-- Header -->
     <header class="mb-8">
-      <h2 class="text-3xl text-punch-50 font-black tracking-tight mb-2">Create New Entry</h2>
-      <p class="text-punch-50">
-        Add a new aircraft, airline, or manufacturer record to the global registry.
-      </p>
+      <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Create New Entry</h2>
+      <p>Add a new aircraft, airline, or manufacturer record to the global registry.</p>
     </header>
 
     <!-- Tabs Navigation -->
-    <nav class="border-b border-punch-50 mb-8">
+    <nav class="border-b border-primary-700 mb-8">
       <div class="flex gap-4">
         <button
           @click="activeTab = 'aircraft'"
           :class="[
             'group relative p-4 text-sm font-bold rounded-t-xl cursor-pointer',
             activeTab === 'aircraft'
-              ? 'text-punch-50 bg-punch-900'
-              : 'text-punch-800 bg-punch-50 hover:text-punch-900',
+              ? 'bg-primary-700 text-white-100'
+              : 'text-black-800 bg-neutral-100 hover:bg-primary-700/80 hover:text-white-100',
           ]"
         >
           <span>Aircraft</span>
@@ -173,8 +186,8 @@ function clearManufacturerForm(): void {
           :class="[
             'group relative p-4 text-sm font-bold rounded-t-xl cursor-pointer',
             activeTab === 'airline'
-              ? 'text-punch-50 bg-punch-900'
-              : 'text-punch-800 bg-punch-50 hover:text-punch-900',
+              ? 'bg-primary-700 text-white-100'
+              : 'text-black-800 bg-neutral-100 hover:bg-primary-700/80 hover:text-white-100',
           ]"
         >
           <span>Airline</span>
@@ -185,8 +198,8 @@ function clearManufacturerForm(): void {
           :class="[
             'group relative p-4 text-sm font-bold rounded-t-xl cursor-pointer',
             activeTab === 'manufacturer'
-              ? 'text-punch-50 bg-punch-900'
-              : 'text-punch-800 bg-punch-50 hover:text-punch-900',
+              ? 'bg-primary-700 text-white-100'
+              : 'text-black-800 bg-neutral-100 hover:bg-primary-700/80 hover:text-white-100',
           ]"
         >
           <span>Manufacturer</span>
@@ -224,9 +237,7 @@ function clearManufacturerForm(): void {
         ></i>
         <div>
           <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
-          <p class="text-xs text-red-700 dark:text-red-400/80">
-            {{ aircraftErrorMessage }}
-          </p>
+          <p class="text-xs text-red-700 dark:text-red-400/80" v-html="aircraftErrorMessage"></p>
         </div>
       </div>
     </Transition>
@@ -237,19 +248,19 @@ function clearManufacturerForm(): void {
       @submit.prevent="submitAircraftForm()"
     >
       <!-- Section: General Information -->
-      <section class="bg-punch-900 p-6 rounded-xl border">
-        <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
+      <section class="bg-neutral-100 p-6 rounded-xl border border-neutral-100">
+        <h3 class="text-lg text-primary-900 font-bold mb-6 flex items-center gap-2">
           General Information
         </h3>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="registry">Registry</label>
+            <label class="text-sm text-primary-700 font-semibold" for="registry">Registry</label>
             <input
               v-model="registry"
               name="registry"
               id="registry"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               placeholder="e.g. N123AA"
               type="text"
               required
@@ -257,12 +268,12 @@ function clearManufacturerForm(): void {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="model">Model</label>
+            <label class="text-sm text-primary-700 font-semibold" for="model">Model</label>
             <input
               v-model="model"
               name="model"
               id="model"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               placeholder="e.g. Boeing 737-800"
               type="text"
               required
@@ -270,12 +281,12 @@ function clearManufacturerForm(): void {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="manufacturer"
+            <label class="text-sm text-primary-700 font-semibold" for="manufacturer"
               >Manufacturer</label
             >
             <select
               v-model="selectedManufacturer"
-              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               name="manufacturer"
               id="manufacturer"
               required
@@ -293,10 +304,10 @@ function clearManufacturerForm(): void {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="airline">Airline</label>
+            <label class="text-sm text-primary-700 font-semibold" for="airline">Airline</label>
             <select
               v-model="selectedAirline"
-              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-accent-500"
               name="airline"
               id="airline"
               required
@@ -315,47 +326,47 @@ function clearManufacturerForm(): void {
       <UploadFile v-model:imageURL="aircraftImageURL" />
 
       <!-- Section: Specifications -->
-      <section class="bg-punch-900 p-6 rounded-xl border">
-        <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
+      <section class="bg-neutral-100 p-6 rounded-xl border border-neutral-100">
+        <h3 class="text-lg text-primary-900 font-bold mb-6 flex items-center gap-2">
           Additional Specifications
         </h3>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="passengerCapacity"
+            <label class="text-sm text-primary-700 font-semibold" for="passengerCapacity"
               >Passenger Capacity</label
             >
             <input
               v-model="passengerCapacity"
               name="passengerCapacity"
               id="passengerCapacity"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               type="number"
               required
             />
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="firstFlightDate"
+            <label class="text-sm text-primary-700 font-semibold" for="firstFlightDate"
               >First Flight Date</label
             >
             <input
               v-model="firstFlightDate"
               name="firstFlightDate"
               id="firstFlightDate"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               type="date"
               required
             />
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="status">Status</label>
+            <label class="text-sm text-primary-700 font-semibold" for="status">Status</label>
             <select
               v-model="status"
               name="status"
               id="status"
-              class="w-full bg-punch-50 text-deep-black rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-accent-500"
               required
             >
               <option value="active">Active</option>
@@ -369,7 +380,7 @@ function clearManufacturerForm(): void {
       <!-- Form Actions -->
       <div class="flex items-center justify-end gap-4 pt-4">
         <button
-          class="px-6 py-3 text-sm font-bold text-punch-50 bg-punch-800 hover:bg-punch-900 rounded-lg transition-colors cursor-pointer"
+          class="px-6 py-3 text-sm font-bold text-black-800 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
           type="button"
           @click="clearAircraftForm()"
         >
@@ -377,7 +388,7 @@ function clearManufacturerForm(): void {
         </button>
 
         <button
-          class="px-8 py-3 text-sm font-bold text-deep-black bg-punch-50 hover:text-light-black/50 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
+          class="px-8 py-3 text-sm font-bold text-black-900 bg-accent-500 hover:bg-accent-500/90 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
           type="submit"
         >
           Save Aircraft Entry
@@ -415,9 +426,7 @@ function clearManufacturerForm(): void {
         ></i>
         <div>
           <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
-          <p class="text-xs text-red-700 dark:text-red-400/80">
-            {{ airlineErrorMessage }}
-          </p>
+          <p class="text-xs text-red-700 dark:text-red-400/80" v-html="airlineErrorMessage"></p>
         </div>
       </div>
     </Transition>
@@ -428,17 +437,17 @@ function clearManufacturerForm(): void {
       @submit.prevent="submitAirlineForm()"
     >
       <!-- Section: General Information -->
-      <section class="bg-punch-900 p-6 rounded-xl border">
-        <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
+      <section class="bg-neutral-100 p-6 rounded-xl border border-neutral-100">
+        <h3 class="text-lg text-primary-900 font-bold mb-6 flex items-center gap-2">
           General Information
         </h3>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="airlineName">Name</label>
+            <label class="text-sm text-primary-700 font-semibold" for="airlineName">Name</label>
             <input
               v-model="airlineName"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               placeholder="Name"
               type="text"
               name="airlineName"
@@ -448,10 +457,12 @@ function clearManufacturerForm(): void {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="airlineCountry">Country</label>
+            <label class="text-sm text-primary-700 font-semibold" for="airlineCountry"
+              >Country</label
+            >
             <select
               v-model="airlineCountry"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               name="airlineCountry"
               id="airlineCountry"
               required
@@ -465,12 +476,12 @@ function clearManufacturerForm(): void {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="destinations"
+            <label class="text-sm text-primary-700 font-semibold" for="destinations"
               >Destinations</label
             >
             <input
               v-model="destinations"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               placeholder="List of cities separated by commas"
               type="text"
               name="destinations"
@@ -487,14 +498,14 @@ function clearManufacturerForm(): void {
       <!-- Form Actions -->
       <div class="flex items-center justify-end gap-4 pt-4">
         <button
-          class="px-6 py-3 text-sm font-bold text-punch-50 bg-punch-800 hover:bg-punch-900 rounded-lg transition-colors cursor-pointer"
+          class="px-6 py-3 text-sm font-bold text-black-800 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
           type="button"
           @click="clearAirlineForm()"
         >
           Discard Changes
         </button>
         <button
-          class="px-8 py-3 text-sm font-bold text-deep-black bg-punch-50 hover:text-light-black/50 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
+          class="px-8 py-3 text-sm font-bold text-black-900 bg-accent-500 hover:bg-accent-500/90 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
           type="submit"
         >
           Save Airline Entry
@@ -532,9 +543,10 @@ function clearManufacturerForm(): void {
         ></i>
         <div>
           <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
-          <p class="text-xs text-red-700 dark:text-red-400/80">
-            {{ manufacturerErrorMessage }}
-          </p>
+          <p
+            class="text-xs text-red-700 dark:text-red-400/80"
+            v-html="manufacturerErrorMessage"
+          ></p>
         </div>
       </div>
     </Transition>
@@ -545,17 +557,19 @@ function clearManufacturerForm(): void {
       @submit.prevent="submitManufacturerForm()"
     >
       <!-- Section: General Information -->
-      <section class="bg-punch-900 p-6 rounded-xl border">
-        <h3 class="text-lg text-punch-50 font-bold mb-6 flex items-center gap-2">
+      <section class="bg-neutral-100 p-6 rounded-xl border border-neutral-100">
+        <h3 class="text-lg text-primary-900 font-bold mb-6 flex items-center gap-2">
           General Information
         </h3>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="manufacturerName">Name</label>
+            <label class="text-sm text-primary-700 font-semibold" for="manufacturerName"
+              >Name</label
+            >
             <input
               v-model="manufacturerName"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               placeholder="Name"
               type="text"
               name="manufacturerName"
@@ -565,12 +579,12 @@ function clearManufacturerForm(): void {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="manufacturerCountry"
+            <label class="text-sm text-primary-700 font-semibold" for="manufacturerCountry"
               >Country</label
             >
             <select
               v-model="manufacturerCountry"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               name="manufacturerCountry"
               id="manufacturerCountry"
               required
@@ -584,12 +598,12 @@ function clearManufacturerForm(): void {
           </div>
 
           <div class="space-y-2">
-            <label class="text-sm text-punch-50 font-semibold" for="foundationDate"
+            <label class="text-sm text-primary-700 font-semibold" for="foundationDate"
               >Foundation Date</label
             >
             <input
               v-model="foundationDate"
-              class="w-full bg-punch-50 border rounded-lg p-3 text-sm focus:ring-primary focus:border-primary"
+              class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
               type="date"
               name="foundationDate"
               id="foundationDate"
@@ -605,14 +619,14 @@ function clearManufacturerForm(): void {
       <!-- Form Actions -->
       <div class="flex items-center justify-end gap-4 pt-4">
         <button
-          class="px-6 py-3 text-sm font-bold text-punch-50 bg-punch-800 hover:bg-punch-900 rounded-lg transition-colors cursor-pointer"
+          class="px-6 py-3 text-sm font-bold text-black-800 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
           type="button"
           @click="clearManufacturerForm()"
         >
           Discard Changes
         </button>
         <button
-          class="px-8 py-3 text-sm font-bold text-deep-black bg-punch-50 hover:text-light-black/50 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
+          class="px-8 py-3 text-sm font-bold text-black-900 bg-accent-500 hover:bg-accent-500/90 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
           type="submit"
         >
           Save Manufacturer Entry
