@@ -16,6 +16,12 @@ const router = createRouter({
       meta: { title: 'Create Entry' },
     },
     {
+      path: '/admin/edit',
+      name: 'admin-edit',
+      component: EditView,
+      meta: { title: 'Edit Entries', layout: 'none' },
+    },
+    {
       path: '/login',
       name: 'login',
       component: LoginView,

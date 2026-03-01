@@ -2,9 +2,15 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 
-const props = defineProps<{
-  imageURL: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    imageURL: string;
+    preview?: boolean;
+  }>(),
+  {
+    preview: true,
+  },
+);
 const emit = defineEmits(['update:imageURL']);
 
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -117,7 +123,7 @@ watch(
 
       <!-- Preview -->
       <div
-        v-if="imageFile || props.imageURL"
+        v-if="preview && (imageFile || props.imageURL)"
         class="flex items-center gap-4 p-3 bg-primary-700/5 border-primary-700/10 rounded-lg"
       >
         <div
