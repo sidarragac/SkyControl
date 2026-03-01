@@ -28,6 +28,10 @@ export class UserService {
     }
   }
 
+  static logOutUser(): void {
+    useUserStore().loggedInUser = null;
+  }
+
   static validateExistingEmail(email: string): boolean {
     return useUserStore().users.some((u) => u.email === email);
   }

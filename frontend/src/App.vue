@@ -1,16 +1,25 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
-import { ref } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { ref, computed } from 'vue';
+import { RouterLink, RouterView, useRoute } from 'vue-router';
+import { UserService } from '@/services/UserService';
+
+const route = useRoute();
 
 const isOpen = ref(false);
 const activeLink = ref('home');
+const loggedInUser = computed(() => UserService.getLoggedInUser());
+
+function submitLogoutForm() {
+  UserService.logOutUser();
+}
 </script>
 
 <template>
   <body class="min-h-screen">
     <div class="flex h-screen bg-white-200">
       <button
+        v-if="route.meta.layout !== 'none'"
         @click="isOpen = !isOpen"
         class="md:hidden pr-4 py-3 pl-1 mt-auto mb-auto rounded-r-4xl bg-primary-900 text-white-100"
       >
@@ -19,6 +28,7 @@ const activeLink = ref('home');
 
       <!-- Sidebar -->
       <aside
+        v-if="route.meta.layout !== 'none'"
         :class="[
           'fixed md:static flex flex-col inset-y-0 left-0 z-50 w-64 transform bg-primary-900 text-white-100 transition-transform duration-300 ease-in-out',
           isOpen ? 'translate-x-0' : '-translate-x-full',
@@ -113,6 +123,7 @@ const activeLink = ref('home');
           </RouterLink>
 
           <RouterLink
+            v-if="loggedInUser && loggedInUser.role === 'admin'"
             to="/admin/create"
             @click="activeLink = 'admin-create'"
             :class="[
@@ -130,6 +141,7 @@ const activeLink = ref('home');
           </RouterLink>
 
           <RouterLink
+            v-if="loggedInUser && loggedInUser.role === 'admin'"
             to="/admin/edit"
             @click="activeLink = 'admin-edit'"
             :class="[
@@ -147,7 +159,8 @@ const activeLink = ref('home');
           </RouterLink>
         </nav>
 
-        <div class="p-4 border-t border-neutral-100/20">
+        <!-- Login Link -->
+        <div v-if="!loggedInUser" class="p-4 border-t border-neutral-100/20">
           <RouterLink
             to="/login"
             class="w-full bg-accent-500 text-black-900 hover:bg-accent-500/90 rounded-lg py-2.5 px-4 text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md"
@@ -155,6 +168,28 @@ const activeLink = ref('home');
             <i class="fas fa-user material-symbols-outlined text-black-900"></i>
             Login
           </RouterLink>
+        </div>
+
+        <!-- User Info -->
+        <div v-if="loggedInUser" class="p-4 border-t border-neutral-100/20">
+          <div class="flex gap-3 items-center">
+            <i class="fas fa-user material-symbols-outlined text-black-900 p-2 bg-neutral-200 rounded-full"></i>
+            <div>
+              <p class="text-white-100">{{ loggedInUser?.name }}</p>
+              <p class="text-xs text-white-100/80">{{ loggedInUser?.email }}</p>
+            </div>
+          </div>
+          
+          <!-- Logout Form -->
+          <form class="mt-4" @submit.prevent="submitLogoutForm()">
+            <button
+              type="submit"
+              class="w-full bg-accent-500 text-black-900 hover:bg-accent-500/90 rounded-lg py-2.5 px-4 text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+            >
+              <i class="fas fa-power-off material-symbols-outlined text-black-900"></i>
+              Logout
+            </button>
+          </form>
         </div>
       </aside>
 
