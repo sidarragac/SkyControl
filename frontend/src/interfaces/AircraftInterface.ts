@@ -1,4 +1,5 @@
 // Developed by Mateo Pineda
+// Internal imports
 import type { Status } from '@/types/AircraftTypes';
 
 export interface AircraftInterface {

@@ -1,4 +1,5 @@
 // Developed by Mateo Pineda
+// Internal imports
 import { COUNTRIES, type Country } from '@/types/SharedTypes';
 
 export class CountryFormatterUtil {

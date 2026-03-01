@@ -1,4 +1,5 @@
 // Developed by Mateo Pineda
+// Internal imports
 import type { Country } from '@/types/SharedTypes';
 
 export interface AirlineInterface {

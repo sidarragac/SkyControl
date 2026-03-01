@@ -1,6 +1,7 @@
 // Developed by Mateo Pineda
-import type { UserInterface } from '@/interfaces/UserInterface';
+// Internal imports
 import type { CreateUserDTO } from '@/dtos/CreateUserDTO';
+import type { UserInterface } from '@/interfaces/UserInterface';
 import { useUserStore } from '@/stores/UserStore';
 
 export class UserService {

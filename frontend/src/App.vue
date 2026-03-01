@@ -1,7 +1,10 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+// External imports
+import { computed, ref } from 'vue';
 import { RouterLink, RouterView, useRoute } from 'vue-router';
+
+// Internal imports
 import { UserService } from '@/services/UserService';
 
 const route = useRoute();
@@ -23,7 +26,7 @@ function submitLogoutForm() {
         @click="isOpen = !isOpen"
         class="md:hidden pr-4 py-3 pl-1 mt-auto mb-auto rounded-r-4xl bg-primary-900 text-white-100"
       >
-        <i class="fas fa-caret-right material-symbols-outlined"></i>
+        <i class="fas fa-caret-right"></i>
       </button>
 
       <!-- Sidebar -->
@@ -38,7 +41,7 @@ function submitLogoutForm() {
         <!-- Logo and Title -->
         <div class="p-6 flex items-center gap-3">
           <div class="bg-primary-700 rounded-lg p-1.5 shadow-lg">
-            <i class="fas fa-plane-up material-symbols-outlined text-accent-500 text-2xl"></i>
+            <i class="fas fa-plane-up text-accent-500 text-2xl"></i>
           </div>
           <div>
             <h1 class="text-base font-bold leading-none">SkyControl</h1>
@@ -49,7 +52,7 @@ function submitLogoutForm() {
         </div>
 
         <button @click="isOpen = false" class="absolute top-4 right-4 md:hidden">
-          <i class="fas fa-caret-left material-symbols-outlined"></i>
+          <i class="fas fa-caret-left"></i>
         </button>
 
         <!-- Navigation Links -->
@@ -65,7 +68,7 @@ function submitLogoutForm() {
             ]"
           >
             <i
-              class="fas fa-home material-symbols-outlined transition-colors group-hover:text-accent-500"
+              class="fas fa-home transition-colors group-hover:text-accent-500"
               :class="activeLink == 'home' ? 'text-accent-500' : 'text-neutral-100/80'"
             ></i>
             <span class="text-sm font-medium">Home</span>
@@ -82,7 +85,7 @@ function submitLogoutForm() {
             ]"
           >
             <i
-              class="fas fa-plane material-symbols-outlined transition-colors group-hover:text-accent-500"
+              class="fas fa-plane transition-colors group-hover:text-accent-500"
               :class="activeLink == 'aircrafts' ? 'text-accent-500' : 'text-neutral-100/80'"
             ></i>
             <span class="text-sm font-medium">Aircrafts</span>
@@ -99,7 +102,7 @@ function submitLogoutForm() {
             ]"
           >
             <i
-              class="fas fa-building material-symbols-outlined transition-colors group-hover:text-accent-500"
+              class="fas fa-building transition-colors group-hover:text-accent-500"
               :class="activeLink == 'airlines' ? 'text-accent-500' : 'text-neutral-100/80'"
             ></i>
             <span class="text-sm font-medium">Airlines</span>
@@ -116,7 +119,7 @@ function submitLogoutForm() {
             ]"
           >
             <i
-              class="fas fa-industry material-symbols-outlined transition-colors group-hover:text-accent-500"
+              class="fas fa-industry transition-colors group-hover:text-accent-500"
               :class="activeLink == 'manufacturers' ? 'text-accent-500' : 'text-neutral-100/80'"
             ></i>
             <span class="text-sm font-medium">Manufacturers</span>
@@ -134,7 +137,7 @@ function submitLogoutForm() {
             ]"
           >
             <i
-              class="fas fa-plus material-symbols-outlined transition-colors group-hover:text-accent-500"
+              class="fas fa-plus transition-colors group-hover:text-accent-500"
               :class="activeLink == 'admin-create' ? 'text-accent-500' : 'text-neutral-100/80'"
             ></i>
             <span class="text-sm font-medium">Add Elements</span>
@@ -147,7 +150,7 @@ function submitLogoutForm() {
             class="group flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary-700 hover:text-white-100 transition-colors"
           >
             <i
-              class="fas fa-edit material-symbols-outlined transition-colors group-hover:text-accent-500 text-neutral-100/80"
+              class="fas fa-edit transition-colors group-hover:text-accent-500 text-neutral-100/80"
             ></i>
             <span class="text-sm font-medium">Edit Elements</span>
           </RouterLink>
@@ -160,7 +163,7 @@ function submitLogoutForm() {
             @click="activeLink = 'home'"
             class="w-full bg-accent-500 text-black-900 hover:bg-accent-500/90 rounded-lg py-2.5 px-4 text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md"
           >
-            <i class="fas fa-user material-symbols-outlined text-black-900"></i>
+            <i class="fas fa-user text-black-900"></i>
             Login
           </RouterLink>
         </div>
@@ -168,9 +171,7 @@ function submitLogoutForm() {
         <!-- User Info -->
         <div v-if="loggedInUser" class="p-4 border-t border-neutral-100/20">
           <div class="flex gap-3 items-center">
-            <i
-              class="fas fa-user material-symbols-outlined text-black-900 p-2 bg-neutral-200 rounded-full"
-            ></i>
+            <i class="fas fa-user text-black-900 p-2 bg-neutral-200 rounded-full"></i>
             <div>
               <p class="text-white-100">{{ loggedInUser?.name }}</p>
               <p class="text-xs text-white-100/80">{{ loggedInUser?.email }}</p>
@@ -183,7 +184,7 @@ function submitLogoutForm() {
               type="submit"
               class="w-full bg-accent-500 text-black-900 hover:bg-accent-500/90 rounded-lg py-2.5 px-4 text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
             >
-              <i class="fas fa-power-off material-symbols-outlined text-black-900"></i>
+              <i class="fas fa-power-off text-black-900"></i>
               Logout
             </button>
           </form>

@@ -1,16 +1,19 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
+// External imports
 import { ref } from 'vue';
-import UploadFile from '@/components/UploadFile.vue';
+
+// Internal imports
+import { AircraftService } from '@/services/AircraftService';
+import { AirlineService } from '@/services/AirlineService';
+import { COUNTRIES, type Country } from '@/types/SharedTypes';
+import { CountryFormatterUtil } from '@/utils/CountryFormatterUtil';
 import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
 import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
 import type { CreateManufacturerDTO } from '@/dtos/CreateManufacturerDTO';
-import { AircraftService } from '@/services/AircraftService';
-import { AirlineService } from '@/services/AirlineService';
 import { ManufacturerService } from '@/services/ManufacturerService';
-import { COUNTRIES, type Country } from '@/types/SharedTypes';
-import { CountryFormatterUtil } from '@/utils/CountryFormatterUtil';
 import type { Status } from '@/types/AircraftTypes';
+import UploadFile from '@/components/UploadFile.vue';
 
 // States for interactivity
 const activeTab = ref('aircraft');
@@ -214,9 +217,7 @@ function clearManufacturerForm(): void {
         v-if="aircraftSuccessMessage && activeTab === 'aircraft'"
         class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
       >
-        <i
-          class="fas fa-check-circle material-symbols-outlined text-emerald-600 dark:text-emerald-400"
-        ></i>
+        <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400"></i>
         <div>
           <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
           <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
@@ -232,9 +233,7 @@ function clearManufacturerForm(): void {
         v-if="aircraftErrorMessage && activeTab === 'aircraft'"
         class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
       >
-        <i
-          class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
-        ></i>
+        <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400"></i>
         <div>
           <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
           <p class="text-xs text-red-700 dark:text-red-400/80" v-html="aircraftErrorMessage"></p>
@@ -403,9 +402,7 @@ function clearManufacturerForm(): void {
         v-if="airlineSuccessMessage && activeTab === 'airline'"
         class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
       >
-        <i
-          class="fas fa-check-circle material-symbols-outlined text-emerald-600 dark:text-emerald-400"
-        ></i>
+        <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400"></i>
         <div>
           <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
           <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
@@ -421,9 +418,7 @@ function clearManufacturerForm(): void {
         v-if="airlineErrorMessage && activeTab === 'airline'"
         class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
       >
-        <i
-          class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
-        ></i>
+        <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400"></i>
         <div>
           <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
           <p class="text-xs text-red-700 dark:text-red-400/80" v-html="airlineErrorMessage"></p>
@@ -520,9 +515,7 @@ function clearManufacturerForm(): void {
         v-if="manufacturerSuccessMessage && activeTab === 'manufacturer'"
         class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
       >
-        <i
-          class="fas fa-check-circle material-symbols-outlined text-emerald-600 dark:text-emerald-400"
-        ></i>
+        <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400"></i>
         <div>
           <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
           <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
@@ -538,9 +531,7 @@ function clearManufacturerForm(): void {
         v-if="manufacturerErrorMessage && activeTab === 'manufacturer'"
         class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
       >
-        <i
-          class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
-        ></i>
+        <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400"></i>
         <div>
           <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
           <p

@@ -1,5 +1,6 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
+// External imports
 import { ref, computed, watch } from 'vue';
 
 const props = withDefaults(
@@ -105,7 +106,7 @@ watch(
         @drop.prevent="handleDrop"
       >
         <div class="p-4 rounded-full mb-4">
-          <i class="fas fa-file material-symbols-outlined text-black-800 text-3xl"></i>
+          <i class="fas fa-file text-black-800 text-3xl"></i>
         </div>
 
         <p class="text-sm text-black-800 font-bold mb-1">Click to upload or drag and drop</p>
@@ -145,7 +146,7 @@ watch(
           type="button"
           @click="removeImage"
         >
-          <i class="fas fa-trash material-symbols-outlined text-xl"></i>
+          <i class="fas fa-trash text-xl"></i>
         </button>
       </div>
     </div>

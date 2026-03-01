@@ -1,19 +1,22 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
+// External imports
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import UploadFile from '@/components/UploadFile.vue';
+
+// Internal imports
 import { AircraftService } from '@/services/AircraftService';
 import { AirlineService } from '@/services/AirlineService';
+import { COUNTRIES } from '@/types/SharedTypes';
+import { CountryFormatterUtil } from '@/utils/CountryFormatterUtil';
+import type { AircraftInterface } from '@/interfaces/AircraftInterface';
+import type { AirlineInterface } from '@/interfaces/AirlineInterface';
+import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import { ManufacturerService } from '@/services/ManufacturerService';
 import type { UpdateAircraftDTO } from '@/dtos/UpdateAircraftDTO';
 import type { UpdateAirlineDTO } from '@/dtos/UpdateAirlineDTO';
 import type { UpdateManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
-import type { AircraftInterface } from '@/interfaces/AircraftInterface';
-import type { AirlineInterface } from '@/interfaces/AirlineInterface';
-import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
-import { COUNTRIES } from '@/types/SharedTypes';
-import { CountryFormatterUtil } from '@/utils/CountryFormatterUtil';
+import UploadFile from '@/components/UploadFile.vue';
 
 // States for interactivity
 const selectedObjectClass = ref('aircraft');
@@ -263,9 +266,7 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
             v-if="aircraftSuccessMessage"
             class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
           >
-            <i
-              class="fas fa-check-circle material-symbols-outlined text-emerald-600 dark:text-emerald-400"
-            ></i>
+            <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400"></i>
             <div>
               <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
               <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
@@ -281,9 +282,7 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
             v-if="aircraftErrorMessage"
             class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
           >
-            <i
-              class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
-            ></i>
+            <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400"></i>
             <div>
               <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
               <p
@@ -491,9 +490,7 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
             v-if="airlineSuccessMessage"
             class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
           >
-            <i
-              class="fas fa-check-circle material-symbols-outlined text-emerald-600 dark:text-emerald-400"
-            ></i>
+            <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400"></i>
             <div>
               <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
               <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
@@ -509,9 +506,7 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
             v-if="airlineErrorMessage"
             class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
           >
-            <i
-              class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
-            ></i>
+            <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400"></i>
             <div>
               <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
               <p class="text-xs text-red-700 dark:text-red-400/80" v-html="airlineErrorMessage"></p>
@@ -642,9 +637,7 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
             v-if="manufacturerSuccessMessage"
             class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
           >
-            <i
-              class="fas fa-check-circle material-symbols-outlined text-emerald-600 dark:text-emerald-400"
-            ></i>
+            <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400"></i>
             <div>
               <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
               <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
@@ -660,9 +653,7 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
             v-if="manufacturerErrorMessage"
             class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
           >
-            <i
-              class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
-            ></i>
+            <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400"></i>
             <div>
               <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
               <p

@@ -1,6 +1,7 @@
 // Developed by Mateo Pineda
-import type { AircraftInterface } from '@/interfaces/AircraftInterface';
+// Internal imports
 import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
+import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import type { UpdateAircraftDTO } from '@/dtos/UpdateAircraftDTO';
 import { useAircraftStore } from '@/stores/AircraftStore';
 

@@ -1,6 +1,7 @@
 // Developed by Mateo Pineda
-import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
+// Internal imports
 import type { CreateManufacturerDTO } from '@/dtos/CreateManufacturerDTO';
+import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import type { UpdateManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
 import { useManufacturerStore } from '@/stores/ManufacturerStore';
 

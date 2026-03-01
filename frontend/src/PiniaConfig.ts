@@ -1,6 +1,9 @@
 // Developed by Mateo Pineda
+// External imports
 import { createPinia } from 'pinia';
 import { watch } from 'vue';
+
+// Internal imports
 import { aircraftSeeder } from '@/stores/aircraftSeeder.js';
 import { airlineSeeder } from '@/stores/airlineSeeder.js';
 import { manufacturerSeeder } from '@/stores/manufacturerSeeder.js';

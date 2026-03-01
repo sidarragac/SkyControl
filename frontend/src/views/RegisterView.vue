@@ -1,9 +1,12 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
-import { RouterLink, useRouter } from 'vue-router';
+// External imports
 import { ref } from 'vue';
-import { UserService } from '@/services/UserService';
+import { RouterLink, useRouter } from 'vue-router';
+
+// Internal imports
 import type { CreateUserDTO } from '@/dtos/CreateUserDTO';
+import { UserService } from '@/services/UserService';
 
 const router = useRouter();
 
@@ -70,7 +73,7 @@ function clearRegisterForm(): void {
           <!-- Brand Header -->
           <div class="flex flex-col items-center mb-8">
             <div class="bg-primary-700 p-5 rounded-xl mb-4">
-              <i class="fas fa-plane-up material-symbols-outlined text-accent-500 text-3xl"></i>
+              <i class="fas fa-plane-up text-accent-500 text-3xl"></i>
             </div>
 
             <h1
@@ -92,9 +95,7 @@ function clearRegisterForm(): void {
                 v-if="registrationErrorMessage"
                 class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
               >
-                <i
-                  class="fas fa-exclamation-circle material-symbols-outlined text-red-600 dark:text-red-400"
-                ></i>
+                <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400"></i>
                 <div>
                   <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
                   <p
@@ -123,7 +124,7 @@ function clearRegisterForm(): void {
                   required
                 />
                 <div class="flex items-center justify-center px-4">
-                  <i class="fas fa-user material-symbols-outlined text-neutral-400"></i>
+                  <i class="fas fa-user text-neutral-400"></i>
                 </div>
               </div>
             </div>
@@ -146,7 +147,7 @@ function clearRegisterForm(): void {
                   required
                 />
                 <div class="flex items-center justify-center px-4">
-                  <i class="fas fa-envelope material-symbols-outlined text-neutral-400"></i>
+                  <i class="fas fa-envelope text-neutral-400"></i>
                 </div>
               </div>
             </div>
@@ -169,7 +170,7 @@ function clearRegisterForm(): void {
                   required
                 />
                 <div class="flex items-center justify-center px-4">
-                  <i class="fas fa-lock material-symbols-outlined text-neutral-400"></i>
+                  <i class="fas fa-lock text-neutral-400"></i>
                 </div>
               </div>
             </div>

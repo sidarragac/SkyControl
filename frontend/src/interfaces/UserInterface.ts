@@ -1,4 +1,5 @@
 // Developed by Mateo Pineda
+// Internal imports
 import type { Role } from '@/types/UserTypes';
 
 export interface UserInterface {
