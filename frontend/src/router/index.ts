@@ -1,7 +1,9 @@
+// Developed by Mateo Pineda
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import CreateView from '../views/admin/CreateView.vue';
-import EditView from '../views/admin/EditView.vue';
+import HomeView from '@/views/HomeView.vue';
+import CreateView from '@/views/admin/CreateView.vue';
+import LoginView from '@/views/LoginView.vue';
+import RegisterView from '@/views/RegisterView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +20,18 @@ const router = createRouter({
       name: 'admin-edit',
       component: EditView,
       meta: { title: 'Edit Entries', layout: 'none' },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+      meta: { title: 'Login', layout: 'none' },
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView,
+      meta: { title: 'Sign Up', layout: 'none' },
     },
   ],
 });

@@ -1,12 +1,18 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { RouterLink, RouterView, useRoute } from 'vue-router';
+import { UserService } from '@/services/UserService';
 
 const route = useRoute();
 
 const isOpen = ref(false);
 const activeLink = ref('home');
+const loggedInUser = computed(() => UserService.getLoggedInUser());
+
+function submitLogoutForm() {
+  UserService.logOutUser();
+}
 </script>
 
 <template>
@@ -117,6 +123,7 @@ const activeLink = ref('home');
           </RouterLink>
 
           <RouterLink
+            v-if="loggedInUser && loggedInUser.role === 'admin'"
             to="/admin/create"
             @click="activeLink = 'admin-create'"
             :class="[
@@ -134,6 +141,7 @@ const activeLink = ref('home');
           </RouterLink>
 
           <RouterLink
+            v-if="loggedInUser && loggedInUser.role === 'admin'"
             to="/admin/edit"
             @click="activeLink = 'home'"
             class="group flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary-700 hover:text-white-100 transition-colors"
@@ -155,6 +163,30 @@ const activeLink = ref('home');
             <i class="fas fa-user material-symbols-outlined text-black-900"></i>
             Login
           </RouterLink>
+        </div>
+
+        <!-- User Info -->
+        <div v-if="loggedInUser" class="p-4 border-t border-neutral-100/20">
+          <div class="flex gap-3 items-center">
+            <i
+              class="fas fa-user material-symbols-outlined text-black-900 p-2 bg-neutral-200 rounded-full"
+            ></i>
+            <div>
+              <p class="text-white-100">{{ loggedInUser?.name }}</p>
+              <p class="text-xs text-white-100/80">{{ loggedInUser?.email }}</p>
+            </div>
+          </div>
+
+          <!-- Logout Form -->
+          <form class="mt-4" @submit.prevent="submitLogoutForm()">
+            <button
+              type="submit"
+              class="w-full bg-accent-500 text-black-900 hover:bg-accent-500/90 rounded-lg py-2.5 px-4 text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+            >
+              <i class="fas fa-power-off material-symbols-outlined text-black-900"></i>
+              Logout
+            </button>
+          </form>
         </div>
       </aside>
 
