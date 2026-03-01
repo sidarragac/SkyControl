@@ -1,6 +1,7 @@
 // Developed by Mateo Pineda
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
+import type { EditAirlineDTO } from '@/dtos/EditAirlineDTO';
 import { useAirlineStore } from '@/stores/AirlineStore';
 
 export class AirlineService {
@@ -14,5 +15,30 @@ export class AirlineService {
     const updatedAt = new Date();
 
     useAirlineStore().airlines.push({ id, ...airline, createdAt, updatedAt });
+  }
+
+  static updateAirline(updatedAirline: EditAirlineDTO): void {
+    const index = useAirlineStore().airlines.findIndex(
+      (airline) => airline.id === updatedAirline.id,
+    );
+
+    if (index === -1) {
+      throw new Error('Airline not found');
+    }
+
+    useAirlineStore().airlines[index] = {
+      ...updatedAirline,
+      updatedAt: new Date(),
+    };
+  }
+
+  static deleteAirline(id: string): void {
+    const index = useAirlineStore().airlines.findIndex((airline) => airline.id === id);
+
+    if (index === -1) {
+      throw new Error('Airline not found');
+    }
+
+    useAirlineStore().airlines.splice(index, 1);
   }
 }

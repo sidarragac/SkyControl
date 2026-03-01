@@ -1,6 +1,7 @@
 // Developed by Mateo Pineda
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
+import type { EditAircraftDTO } from '@/dtos/EditAircraftDTO';
 import { useAircraftStore } from '@/stores/AircraftStore';
 
 export class AircraftService {
@@ -14,5 +15,30 @@ export class AircraftService {
     const updatedAt = new Date();
 
     useAircraftStore().aircrafts.push({ id, ...aircraft, createdAt, updatedAt });
+  }
+
+  static updateAircraft(updatedAircraft: EditAircraftDTO): void {
+    const index = useAircraftStore().aircrafts.findIndex(
+      (aircraft) => aircraft.id === updatedAircraft.id,
+    );
+
+    if (index === -1) {
+      throw new Error('Aircraft not found');
+    }
+
+    useAircraftStore().aircrafts[index] = {
+      ...updatedAircraft,
+      updatedAt: new Date(),
+    };
+  }
+
+  static deleteAircraft(id: string): void {
+    const index = useAircraftStore().aircrafts.findIndex((aircraft) => aircraft.id === id);
+
+    if (index === -1) {
+      throw new Error('Aircraft not found');
+    }
+
+    useAircraftStore().aircrafts.splice(index, 1);
   }
 }

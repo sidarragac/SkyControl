@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import CreateView from '../views/admin/CreateView.vue';
+import EditView from '../views/admin/EditView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,7 +16,7 @@ const router = createRouter({
     {
       path: '/admin/edit',
       name: 'admin-edit',
-      component: CreateView,
+      component: EditView,
       meta: { title: 'Edit Entries', layout: 'none' },
     },
   ],

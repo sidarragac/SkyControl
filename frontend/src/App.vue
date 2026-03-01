@@ -135,17 +135,11 @@ const activeLink = ref('home');
 
           <RouterLink
             to="/admin/edit"
-            @click="activeLink = 'admin-edit'"
-            :class="[
-              'group flex items-center gap-3 px-3 py-2 rounded-lg',
-              activeLink === 'admin-edit'
-                ? 'bg-secondary-700 text-white-100'
-                : 'hover:bg-primary-700 hover:text-white-100 transition-colors',
-            ]"
+            @click="activeLink = 'home'"
+            class="group flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary-700 hover:text-white-100 transition-colors"
           >
             <i
-              class="fas fa-edit material-symbols-outlined transition-colors group-hover:text-accent-500"
-              :class="activeLink == 'admin-edit' ? 'text-accent-500' : 'text-neutral-100/80'"
+              class="fas fa-edit material-symbols-outlined transition-colors group-hover:text-accent-500 text-neutral-100/80"
             ></i>
             <span class="text-sm font-medium">Edit Elements</span>
           </RouterLink>
@@ -155,6 +149,7 @@ const activeLink = ref('home');
         <div class="p-4 border-t border-neutral-100/20">
           <RouterLink
             to="/login"
+            @click="activeLink = 'home'"
             class="w-full bg-accent-500 text-black-900 hover:bg-accent-500/90 rounded-lg py-2.5 px-4 text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md"
           >
             <i class="fas fa-user material-symbols-outlined text-black-900"></i>
