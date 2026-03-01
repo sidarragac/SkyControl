@@ -1,7 +1,7 @@
 // Developed by Mateo Pineda
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
-import type { EditAirlineDTO } from '@/dtos/UpdateAirlineDTO';
+import type { UpdateAirlineDTO } from '@/dtos/UpdateAirlineDTO';
 import { useAirlineStore } from '@/stores/AirlineStore';
 
 export class AirlineService {
@@ -17,7 +17,7 @@ export class AirlineService {
     useAirlineStore().airlines.push({ id, ...airline, createdAt, updatedAt });
   }
 
-  static updateAirline(updatedAirline: EditAirlineDTO): void {
+  static updateAirline(updatedAirline: UpdateAirlineDTO): void {
     const index = useAirlineStore().airlines.findIndex(
       (airline) => airline.id === updatedAirline.id,
     );

@@ -1,7 +1,7 @@
 // Developed by Mateo Pineda
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import type { CreateManufacturerDTO } from '@/dtos/CreateManufacturerDTO';
-import type { EditManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
+import type { UpdateManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
 import { useManufacturerStore } from '@/stores/ManufacturerStore';
 
 export class ManufacturerService {
@@ -17,7 +17,7 @@ export class ManufacturerService {
     useManufacturerStore().manufacturers.push({ id, ...manufacturer, createdAt, updatedAt });
   }
 
-  static updateManufacturer(updatedManufacturer: EditManufacturerDTO): void {
+  static updateManufacturer(updatedManufacturer: UpdateManufacturerDTO): void {
     const index = useManufacturerStore().manufacturers.findIndex(
       (manufacturer) => manufacturer.id === updatedManufacturer.id,
     );
