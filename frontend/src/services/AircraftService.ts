@@ -1,7 +1,7 @@
 // Developed by Mateo Pineda
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
-import type { EditAircraftDTO } from '@/dtos/EditAircraftDTO';
+import type { EditAircraftDTO } from '@/dtos/UpdateAircraftDTO';
 import { useAircraftStore } from '@/stores/AircraftStore';
 
 export class AircraftService {

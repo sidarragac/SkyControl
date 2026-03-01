@@ -1,7 +1,7 @@
 // Developed by Mateo Pineda
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
-import type { EditAirlineDTO } from '@/dtos/EditAirlineDTO';
+import type { EditAirlineDTO } from '@/dtos/UpdateAirlineDTO';
 import { useAirlineStore } from '@/stores/AirlineStore';
 
 export class AirlineService {

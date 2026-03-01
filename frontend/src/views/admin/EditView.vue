@@ -6,9 +6,9 @@ import UploadFile from '@/components/UploadFile.vue';
 import { AircraftService } from '@/services/AircraftService';
 import { AirlineService } from '@/services/AirlineService';
 import { ManufacturerService } from '@/services/ManufacturerService';
-import type { EditAircraftDTO } from '@/dtos/EditAircraftDTO';
-import type { EditAirlineDTO } from '@/dtos/EditAirlineDTO';
-import type { EditManufacturerDTO } from '@/dtos/EditManufacturerDTO';
+import type { UpdateAircraftDTO } from '@/dtos/UpdateAircraftDTO';
+import type { UpdateAirlineDTO } from '@/dtos/UpdateAirlineDTO';
+import type { UpdateManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
@@ -52,7 +52,7 @@ function getObjectList(): AircraftInterface[] | AirlineInterface[] | Manufacture
 // Aircraft Form
 function saveAircraftChanges(aircraft: AircraftInterface): void {
   try {
-    const updatedAircraft: EditAircraftDTO = {
+    const updatedAircraft: UpdateAircraftDTO = {
       id: aircraft.id,
       registry: aircraft.registry,
       model: aircraft.model,
@@ -83,7 +83,7 @@ function saveAirlineChanges(airline: AirlineInterface): void {
       airline.destinations = CountryFormatterUtil.formatDestinations(airline.destinations);
     }
 
-    const updatedAirline: EditAirlineDTO = {
+    const updatedAirline: UpdateAirlineDTO = {
       id: airline.id,
       name: airline.name,
       country: airline.country,
@@ -108,7 +108,7 @@ function saveAirlineChanges(airline: AirlineInterface): void {
 // Manufacturer Form
 function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
   try {
-    const updatedManufacturer: EditManufacturerDTO = {
+    const updatedManufacturer: UpdateManufacturerDTO = {
       id: manufacturer.id,
       name: manufacturer.name,
       country: manufacturer.country,
@@ -296,7 +296,7 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
 
         <!-- Form Content -->
         <form
-          method="POST"
+          method="PUT"
           class="px-8 pb-20 text-primary-700"
           @submit.prevent="saveAircraftChanges(activeObject)"
         >
@@ -521,7 +521,7 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
 
         <!-- Form Content -->
         <form
-          method="POST"
+          method="PUT"
           class="px-8 pb-20 text-primary-700"
           @submit.prevent="saveAirlineChanges(activeObject)"
         >
@@ -675,7 +675,7 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
 
         <!-- Form Content -->
         <form
-          method="POST"
+          method="PUT"
           class="px-8 pb-20 text-primary-700"
           @submit.prevent="saveManufacturerChanges(activeObject)"
         >

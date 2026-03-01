@@ -1,7 +1,7 @@
 // Developed by Mateo Pineda
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import type { CreateManufacturerDTO } from '@/dtos/CreateManufacturerDTO';
-import type { EditManufacturerDTO } from '@/dtos/EditManufacturerDTO';
+import type { EditManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
 import { useManufacturerStore } from '@/stores/ManufacturerStore';
 
 export class ManufacturerService {
