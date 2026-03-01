@@ -12,6 +12,12 @@ const router = createRouter({
       component: CreateView,
       meta: { title: 'Create Entry' },
     },
+    {
+      path: '/admin/edit',
+      name: 'admin-edit',
+      component: CreateView,
+      meta: { title: 'Edit Entries', layout: 'none' },
+    },
   ],
 });
 
