@@ -26,7 +26,7 @@ const router = createRouter({
       name: 'register',
       component: RegisterView,
       meta: { title: 'Sign Up', layout: 'none' },
-    }
+    },
   ],
 });
 

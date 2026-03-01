@@ -55,7 +55,7 @@ function submitLogoutForm() {
         <!-- Navigation Links -->
         <nav class="flex-1 px-4 space-y-1 mt-4">
           <RouterLink
-            to="/"
+            to="/home"
             @click="activeLink = 'home'"
             :class="[
               'group flex items-center gap-3 px-3 py-2 rounded-lg',
@@ -173,13 +173,15 @@ function submitLogoutForm() {
         <!-- User Info -->
         <div v-if="loggedInUser" class="p-4 border-t border-neutral-100/20">
           <div class="flex gap-3 items-center">
-            <i class="fas fa-user material-symbols-outlined text-black-900 p-2 bg-neutral-200 rounded-full"></i>
+            <i
+              class="fas fa-user material-symbols-outlined text-black-900 p-2 bg-neutral-200 rounded-full"
+            ></i>
             <div>
               <p class="text-white-100">{{ loggedInUser?.name }}</p>
               <p class="text-xs text-white-100/80">{{ loggedInUser?.email }}</p>
             </div>
           </div>
-          
+
           <!-- Logout Form -->
           <form class="mt-4" @submit.prevent="submitLogoutForm()">
             <button

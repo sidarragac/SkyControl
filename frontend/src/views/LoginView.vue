@@ -11,10 +11,10 @@ const password = ref('');
 const loginErrorMessage = ref('');
 
 function submitLoginForm(): void {
-  try{
+  try {
     UserService.logInUser(email.value, password.value);
 
-    if(UserService.getLoggedInUser()) {
+    if (UserService.getLoggedInUser()) {
       clearLoginForm();
       router.push('home');
     } else {
@@ -23,13 +23,13 @@ function submitLoginForm(): void {
         loginErrorMessage.value = '';
       }, 5000);
     }
-  } catch(error: Error | unknown) {
+  } catch (error: Error | unknown) {
     loginErrorMessage.value = `An error occurred while logging in. Please try again.<br>Error details: ${(error as Error).message}`;
     setTimeout(() => {
       loginErrorMessage.value = '';
     }, 5000);
   }
-};
+}
 
 function clearLoginForm(): void {
   email.value = '';
@@ -85,7 +85,10 @@ function clearLoginForm(): void {
                 ></i>
                 <div>
                   <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
-                  <p class="text-xs text-red-700 dark:text-red-400/80" v-html="loginErrorMessage"></p>
+                  <p
+                    class="text-xs text-red-700 dark:text-red-400/80"
+                    v-html="loginErrorMessage"
+                  ></p>
                 </div>
               </div>
             </Transition>

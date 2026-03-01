@@ -28,7 +28,7 @@ export default class PiniaConfig {
         user: {
           users: userSeeder,
           loggedInUser: null,
-        }
+        },
       };
 
       // save the initial state to localStorage

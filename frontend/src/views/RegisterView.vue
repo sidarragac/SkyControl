@@ -13,7 +13,7 @@ const password = ref('');
 const registrationErrorMessage = ref('');
 
 function submitRegisterForm(): void {
-  try{
+  try {
     const newUser: CreateUserDTO = {
       name: name.value,
       email: email.value,
@@ -22,7 +22,8 @@ function submitRegisterForm(): void {
 
     const existingUser = UserService.validateExistingEmail(email.value);
     if (existingUser) {
-      registrationErrorMessage.value = 'The email address is already in use. Please use a different email.';
+      registrationErrorMessage.value =
+        'The email address is already in use. Please use a different email.';
       setTimeout(() => {
         registrationErrorMessage.value = '';
       }, 5000);
@@ -33,20 +34,19 @@ function submitRegisterForm(): void {
     UserService.logInUser(email.value, password.value);
     clearRegisterForm();
     router.push('home');
-
   } catch (error: Error | unknown) {
     registrationErrorMessage.value = `An error occurred while creating the user. Please try again.<br>Error details: ${(error as Error).message}`;
     setTimeout(() => {
       registrationErrorMessage.value = '';
     }, 5000);
   }
-};
+}
 
 function clearRegisterForm(): void {
   name.value = '';
   email.value = '';
   password.value = '';
-};
+}
 </script>
 
 <template>
@@ -97,12 +97,15 @@ function clearRegisterForm(): void {
                 ></i>
                 <div>
                   <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
-                  <p class="text-xs text-red-700 dark:text-red-400/80" v-html="registrationErrorMessage"></p>
+                  <p
+                    class="text-xs text-red-700 dark:text-red-400/80"
+                    v-html="registrationErrorMessage"
+                  ></p>
                 </div>
               </div>
             </Transition>
 
-             <!-- Name Field -->
+            <!-- Name Field -->
             <div class="flex flex-col gap-2">
               <label class="text-white-100 text-sm font-medium leading-normal px-1" for="name"
                 >Name</label
