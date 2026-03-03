@@ -5,7 +5,6 @@ defineProps<{
   secondaryText: string;
   imageURL: string;
 }>();
-
 </script>
 
 <template>
