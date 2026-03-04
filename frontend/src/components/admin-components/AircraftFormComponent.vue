@@ -50,11 +50,14 @@ function submitAircraftForm(): void {
     if (props.formType === 'create') {
       const newAircraft = createAircraftEntry();
       AircraftService.createAircraft(newAircraft);
+
       successMessage.value = 'Aircraft entry created succesfully!';
+
       clearAircraftForm();
     } else if (props.formType === 'edit' && props.modelValue) {
       const updatedAircraft = updateAircraftEntry();
       AircraftService.updateAircraft(updatedAircraft);
+
       successMessage.value = 'Aircraft entry updated successfully!';
     }
 
@@ -100,7 +103,7 @@ function updateAircraftEntry(): UpdateAircraftDTO {
     imageURL: form.value.imageURL,
     airlineId: form.value.airlineId,
     manufacturerId: form.value.manufacturerId,
-    createdAt: new Date(props.modelValue.createdAt).toISOString(),
+    createdAt: props.modelValue.createdAt,
   };
 
   return updatedAircraft;

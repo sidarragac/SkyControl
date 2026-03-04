@@ -5,7 +5,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <Transition name="fade">
+  <Transition name="fade" class="fixed top-4 w-1/2 left-1/2 transform -translate-x-1/2 z-50">
     <div
       v-if="props.successMessage"
       class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
