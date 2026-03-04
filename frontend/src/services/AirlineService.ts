@@ -10,10 +10,14 @@ export class AirlineService {
     return useAirlineStore().airlines;
   }
 
+  static getAirlineById(id: string): AirlineInterface | undefined {
+    return useAirlineStore().airlines.find((airline) => airline.id === id);
+  }
+
   static createAirline(airline: CreateAirlineDTO): void {
     const id = crypto.randomUUID();
-    const createdAt = new Date();
-    const updatedAt = new Date();
+    const createdAt = new Date().toISOString();
+    const updatedAt = new Date().toISOString();
 
     useAirlineStore().airlines.push({ id, ...airline, createdAt, updatedAt });
   }
@@ -29,7 +33,7 @@ export class AirlineService {
 
     useAirlineStore().airlines[index] = {
       ...updatedAirline,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     };
   }
 

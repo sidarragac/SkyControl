@@ -6,8 +6,8 @@ export interface ManufacturerInterface {
   id: string;
   name: string;
   country: Country;
-  foundationDate: Date;
+  foundationDate: string;
   imageURL: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }

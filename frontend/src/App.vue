@@ -7,12 +7,15 @@ import { RouterLink, RouterView, useRoute } from 'vue-router';
 // Internal imports
 import { UserService } from '@/services/UserService';
 
+// Non-reactive variables
 const route = useRoute();
 
+// Reactive variables
 const isOpen = ref(false);
 const activeLink = ref('home');
 const loggedInUser = computed(() => UserService.getLoggedInUser());
 
+// Functions
 function submitLogoutForm() {
   UserService.logOutUser();
 }
