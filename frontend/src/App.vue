@@ -160,7 +160,7 @@ function submitLogoutForm() {
         </nav>
 
         <!-- Login Link -->
-        <div class="p-4 border-t border-neutral-100/20">
+        <div v-if="!loggedInUser" class="p-4 border-t border-neutral-100/20">
           <RouterLink
             to="/login"
             @click="activeLink = 'home'"
