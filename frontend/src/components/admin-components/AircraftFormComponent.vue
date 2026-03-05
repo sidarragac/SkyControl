@@ -1,3 +1,4 @@
+<!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
 import { ref, watch } from 'vue';
@@ -160,6 +161,7 @@ watch(
     :error-message="errorMessage"
   />
 
+  <!-- Form Content -->
   <form
     :method="props.formType === 'create' ? 'POST' : 'PUT'"
     :class="['space-y-8', props.formType === 'edit' ? 'px-8 pb-20' : '']"

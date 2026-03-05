@@ -9,12 +9,11 @@ import AircraftFormComponent from '@/components/admin-components/AircraftFormCom
 import { AircraftService } from '@/services/AircraftService';
 import AirlineFormComponent from '@/components/admin-components/AirlineFormComponent.vue';
 import { AirlineService } from '@/services/AirlineService';
-import { COUNTRIES } from '@/types/SharedTypes';
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
+import ManufacturerFormComponent from '@/components/admin-components/ManufacturerFormComponent.vue';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import { ManufacturerService } from '@/services/ManufacturerService';
-import type { UpdateManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
 
 // Reactive variables
 const selectedObjectClass = ref('aircraft');
@@ -22,10 +21,6 @@ const activeObject = ref<AircraftInterface | AirlineInterface | ManufacturerInte
 const originalObject = ref<AircraftInterface | AirlineInterface | ManufacturerInterface | null>(
   null,
 );
-
-// Manufacturer variables
-const manufacturerSuccessMessage = ref('');
-const manufacturerErrorMessage = ref('');
 
 // Functions
 function getObjectList(): AircraftInterface[] | AirlineInterface[] | ManufacturerInterface[] {
@@ -38,31 +33,6 @@ function getObjectList(): AircraftInterface[] | AirlineInterface[] | Manufacture
       return ManufacturerService.getManufacturers();
     default:
       return [];
-  }
-}
-
-// Manufacturer Form
-function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
-  try {
-    const updatedManufacturer: UpdateManufacturerDTO = {
-      id: manufacturer.id,
-      name: manufacturer.name,
-      country: manufacturer.country,
-      foundationDate: new Date(manufacturer.foundationDate).toISOString(),
-      imageURL: manufacturer.imageURL,
-      createdAt: manufacturer.createdAt,
-    };
-
-    ManufacturerService.updateManufacturer(updatedManufacturer);
-    manufacturerSuccessMessage.value = 'Manufacturer entry updated successfully!';
-    setTimeout(() => {
-      manufacturerSuccessMessage.value = '';
-    }, 5000);
-  } catch (error: Error | unknown) {
-    manufacturerErrorMessage.value = `An error occurred while editing the manufacturer entry. Please try again.<br>Error details: ${(error as Error).message}`;
-    setTimeout(() => {
-      manufacturerErrorMessage.value = '';
-    }, 10000);
   }
 }
 </script>
@@ -237,144 +207,13 @@ function saveManufacturerChanges(manufacturer: ManufacturerInterface): void {
           </div>
         </div>
 
-        <!-- Success Message -->
-        <Transition name="fade" class="mx-8">
-          <div
-            v-if="manufacturerSuccessMessage"
-            class="mb-6 bg-emerald-50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-center gap-3"
-          >
-            <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400"></i>
-            <div>
-              <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Success!</p>
-              <p class="text-xs text-emerald-700 dark:text-emerald-400/80">
-                {{ manufacturerSuccessMessage }}
-              </p>
-            </div>
-          </div>
-        </Transition>
-
-        <!-- Error Message -->
-        <Transition name="fade" class="mx-8">
-          <div
-            v-if="manufacturerErrorMessage"
-            class="mb-6 bg-red-50 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3"
-          >
-            <i class="fas fa-exclamation-circle text-red-600 dark:text-red-400"></i>
-            <div>
-              <p class="text-sm font-semibold text-red-800 dark:text-red-300">Error!</p>
-              <p
-                class="text-xs text-red-700 dark:text-red-400/80"
-                v-html="manufacturerErrorMessage"
-              ></p>
-            </div>
-          </div>
-        </Transition>
-
         <!-- Form Content -->
-        <form
-          method="PUT"
-          class="px-8 pb-20 text-primary-700"
-          @submit.prevent="saveManufacturerChanges(activeObject)"
-        >
-          <div class="bg-neutral-100 rounded-xl border border-neutral-100 overflow-hidden">
-            <!-- Section: General Information -->
-            <div class="p-6 border-b-2 border-white-100">
-              <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-primary-900">
-                General Information
-              </h3>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-2">
-                  <label class="text-sm font-semibold" for="manufacturerName">Name</label>
-                  <input
-                    v-model="activeObject.name"
-                    class="w-full bg-white-200 border-white-200 rounded-lg text-black-800 px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none"
-                    type="text"
-                    name="manufacturerName"
-                    id="manufacturerName"
-                    required
-                  />
-                </div>
-
-                <div class="space-y-2">
-                  <label class="text-sm font-semibold" for="manufacturerCountry">Country</label>
-                  <select
-                    v-model="activeObject.country"
-                    class="w-full bg-white-200 border-white-200 rounded-lg text-black-800 px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none"
-                    name="manufacturerCountry"
-                    id="manufacturerCountry"
-                    required
-                  >
-                    <option v-for="country in COUNTRIES" :key="country" :value="country">
-                      {{ country }}
-                    </option>
-                  </select>
-                </div>
-
-                <div class="space-y-2">
-                  <label class="text-sm font-semibold" for="foundationDate">Foundation Date</label>
-                  <input
-                    v-model="String(activeObject.foundationDate).split('T')[0]"
-                    class="w-full bg-white-200 border-white-200 rounded-lg text-black-800 px-4 py-3 focus:ring-2 focus:ring-accent-500 focus:outline-none"
-                    type="date"
-                    name="foundationDate"
-                    id="foundationDate"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- Section: Media -->
-            <div class="p-6 border-b-2 border-white-100 flex">
-              <div class="flex-1 flex flex-col">
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-primary-900">
-                  Selected Media
-                </h3>
-                <img
-                  v-if="activeObject.imageURL"
-                  :src="activeObject.imageURL"
-                  :alt="activeObject.name + 'image'"
-                  class="w-48 h-48 object-cover rounded-lg border border-primary-700/20 self-center my-auto"
-                />
-                <span v-else class="text-sm text-primary-700 self-center my-auto"
-                  >No image available</span
-                >
-              </div>
-              <UploadFile
-                class="border-none flex-2 p-0!"
-                v-model:imageURL="activeObject.imageURL"
-                :preview="false"
-              />
-            </div>
-
-            <!-- Form Actions -->
-            <div
-              class="p-6 bg-white-100 flex flex-col sm:flex-row justify-between items-center gap-4"
-            >
-              <button
-                type="button"
-                @click="
-                  ManufacturerService.deleteManufacturer(activeObject.id);
-                  activeObject = null;
-                "
-                class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-red-500/50 text-red-700 font-bold hover:bg-red-700 hover:text-white-100 transition-all order-2 sm:order-1 cursor-pointer"
-              >
-                <i class="fas fa-trash text-lg"></i>
-                Delete Manufacturer
-              </button>
-
-              <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto order-1 sm:order-2">
-                <button
-                  type="submit"
-                  class="px-8 py-3 text-sm font-bold text-black-900 bg-accent-500 hover:bg-accent-500/90 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
+        <ManufacturerFormComponent
+          v-if="activeObject && 'foundationDate' in activeObject"
+          v-model="activeObject"
+          :form-type="'edit'"
+          @delete="activeObject = null"
+        />
       </div>
 
       <div v-else class="flex flex-col items-center justify-center h-full gap-4">

@@ -1,3 +1,4 @@
+<!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 const props = defineProps<{
   successMessage: string;
@@ -20,3 +21,15 @@ const props = defineProps<{
     </div>
   </Transition>
 </template>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
