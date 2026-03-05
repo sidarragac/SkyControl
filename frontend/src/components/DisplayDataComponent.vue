@@ -5,13 +5,14 @@ defineProps<{
   secondaryText: string;
   imageURL: string;
 }>();
-
 </script>
 
 <template>
   <div class="flex items-center gap-3">
-    <div class="w-12 h-12 rounded-lg bg-primary-900/10 flex items-center justify-center overflow-hidden">
-      <img :src="imageURL" :alt="mainText" class="w-full h-full object-cover">
+    <div
+      class="w-12 h-12 rounded-lg bg-primary-900/10 flex items-center justify-center overflow-hidden"
+    >
+      <img :src="imageURL" :alt="mainText" class="w-full h-full object-cover" />
     </div>
     <div>
       <p class="font-semibold text-sm">{{ mainText }}</p>

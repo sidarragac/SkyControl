@@ -10,10 +10,14 @@ export class ManufacturerService {
     return useManufacturerStore().manufacturers;
   }
 
+  static getManufacturerById(id: string): ManufacturerInterface | undefined {
+    return useManufacturerStore().manufacturers.find((manufacturer) => manufacturer.id === id);
+  }
+
   static createManufacturer(manufacturer: CreateManufacturerDTO): void {
     const id = crypto.randomUUID();
-    const createdAt = new Date();
-    const updatedAt = new Date();
+    const createdAt = new Date().toISOString();
+    const updatedAt = new Date().toISOString();
 
     useManufacturerStore().manufacturers.push({ id, ...manufacturer, createdAt, updatedAt });
   }
@@ -29,7 +33,7 @@ export class ManufacturerService {
 
     useManufacturerStore().manufacturers[index] = {
       ...updatedManufacturer,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     };
   }
 

@@ -8,8 +8,10 @@ export interface AircraftInterface {
   model: string;
   passengerCapacity: number;
   status: Status;
-  firstFlightDate: Date;
+  firstFlightDate: string;
   imageURL: string;
-  createdAt: Date;
-  updatedAt: Date;
+  airlineId: string;
+  manufacturerId: string;
+  createdAt: string;
+  updatedAt: string;
 }
