@@ -142,7 +142,7 @@ function getObjectList(): AircraftInterface[] | AirlineInterface[] | Manufacture
       <!-- Return Home -->
       <div class="flex flex-wrap items-center gap-2 px-8 pt-6">
         <RouterLink
-          to="/home"
+          to="/"
           class="text-sm text-black-800/80 hover:text-black-800 transition-colors flex items-center gap-1"
         >
           <i class="fas fa-arrow-left"></i>

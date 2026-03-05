@@ -201,7 +201,7 @@ function clearRegisterForm(): void {
 
           <div class="w-full flex justify-center">
             <RouterLink
-              to="/home"
+              to="/"
               class="text-white-100 hover:text-white-100/80 py-5 text-sm cursor-pointer text-center transition-colors"
             >
               &larr; Go back to Home

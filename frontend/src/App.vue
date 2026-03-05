@@ -61,7 +61,7 @@ function submitLogoutForm() {
         <!-- Navigation Links -->
         <nav class="flex-1 px-4 space-y-1 mt-4">
           <RouterLink
-            to="/home"
+            to="/"
             @click="activeLink = 'home'"
             :class="[
               'group flex items-center gap-3 px-3 py-2 rounded-lg',
