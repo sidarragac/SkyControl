@@ -2,13 +2,14 @@
 <script setup lang="ts">
 // External imports
 import { computed, ref } from 'vue';
-import { RouterLink, RouterView, useRoute } from 'vue-router';
+import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 
 // Internal imports
 import { UserService } from '@/services/UserService';
 
 // Non-reactive variables
 const route = useRoute();
+const router = useRouter();
 
 // Reactive variables
 const isOpen = ref(false);
@@ -18,6 +19,11 @@ const loggedInUser = computed(() => UserService.getLoggedInUser());
 // Functions
 function submitLogoutForm() {
   UserService.logOutUser();
+  
+  activeLink.value = 'home';
+  isOpen.value = false;
+
+  router.push('/login');
 }
 </script>
 
