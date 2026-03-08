@@ -1,17 +1,20 @@
 <!-- Developed by Santiago Idárraga -->
 <script setup lang="ts">
 // External imports
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 // Internal imports
-import DataTableComponent from '@/components/DataTableComponent.vue';
 import { AirlineService } from '@/services/AirlineService';
 import { AircraftService } from '@/services/AircraftService';
+import DataTableComponent from '@/components/DataTableComponent.vue';
+import FilterBarComponent from '@/components/FilterBarComponent.vue';
 
 const airlines = AirlineService.getAirlines();
 const tableHeaders = ['Airline', 'Country', 'Number Of Destinations', 'Favourite Aircraft'];
 
 // Reactive Variables
+const activeFilters = ref<Record<string, string | number>>({});
+
 const tableData = computed(() => {
   const data: Record<string, unknown>[] = [];
   airlines.forEach(airline => {
@@ -25,6 +28,39 @@ const tableData = computed(() => {
   });
   return data;
 });
+
+const filteredTableData = computed(() => {
+  return tableData.value.filter(row => {
+    return Object.entries(activeFilters.value).every(([key, value]) => {
+      if (value === 'All') {
+        return true;
+      }
+
+      return row[key] === value;
+    });
+  });
+});
+
+const countryOptions = computed(() => {
+  const countries = new Set<string>();
+
+  tableData.value.forEach(row => {
+    countries.add(row.Country as string);
+  });
+
+  return Array.from(countries).map(country => ({
+    label: country,
+    value: country
+  }));
+});
+
+const filtersConfig = computed(() => [
+  {
+    label: 'Country',
+    key: 'Country',
+    options: countryOptions.value
+  }
+]);
 
 // Functions
 function getAirlineFavouriteAircraft(airlineId: string): string {
@@ -68,10 +104,13 @@ function getAirlineNumberOfDestinations(airlineId: string): number {
       <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Airlines Information</h2>
       <p>Get to know some of the most well known airlines in the world.</p>
     </header>
-
+    <FilterBarComponent
+      :filters="filtersConfig"
+      @update:filters="activeFilters = $event"
+    />
     <DataTableComponent
       :headers="tableHeaders"
-      :data="tableData"
+      :data="filteredTableData"
       :useDisplayInFirstColumn="true"
       mainTextKey="Name"
       imageKey="ImageURL"
