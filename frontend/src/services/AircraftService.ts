@@ -42,4 +42,8 @@ export class AircraftService {
 
     useAircraftStore().aircrafts.splice(index, 1);
   }
+
+  static getAircraftsByAirline(airlineId: string): AircraftInterface[] {
+    return useAircraftStore().aircrafts.filter((aircraft) => aircraft.airlineId === airlineId);
+  }
 }
