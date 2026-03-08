@@ -77,5 +77,5 @@ export const aircraftSeeder = [
     manufacturerId: '11111111-1111-4111-8111-111111111111', // Boeing
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-  }
+  },
 ];

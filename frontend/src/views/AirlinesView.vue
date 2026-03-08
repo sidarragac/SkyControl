@@ -17,13 +17,13 @@ const activeFilters = ref<Record<string, string | number>>({});
 
 const tableData = computed(() => {
   const data: Record<string, unknown>[] = [];
-  airlines.forEach(airline => {
+  airlines.forEach((airline) => {
     data.push({
       Name: airline.name,
       ImageURL: airline.imageURL,
       Country: airline.country,
-      'NumberOfDestinations': getAirlineNumberOfDestinations(airline.id),
-      'FavouriteAircraft': getAirlineFavouriteAircraft(airline.id)
+      NumberOfDestinations: getAirlineNumberOfDestinations(airline.id),
+      FavouriteAircraft: getAirlineFavouriteAircraft(airline.id),
     });
   });
   return data;
@@ -33,7 +33,7 @@ const filteredTableData = computed(() => {
   const sortOrder = activeFilters.value.DestinationsSort;
   let result = [...tableData.value];
 
-  result = result.filter(row => {
+  result = result.filter((row) => {
     return Object.entries(activeFilters.value).every(([key, value]) => {
       if (value === 'All') return true;
 
@@ -45,21 +45,12 @@ const filteredTableData = computed(() => {
     });
   });
 
-
   if (sortOrder === 'desc') {
-    result.sort(
-      (a, b) =>
-        (b.NumberOfDestinations as number) -
-        (a.NumberOfDestinations as number)
-    );
+    result.sort((a, b) => (b.NumberOfDestinations as number) - (a.NumberOfDestinations as number));
   }
 
   if (sortOrder === 'asc') {
-    result.sort(
-      (a, b) =>
-        (a.NumberOfDestinations as number) -
-        (b.NumberOfDestinations as number)
-    );
+    result.sort((a, b) => (a.NumberOfDestinations as number) - (b.NumberOfDestinations as number));
   }
 
   return result;
@@ -68,13 +59,13 @@ const filteredTableData = computed(() => {
 const countryOptions = computed(() => {
   const countries = new Set<string>();
 
-  tableData.value.forEach(row => {
+  tableData.value.forEach((row) => {
     countries.add(row.Country as string);
   });
 
-  return Array.from(countries).map(country => ({
+  return Array.from(countries).map((country) => ({
     label: country,
-    value: country
+    value: country,
   }));
 });
 
@@ -82,16 +73,16 @@ const filtersConfig = computed(() => [
   {
     label: 'Country',
     key: 'Country',
-    options: countryOptions.value
+    options: countryOptions.value,
   },
   {
     label: 'Sort by Destinations',
     key: 'DestinationsSort',
     options: [
       { label: 'Highest to Lowest', value: 'desc' },
-      { label: 'Lowest to Highest', value: 'asc' }
-    ]
-  }
+      { label: 'Lowest to Highest', value: 'asc' },
+    ],
+  },
 ]);
 
 // Functions
@@ -104,7 +95,7 @@ function getAirlineFavouriteAircraft(airlineId: string): string {
 
   const modelCount = new Map<string, number>();
 
-  aircrafts.forEach(aircraft => {
+  aircrafts.forEach((aircraft) => {
     const currentCount = modelCount.get(aircraft.model) || 0;
     modelCount.set(aircraft.model, currentCount + 1);
   });
@@ -136,10 +127,7 @@ function getAirlineNumberOfDestinations(airlineId: string): number {
       <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Airlines Information</h2>
       <p>Get to know some of the most well known airlines in the world.</p>
     </header>
-    <FilterBarComponent
-      :filters="filtersConfig"
-      @update:filters="activeFilters = $event"
-    />
+    <FilterBarComponent :filters="filtersConfig" @update:filters="activeFilters = $event" />
     <DataTableComponent
       :headers="tableHeaders"
       :data="filteredTableData"

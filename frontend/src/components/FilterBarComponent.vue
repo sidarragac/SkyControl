@@ -29,7 +29,7 @@ const selectedFilters = ref<Record<string, string | number>>({});
 
 // Functions
 function initializeFilters(): void {
-  props.filters.forEach(filter => {
+  props.filters.forEach((filter) => {
     selectedFilters.value[filter.key] = 'All';
   });
 }
@@ -40,7 +40,7 @@ watch(
   () => {
     emit('update:filters', selectedFilters.value);
   },
-  { deep: true }
+  { deep: true },
 );
 
 onMounted(() => {
@@ -61,11 +61,7 @@ onMounted(() => {
       >
         <option value="All">All</option>
 
-        <option
-          v-for="option in filter.options"
-          :key="option.value"
-          :value="option.value"
-        >
+        <option v-for="option in filter.options" :key="option.value" :value="option.value">
           {{ option.label }}
         </option>
       </select>

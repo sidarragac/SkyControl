@@ -1,6 +1,5 @@
 <!-- Developed by Santiago Idárraga -->
 <script setup lang="ts">
-
 // External imports
 import { ref, computed } from 'vue';
 
@@ -24,14 +23,14 @@ const props = withDefaults(defineProps<Props>(), {
   useDisplayInFirstColumn: false,
   mainTextKey: '',
   secondaryTextKey: '',
-  imageKey: ''
+  imageKey: '',
 });
 
 // Reactive variables
 const currentPage = ref(1);
 
 const normalizedHeaders = computed(() => {
-  return props.headers.map(header => {
+  return props.headers.map((header) => {
     if (typeof header === 'string') {
       const key = header.replace(/\s+/g, '');
 
@@ -160,8 +159,7 @@ function prevPage(): void {
     <div v-if="totalPages > 1" class="mt-4 flex items-center justify-between">
       <div class="text-sm text-slate-500">
         Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} -
-        {{ Math.min(currentPage * itemsPerPage, data.length) }} de
-        {{ data.length }} registros
+        {{ Math.min(currentPage * itemsPerPage, data.length) }} de {{ data.length }} registros
       </div>
 
       <div class="flex items-center gap-2">
@@ -183,7 +181,7 @@ function prevPage(): void {
               page === currentPage
                 ? 'bg-blue-600 text-white shadow-md ring-2 ring-blue-300 hover:bg-blue-700'
                 : 'text-slate-700 bg-white border border-slate-300 hover:bg-slate-50',
-              page === '...' ? 'cursor-default border-0 hover:bg-white' : ''
+              page === '...' ? 'cursor-default border-0 hover:bg-white' : '',
             ]"
           >
             {{ page }}
