@@ -30,15 +30,39 @@ const tableData = computed(() => {
 });
 
 const filteredTableData = computed(() => {
-  return tableData.value.filter(row => {
+  const sortOrder = activeFilters.value.DestinationsSort;
+  let result = [...tableData.value];
+
+  result = result.filter(row => {
     return Object.entries(activeFilters.value).every(([key, value]) => {
-      if (value === 'All') {
-        return true;
+      if (value === 'All') return true;
+
+      if (key === 'Country') {
+        return row[key] === value;
       }
 
-      return row[key] === value;
+      return true;
     });
   });
+
+
+  if (sortOrder === 'desc') {
+    result.sort(
+      (a, b) =>
+        (b.NumberOfDestinations as number) -
+        (a.NumberOfDestinations as number)
+    );
+  }
+
+  if (sortOrder === 'asc') {
+    result.sort(
+      (a, b) =>
+        (a.NumberOfDestinations as number) -
+        (b.NumberOfDestinations as number)
+    );
+  }
+
+  return result;
 });
 
 const countryOptions = computed(() => {
@@ -59,6 +83,14 @@ const filtersConfig = computed(() => [
     label: 'Country',
     key: 'Country',
     options: countryOptions.value
+  },
+  {
+    label: 'Sort by Destinations',
+    key: 'DestinationsSort',
+    options: [
+      { label: 'Highest to Lowest', value: 'desc' },
+      { label: 'Lowest to Highest', value: 'asc' }
+    ]
   }
 ]);
 
