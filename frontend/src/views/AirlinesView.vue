@@ -8,6 +8,7 @@ import { AirlineService } from '@/services/AirlineService';
 import { AircraftService } from '@/services/AircraftService';
 import DataTableComponent from '@/components/DataTableComponent.vue';
 import FilterBarComponent from '@/components/FilterBarComponent.vue';
+import FleetSizePolarChartComponent from '@/components/charts/FleetSizePolarChartComponent.vue';
 
 const airlines = AirlineService.getAirlines();
 const tableHeaders = ['Airline', 'Country', 'Number Of Destinations', 'Favourite Aircraft'];
@@ -19,6 +20,7 @@ const tableData = computed(() => {
   const data: Record<string, unknown>[] = [];
   airlines.forEach((airline) => {
     data.push({
+      Id: airline.id,
       Name: airline.name,
       ImageURL: airline.imageURL,
       Country: airline.country,
@@ -85,6 +87,13 @@ const filtersConfig = computed(() => [
   },
 ]);
 
+const fleetChartData = computed(() => {
+  return filteredTableData.value.map(airline => ({
+    airline: airline.Name as string,
+    aircraftCount: AircraftService.getAircraftsByAirline(airline.Id as string).length
+  }));
+});
+
 // Functions
 function getAirlineFavouriteAircraft(airlineId: string): string {
   const aircrafts = AircraftService.getAircraftsByAirline(airlineId);
@@ -128,6 +137,7 @@ function getAirlineNumberOfDestinations(airlineId: string): number {
       <p>Get to know some of the most well known airlines in the world.</p>
     </header>
     <FilterBarComponent :filters="filtersConfig" @update:filters="activeFilters = $event" />
+    <FleetSizePolarChartComponent name="Fleet Size per Airline" :data="fleetChartData"/>
     <DataTableComponent
       :headers="tableHeaders"
       :data="filteredTableData"
