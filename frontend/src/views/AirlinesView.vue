@@ -88,9 +88,9 @@ const filtersConfig = computed(() => [
 ]);
 
 const fleetChartData = computed(() => {
-  return filteredTableData.value.map(airline => ({
+  return filteredTableData.value.map((airline) => ({
     airline: airline.Name as string,
-    aircraftCount: AircraftService.getAircraftsByAirline(airline.Id as string).length
+    aircraftCount: AircraftService.getAircraftsByAirline(airline.Id as string).length,
   }));
 });
 
@@ -137,7 +137,7 @@ function getAirlineNumberOfDestinations(airlineId: string): number {
       <p>Get to know some of the most well known airlines in the world.</p>
     </header>
     <FilterBarComponent :filters="filtersConfig" @update:filters="activeFilters = $event" />
-    <FleetSizePolarChartComponent name="Fleet Size per Airline" :data="fleetChartData"/>
+    <FleetSizePolarChartComponent name="Fleet Size per Airline" :data="fleetChartData" />
     <DataTableComponent
       :headers="tableHeaders"
       :data="filteredTableData"

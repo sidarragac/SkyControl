@@ -8,16 +8,10 @@ import {
   RadialLinearScale,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
-Chart.register(
-  PolarAreaController,
-  RadialLinearScale,
-  ArcElement,
-  Tooltip,
-  Legend
-);
+Chart.register(PolarAreaController, RadialLinearScale, ArcElement, Tooltip, Legend);
 
 interface Props {
   name: string;
@@ -47,7 +41,6 @@ function generateColors(count: number): Array<string> {
   return colors;
 }
 
-
 function renderChart(): void {
   if (!canvasRef.value) return;
 
@@ -58,22 +51,22 @@ function renderChart(): void {
   chartInstance = new Chart(canvasRef.value, {
     type: 'polarArea',
     data: {
-      labels: props.data.map(d => d.airline),
+      labels: props.data.map((d) => d.airline),
       datasets: [
         {
-          data: props.data.map(d => d.aircraftCount),
+          data: props.data.map((d) => d.aircraftCount),
           backgroundColor: generateColors(dataLength),
-        }
-      ]
+        },
+      ],
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
-          position: 'bottom'
-        }
-      }
-    }
+          position: 'bottom',
+        },
+      },
+    },
   });
 }
 
@@ -84,7 +77,7 @@ watch(
   () => {
     renderChart();
   },
-  { deep: true }
+  { deep: true },
 );
 </script>
 
