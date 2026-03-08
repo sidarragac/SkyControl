@@ -77,8 +77,8 @@ watch(
 </script>
 
 <template>
-  <div class="bg-white p-4 rounded-lg border border-slate-200">
-    <h3 class="text-lg font-semibold mb-4">{{ props.name }}</h3>
+  <div class="bg-white-100 p-4 rounded-lg border border-neutral-100 mb-6">
+    <h3 class="text-lg font-semibold text-black-900 mb-4">{{ props.name }}</h3>
     <canvas ref="canvasRef"></canvas>
   </div>
 </template>

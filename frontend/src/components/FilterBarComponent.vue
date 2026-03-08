@@ -51,13 +51,13 @@ onMounted(() => {
 <template>
   <div class="flex flex-wrap gap-4 mb-4">
     <div v-for="filter in filters" :key="filter.key" class="flex flex-col">
-      <label class="text-sm font-medium text-slate-700 mb-1">
+      <label class="text-sm font-medium text-black-800 mb-1">
         {{ filter.label }}
       </label>
 
       <select
         v-model="selectedFilters[filter.key]"
-        class="px-3 py-2 border border-slate-300 rounded-lg bg-white text-sm"
+        class="px-3 py-2 border border-neutral-100 rounded-lg bg-white-100 text-black-800 text-sm focus:ring-2 focus:ring-primary-700 focus:border-primary-700"
       >
         <option value="All">All</option>
 
