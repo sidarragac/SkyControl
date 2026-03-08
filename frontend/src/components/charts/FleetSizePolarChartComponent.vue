@@ -30,12 +30,24 @@ interface Props {
 const props = defineProps<Props>();
 
 let chartInstance: Chart | null = null;
-
+const dataLength: number = props.data.length;
 
 // Reactive variables
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 // Functions
+function generateColors(count: number): Array<string> {
+  const colors = [];
+
+  for (let i = 0; i < count; i++) {
+    const hue = (i * 360) / count;
+    colors.push(`hsl(${hue}, 70%, 55%)`);
+  }
+
+  return colors;
+}
+
+
 function renderChart(): void {
   if (!canvasRef.value) return;
 
@@ -50,7 +62,7 @@ function renderChart(): void {
       datasets: [
         {
           data: props.data.map(d => d.aircraftCount),
-          backgroundColor: [ '#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#a855f7', '#14b8a6' ]
+          backgroundColor: generateColors(dataLength),
         }
       ]
     },
