@@ -52,4 +52,30 @@ export const aircraftSeeder = [
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
+  {
+    id: '90000000-0000-4000-8000-000000000005',
+    registry: 'N321SW',
+    model: 'B737-800',
+    passengerCapacity: 160,
+    status: 'active',
+    firstFlightDate: new Date('2015-11-30').toISOString(),
+    imageURL: 'https://calaero.edu/wp-content/uploads/2018/05/Airplane-Transponder.jpg',
+    airlineId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', // SkyControl
+    manufacturerId: '11111111-1111-4111-8111-111111111111', // Boeing
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: '90000000-0000-4000-8000-000000000006',
+    registry: 'N321SE',
+    model: 'B737-800',
+    passengerCapacity: 160,
+    status: 'active',
+    firstFlightDate: new Date('2015-11-30').toISOString(),
+    imageURL: 'https://calaero.edu/wp-content/uploads/2018/05/Airplane-Transponder.jpg',
+    airlineId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', // SkyControl
+    manufacturerId: '11111111-1111-4111-8111-111111111111', // Boeing
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }
 ];
