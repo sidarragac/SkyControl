@@ -2,19 +2,28 @@
 <script setup lang="ts">
 // External imports
 import { computed, ref } from 'vue';
-import { RouterLink, RouterView, useRoute } from 'vue-router';
+import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 
 // Internal imports
 import { UserService } from '@/services/UserService';
 
+// Non-reactive variables
 const route = useRoute();
+const router = useRouter();
 
+// Reactive variables
 const isOpen = ref(false);
 const activeLink = ref('home');
 const loggedInUser = computed(() => UserService.getLoggedInUser());
 
+// Functions
 function submitLogoutForm() {
   UserService.logOutUser();
+  
+  activeLink.value = 'home';
+  isOpen.value = false;
+
+  router.push('/login');
 }
 </script>
 
@@ -58,7 +67,7 @@ function submitLogoutForm() {
         <!-- Navigation Links -->
         <nav class="flex-1 px-4 space-y-1 mt-4">
           <RouterLink
-            to="/home"
+            to="/"
             @click="activeLink = 'home'"
             :class="[
               'group flex items-center gap-3 px-3 py-2 rounded-lg',
@@ -157,7 +166,7 @@ function submitLogoutForm() {
         </nav>
 
         <!-- Login Link -->
-        <div class="p-4 border-t border-neutral-100/20">
+        <div v-if="!loggedInUser" class="p-4 border-t border-neutral-100/20">
           <RouterLink
             to="/login"
             @click="activeLink = 'home'"

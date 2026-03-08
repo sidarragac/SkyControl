@@ -7,12 +7,15 @@ import { RouterLink, useRouter } from 'vue-router';
 // Internal imports
 import { UserService } from '@/services/UserService';
 
+// Non-reactive variables
 const router = useRouter();
 
+// Reactive variables
 const email = ref('');
 const password = ref('');
 const loginErrorMessage = ref('');
 
+// Finctions
 function submitLoginForm(): void {
   try {
     UserService.logInUser(email.value, password.value);
@@ -156,14 +159,14 @@ function clearLoginForm(): void {
               <RouterLink
                 to="/register"
                 class="text-primary text-accent-500/90 font-semibold hover:underline"
-                >Sign Up</RouterLink
-              >
+                >Sign Up
+              </RouterLink>
             </p>
           </div>
 
           <div class="w-full flex justify-center">
             <RouterLink
-              to="/home"
+              to="/"
               class="text-white-100 hover:text-white-100/80 py-5 text-sm cursor-pointer text-center transition-colors"
             >
               &larr; Go back to Home

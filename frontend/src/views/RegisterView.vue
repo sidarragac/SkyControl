@@ -8,13 +8,16 @@ import { RouterLink, useRouter } from 'vue-router';
 import type { CreateUserDTO } from '@/dtos/CreateUserDTO';
 import { UserService } from '@/services/UserService';
 
+// Non-reactive variables
 const router = useRouter();
 
+// Reactive variables
 const name = ref('');
 const email = ref('');
 const password = ref('');
 const registrationErrorMessage = ref('');
 
+// Functions
 function submitRegisterForm(): void {
   try {
     const newUser: CreateUserDTO = {
@@ -191,14 +194,14 @@ function clearRegisterForm(): void {
               <RouterLink
                 to="/login"
                 class="text-primary text-accent-500/90 font-semibold hover:underline"
-                >Sign In</RouterLink
-              >
+                >Sign In
+              </RouterLink>
             </p>
           </div>
 
           <div class="w-full flex justify-center">
             <RouterLink
-              to="/home"
+              to="/"
               class="text-white-100 hover:text-white-100/80 py-5 text-sm cursor-pointer text-center transition-colors"
             >
               &larr; Go back to Home

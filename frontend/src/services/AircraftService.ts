@@ -12,8 +12,8 @@ export class AircraftService {
 
   static createAircraft(aircraft: CreateAircraftDTO): void {
     const id = crypto.randomUUID();
-    const createdAt = new Date();
-    const updatedAt = new Date();
+    const createdAt = new Date().toISOString();
+    const updatedAt = new Date().toISOString();
 
     useAircraftStore().aircrafts.push({ id, ...aircraft, createdAt, updatedAt });
   }
@@ -29,7 +29,7 @@ export class AircraftService {
 
     useAircraftStore().aircrafts[index] = {
       ...updatedAircraft,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     };
   }
 

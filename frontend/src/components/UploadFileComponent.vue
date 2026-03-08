@@ -3,6 +3,7 @@
 // External imports
 import { ref, computed, watch } from 'vue';
 
+// Props
 const props = withDefaults(
   defineProps<{
     imageURL: string;
@@ -12,21 +13,23 @@ const props = withDefaults(
     preview: true,
   },
 );
+
+// Emits
 const emit = defineEmits(['update:imageURL']);
 
+// Reactive variables
 const fileInput = ref<HTMLInputElement | null>(null);
 const imageFile = ref<File | null>(null);
 const isDragging = ref(false);
-
 const imageUrl = computed(() =>
   imageFile.value ? URL.createObjectURL(imageFile.value) : props.imageURL,
 );
-
 const formattedSize = computed(() => {
   if (!imageFile.value) return '';
   return (imageFile.value.size / (1024 * 1024)).toFixed(2) + ' MB';
 });
 
+// Functions
 function openFileDialog(): void {
   fileInput.value?.click();
 }
@@ -74,6 +77,7 @@ function removeImage() {
   emit('update:imageURL', '');
 }
 
+// Watchers
 watch(
   () => props.imageURL,
   (newVal) => {
