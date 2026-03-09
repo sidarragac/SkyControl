@@ -1,4 +1,8 @@
-// Developed by Mateo Pineda
+// Developed by Mateo Pineda, Juan Jara
+// External imports
+import { computed } from 'vue';
+import type { ComputedRef } from 'vue';
+
 // Internal imports
 import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
@@ -18,7 +22,6 @@ export class AirlineService {
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
     const updatedAt = new Date().toISOString();
-
     useAirlineStore().airlines.push({ id, ...airline, createdAt, updatedAt });
   }
 
@@ -26,11 +29,9 @@ export class AirlineService {
     const index = useAirlineStore().airlines.findIndex(
       (airline) => airline.id === updatedAirline.id,
     );
-
     if (index === -1) {
       throw new Error('Airline not found');
     }
-
     useAirlineStore().airlines[index] = {
       ...updatedAirline,
       updatedAt: new Date().toISOString(),
@@ -39,11 +40,14 @@ export class AirlineService {
 
   static deleteAirline(id: string): void {
     const index = useAirlineStore().airlines.findIndex((airline) => airline.id === id);
-
     if (index === -1) {
       throw new Error('Airline not found');
     }
-
     useAirlineStore().airlines.splice(index, 1);
+  }
+
+  static getActiveAirlinesCount(): ComputedRef<number> {
+    const store = useAirlineStore();
+    return computed(() => store.airlines.length);
   }
 }
