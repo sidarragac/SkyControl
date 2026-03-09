@@ -1,18 +1,19 @@
-<!-- Developed by Santiago Idárraga Ceballos-->
+<!-- Developed by Santiago Idárraga -->
 <script setup lang="ts">
 // External imports
-import { onMounted, watch, ref } from 'vue';
 import {
+  ArcElement,
   Chart,
+  Legend,
   PolarAreaController,
   RadialLinearScale,
-  ArcElement,
   Tooltip,
-  Legend,
 } from 'chart.js';
+import { onMounted, ref, watch } from 'vue';
 
 Chart.register(PolarAreaController, RadialLinearScale, ArcElement, Tooltip, Legend);
 
+// Interfaces
 interface Props {
   name: string;
   data: {
@@ -21,8 +22,10 @@ interface Props {
   }[];
 }
 
+// Props
 const props = defineProps<Props>();
 
+// Non-reactive variables
 let chartInstance: Chart | null = null;
 const dataLength: number = props.data.length;
 
