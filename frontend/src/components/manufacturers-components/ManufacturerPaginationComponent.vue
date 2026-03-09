@@ -28,7 +28,7 @@ const pages = computed(() => {
 });
 
 // Functions
-function goTo(page: number | '...') {
+function goTo(page: number | '...'): void {
   if (typeof page === 'number') emit('update:currentPage', page);
 }
 </script>

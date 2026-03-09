@@ -62,7 +62,7 @@ function buildChart(
   });
 }
 
-function initCharts() {
+function initCharts(): void {
   if (marketShareCanvas.value) {
     marketShareChart?.destroy();
     marketShareChart = buildChart(

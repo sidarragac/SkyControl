@@ -4,11 +4,11 @@
 import { computed, ref, watch } from 'vue';
 
 // Internal imports
+import { AircraftService } from '@/services/AircraftService';
 import ManufacturerCardComponent from '@/components/manufacturers-components/ManufacturerCardComponent.vue';
 import ManufacturerChartsComponent from '@/components/manufacturers-components/ManufacturerChartsComponent.vue';
 import ManufacturerPaginationComponent from '@/components/manufacturers-components/ManufacturerPaginationComponent.vue';
 import ManufacturerSearchBarComponent from '@/components/manufacturers-components/ManufacturerSearchBarComponent.vue';
-import { AircraftService } from '@/services/AircraftService';
 import { ManufacturerService } from '@/services/ManufacturerService';
 
 // Non-reactive variables
@@ -95,9 +95,7 @@ watch([search, selectedCountry], (): void => {
 
       <!-- Empty state -->
       <div v-else class="flex flex-col items-center justify-center py-16 text-center">
-        <div
-          class="w-14 h-14 rounded-full bg-primary-900/10 flex items-center justify-center mb-3"
-        >
+        <div class="w-14 h-14 rounded-full bg-primary-900/10 flex items-center justify-center mb-3">
           <i class="fas fa-industry text-primary-900 text-xl"></i>
         </div>
         <p class="text-sm font-semibold text-black-800">No manufacturers found</p>

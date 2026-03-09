@@ -9,7 +9,7 @@ import CreateView from '@/views/admin/CreateView.vue';
 import EditView from '@/views/admin/EditView.vue';
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
-import ManufacturersView from '@/views/ManufacturerView.vue';
+import ManufacturerView from '@/views/ManufacturerView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import { UserService } from '@/services/UserService';
 
@@ -27,7 +27,7 @@ const router = createRouter({
     {
       path: '/manufacturers',
       name: 'manufacturers',
-      component: ManufacturersView,
+      component: ManufacturerView,
       meta: { title: 'Manufacturers' },
     },
     {

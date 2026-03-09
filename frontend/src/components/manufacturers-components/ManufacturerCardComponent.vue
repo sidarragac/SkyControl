@@ -49,9 +49,7 @@ defineProps<{
         </p>
       </div>
       <div class="bg-white-200 rounded-lg p-3">
-        <p class="text-[10px] uppercase tracking-widest text-black-800/40 font-semibold">
-          Founded
-        </p>
+        <p class="text-[10px] uppercase tracking-widest text-black-800/40 font-semibold">Founded</p>
         <p class="text-lg font-bold text-black-800 mt-0.5">
           {{ new Date(manufacturer.foundationDate).getFullYear() }}
         </p>

@@ -128,5 +128,4 @@ export class AircraftService {
       return map;
     });
   }
-
 }
