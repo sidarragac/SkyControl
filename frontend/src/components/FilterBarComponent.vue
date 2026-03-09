@@ -1,7 +1,9 @@
 <!-- Developed by Santiago Idárraga -->
 <script setup lang="ts">
+// External imports
 import { ref, watch, onMounted } from 'vue';
 
+// Interfaces
 interface FilterOption {
   label: string;
   value: string | number;
@@ -17,6 +19,7 @@ interface Props {
   filters: FilterConfig[];
 }
 
+// Props
 const props = defineProps<Props>();
 
 // Emits
