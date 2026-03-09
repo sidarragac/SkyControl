@@ -2,7 +2,7 @@
 <script setup lang="ts">
 defineProps<{
   mainText: string;
-  secondaryText: string;
+  secondaryText?: string;
   imageURL: string;
 }>();
 </script>
