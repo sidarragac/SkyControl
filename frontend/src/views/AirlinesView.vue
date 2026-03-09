@@ -100,7 +100,7 @@ const fleetChartData = computed(() => {
   <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
     <header class="mb-8">
       <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Airlines Information</h2>
-      <p>Get to know some of the most well known airlines in the world.</p>
+      <p>Get to know some of the most well known airlines in the world</p>
     </header>
     <FilterBarComponent :filters="filtersConfig" @update:filters="activeFilters = $event" />
     <FleetSizePolarChartComponent name="Fleet Size per Airline" :data="fleetChartData" />
