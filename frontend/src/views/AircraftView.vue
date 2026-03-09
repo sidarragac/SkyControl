@@ -24,8 +24,8 @@ const tableData = computed(() => {
       ImageURL: aircraft.imageURL,
       PassengerCapacity: aircraft.passengerCapacity,
       FirstFlightDate: aircraft.firstFlightDate.split('T')[0],
-      Airline: AirlineService.getAirlineById(aircraft.airlineId)?.name,
-      Manufacturer: ManufacturerService.getManufacturerById(aircraft.manufacturerId)?.name
+      Airline: AirlineService.getAirlineById(aircraft.airlineId)?.name || 'Unknown',
+      Manufacturer: ManufacturerService.getManufacturerById(aircraft.manufacturerId)?.name || 'Unknown'
     });
   });
   return data;
