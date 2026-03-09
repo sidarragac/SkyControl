@@ -6,6 +6,7 @@ import { computed, ref } from 'vue';
 // Internal imports
 import { AirlineService } from '@/services/AirlineService';
 import { AircraftService } from '@/services/AircraftService';
+import AircraftModelChartComponent from '@/components/charts/AircraftModelChartComponent.vue';
 import { ManufacturerService } from '@/services/ManufacturerService';
 import DataTableComponent from '@/components/DataTableComponent.vue';
 import FilterBarComponent from '@/components/FilterBarComponent.vue';
@@ -130,6 +131,20 @@ const filtersConfig = computed(() => [
     ],
   },
 ]);
+
+const aircraftModelChartData = computed(() => {
+  const counts = new Map<string, number>();
+
+  filteredTableData.value.forEach((aircraft) => {
+    const model = aircraft.Model as string;
+    counts.set(model, (counts.get(model) || 0) + 1);
+  });
+
+  return Array.from(counts.entries()).map(([model, count]) => ({
+    model,
+    count,
+  }));
+});
 </script>
 <template>
   <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
@@ -138,6 +153,7 @@ const filtersConfig = computed(() => [
       <p>Get to know some of the most representative aircrafts in the world</p>
     </header>
     <FilterBarComponent :filters="filtersConfig" @update:filters="activeFilters = $event" />
+    <AircraftModelChartComponent name="Aircraft Model Distribution" :data="aircraftModelChartData" />
     <DataTableComponent
       :headers="tableHeaders"
       :data="filteredTableData"
