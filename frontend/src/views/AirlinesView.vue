@@ -5,6 +5,7 @@ import { computed, ref } from 'vue';
 
 // Internal imports
 import { AirlineService } from '@/services/AirlineService';
+import { AirlineCalculatorUtil } from '@/utils/AirlineCalculatorUtil';
 import { AircraftService } from '@/services/AircraftService';
 import DataTableComponent from '@/components/DataTableComponent.vue';
 import FilterBarComponent from '@/components/FilterBarComponent.vue';
@@ -25,8 +26,8 @@ const tableData = computed(() => {
       Name: airline.name,
       ImageURL: airline.imageURL,
       Country: airline.country,
-      NumberOfDestinations: getAirlineNumberOfDestinations(airline.id),
-      FavouriteAircraft: getAirlineFavouriteAircraft(airline.id),
+      NumberOfDestinations: AirlineCalculatorUtil.calculateAirlineNumberOfDestinations(airline.id),
+      FavouriteAircraft: AirlineCalculatorUtil.calculateAirlineFavouriteAircraft(airline.id),
     });
   });
   return data;
@@ -94,42 +95,6 @@ const fleetChartData = computed(() => {
     aircraftCount: AircraftService.getAircraftsByAirlineId(airline.Id as string).length,
   }));
 });
-
-// Functions
-function getAirlineFavouriteAircraft(airlineId: string): string {
-  const aircrafts = AircraftService.getAircraftsByAirlineId(airlineId);
-
-  if (aircrafts.length === 0) {
-    return 'N/A';
-  }
-
-  const modelCount = new Map<string, number>();
-
-  aircrafts.forEach((aircraft) => {
-    const currentCount = modelCount.get(aircraft.model) || 0;
-    modelCount.set(aircraft.model, currentCount + 1);
-  });
-
-  let mostRepeatedModel = '';
-  let maxCount = 0;
-
-  modelCount.forEach((count, model) => {
-    if (count > maxCount) {
-      maxCount = count;
-      mostRepeatedModel = model;
-    }
-  });
-
-  return mostRepeatedModel;
-}
-
-function getAirlineNumberOfDestinations(airlineId: string): number {
-  const airline = AirlineService.getAirlineById(airlineId);
-  if (!airline) {
-    return 0;
-  }
-  return airline.destinations.length;
-}
 </script>
 <template>
   <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
