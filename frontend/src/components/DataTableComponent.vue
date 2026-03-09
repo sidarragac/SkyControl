@@ -8,6 +8,7 @@ import DisplayDataComponent from './DisplayDataComponent.vue';
 
 type HeaderType = string | { label: string; key: string };
 
+// Interfaces
 interface Props {
   headers: HeaderType[];
   data: Record<string, unknown>[];
@@ -18,6 +19,7 @@ interface Props {
   imageKey?: string;
 }
 
+// Props
 const props = withDefaults(defineProps<Props>(), {
   itemsPerPage: 5,
   useDisplayInFirstColumn: false,
@@ -150,7 +152,7 @@ function prevPage(): void {
           </tr>
           <tr v-if="paginatedData.length === 0">
             <td :colspan="normalizedHeaders.length" class="px-6 py-8 text-center text-black-800">
-              No hay datos disponibles
+              No data available.
             </td>
           </tr>
         </tbody>
@@ -158,8 +160,8 @@ function prevPage(): void {
     </div>
     <div v-if="totalPages > 1" class="mt-4 flex items-center justify-between">
       <div class="text-sm text-black-800">
-        Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} -
-        {{ Math.min(currentPage * itemsPerPage, data.length) }} de {{ data.length }} registros
+        Showing {{ (currentPage - 1) * itemsPerPage + 1 }} -
+        {{ Math.min(currentPage * itemsPerPage, data.length) }} of {{ data.length }} records
       </div>
 
       <div class="flex items-center gap-2">
@@ -168,7 +170,7 @@ function prevPage(): void {
           :disabled="currentPage === 1"
           class="px-3 py-2 text-sm font-medium text-black-800 bg-white-100 border border-neutral-100 rounded-lg hover:bg-white-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          Anterior
+          Previous
         </button>
         <div class="flex items-center gap-1">
           <button
@@ -192,7 +194,7 @@ function prevPage(): void {
           :disabled="currentPage === totalPages"
           class="px-3 py-2 text-sm font-medium text-black-800 bg-white-100 border border-neutral-100 rounded-lg hover:bg-white-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          Siguiente
+          Next
         </button>
       </div>
     </div>
