@@ -11,6 +11,9 @@ import {
 } from 'chart.js';
 import { onMounted, ref, watch } from 'vue';
 
+// Internal Imports
+import { ColorGeneratorUtil } from '@/utils/ColorGeneratroUtil';
+
 Chart.register(PolarAreaController, RadialLinearScale, ArcElement, Tooltip, Legend);
 
 // Interfaces
@@ -33,17 +36,6 @@ const dataLength: number = props.data.length;
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 // Functions
-function generateColors(count: number): Array<string> {
-  const colors = [];
-
-  for (let i = 0; i < count; i++) {
-    const hue = (i * 360) / count;
-    colors.push(`hsl(${hue}, 70%, 55%)`);
-  }
-
-  return colors;
-}
-
 function renderChart(): void {
   if (!canvasRef.value) return;
 
@@ -58,7 +50,7 @@ function renderChart(): void {
       datasets: [
         {
           data: props.data.map((d) => d.aircraftCount),
-          backgroundColor: generateColors(dataLength),
+          backgroundColor: ColorGeneratorUtil.generateColors(dataLength),
         },
       ],
     },
