@@ -67,6 +67,7 @@ const getPageNumbers = computed(() => {
       for (let i = 1; i <= Math.min(4, totalPages.value); i++) {
         pages.push(i);
       }
+
       if (totalPages.value > 4) {
         pages.push('...');
         pages.push(totalPages.value);
@@ -74,6 +75,7 @@ const getPageNumbers = computed(() => {
     } else if (currentPage.value >= totalPages.value - 2) {
       pages.push(1);
       pages.push('...');
+
       for (let i = totalPages.value - 3; i <= totalPages.value; i++) {
         if (i > 1) {
           pages.push(i);
@@ -179,7 +181,7 @@ function prevPage(): void {
             @click="typeof page === 'number' ? goToPage(page) : null"
             :disabled="page === '...'"
             :class="[
-              'min-w-[40px] px-3 py-2 text-sm font-medium rounded-lg transition-colors',
+              'min-w-10 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
               page === currentPage
                 ? 'bg-primary-700 text-white-100 shadow-md ring-2 ring-primary-900/30 hover:bg-primary-900'
                 : 'text-black-800 bg-white-100 border border-neutral-100 hover:bg-white-200',

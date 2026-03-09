@@ -23,6 +23,7 @@ export class ManufacturerService {
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
     const updatedAt = new Date().toISOString();
+
     useManufacturerStore().manufacturers.push({ id, ...manufacturer, createdAt, updatedAt });
   }
 
@@ -30,9 +31,11 @@ export class ManufacturerService {
     const index = useManufacturerStore().manufacturers.findIndex(
       (manufacturer) => manufacturer.id === updatedManufacturer.id,
     );
+
     if (index === -1) {
       throw new Error('Manufacturer not found');
     }
+
     useManufacturerStore().manufacturers[index] = {
       ...updatedManufacturer,
       updatedAt: new Date().toISOString(),
@@ -43,15 +46,18 @@ export class ManufacturerService {
     const index = useManufacturerStore().manufacturers.findIndex(
       (manufacturer) => manufacturer.id === id,
     );
+
     if (index === -1) {
       throw new Error('Manufacturer not found');
     }
+
     useManufacturerStore().manufacturers.splice(index, 1);
   }
 
   // Dashboard helpers
   static getManufacturersCount(): ComputedRef<number> {
     const store = useManufacturerStore();
+
     return computed(() => store.manufacturers.length);
   }
 
@@ -59,6 +65,7 @@ export class ManufacturerService {
     fleetPresenceMap: Ref<Record<string, number>>,
   ): ComputedRef<{ name: string; count: number }[]> {
     const store = useManufacturerStore();
+
     return computed(() =>
       store.manufacturers
         .map((m) => ({ name: m.name, count: fleetPresenceMap.value[m.id] ?? 0 }))
@@ -70,6 +77,7 @@ export class ManufacturerService {
 
   static getCountryOptions(): ComputedRef<string[]> {
     const store = useManufacturerStore();
+
     return computed(() => {
       const countries = store.manufacturers.map((m) => m.country);
       return ['All Countries', ...Array.from(new Set(countries)).sort()];
@@ -82,6 +90,7 @@ export class ManufacturerService {
     fleetPresenceMap: Ref<Record<string, number>>,
   ): ComputedRef<ManufacturerInterface[]> {
     const store = useManufacturerStore();
+
     return computed(() =>
       store.manufacturers.filter((m) => {
         const matchesSearch =
@@ -90,6 +99,7 @@ export class ManufacturerService {
           m.country.toLowerCase().includes(search.value.toLowerCase());
         const matchesCountry =
           selectedCountry.value === 'All Countries' || m.country === selectedCountry.value;
+
         return matchesSearch && matchesCountry;
       }),
     );
@@ -99,8 +109,10 @@ export class ManufacturerService {
     fleetPresenceMap: Ref<Record<string, number>>,
   ): ComputedRef<{ name: string; value: number }[]> {
     const store = useManufacturerStore();
+
     return computed(() => {
       const total = Object.values(fleetPresenceMap.value).reduce((a, b) => a + b, 0) || 1;
+
       return store.manufacturers.map((m) => ({
         name: m.name.split(' ')[0] ?? m.name,
         value: Math.round(((fleetPresenceMap.value[m.id] ?? 0) / total) * 100 * 10) / 10,
@@ -112,6 +124,7 @@ export class ManufacturerService {
     fleetPresenceMap: Ref<Record<string, number>>,
   ): ComputedRef<{ name: string; value: number }[]> {
     const store = useManufacturerStore();
+
     return computed(() =>
       store.manufacturers.map((m) => ({
         name: m.name.split(' ')[0] ?? m.name,

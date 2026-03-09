@@ -5,7 +5,6 @@ import { computed, ref } from 'vue';
 
 // Internal imports
 import { AirlineService } from '@/services/AirlineService';
-import { AirlineCalculatorUtil } from '@/utils/AirlineCalculatorUtil';
 import { AircraftService } from '@/services/AircraftService';
 import DataTableComponent from '@/components/DataTableComponent.vue';
 import FilterBarComponent from '@/components/FilterBarComponent.vue';
@@ -26,8 +25,8 @@ const tableData = computed(() => {
       Name: airline.name,
       ImageURL: airline.imageURL,
       Country: airline.country,
-      NumberOfDestinations: AirlineCalculatorUtil.calculateAirlineNumberOfDestinations(airline.id),
-      FavouriteAircraft: AirlineCalculatorUtil.calculateAirlineFavouriteAircraft(airline.id),
+      NumberOfDestinations: AirlineService.getNumberOfDestinations(airline.id),
+      FavouriteAircraft: AirlineService.getMostCommonAircraft(airline.id),
     });
   });
   return data;

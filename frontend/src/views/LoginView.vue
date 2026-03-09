@@ -22,15 +22,18 @@ function submitLoginForm(): void {
 
     if (UserService.getLoggedInUser()) {
       clearLoginForm();
+
       router.push('home');
     } else {
       loginErrorMessage.value = 'Invalid email or password. Please try again.';
+
       setTimeout(() => {
         loginErrorMessage.value = '';
       }, 5000);
     }
   } catch (error: Error | unknown) {
     loginErrorMessage.value = `An error occurred while logging in. Please try again.<br>Error details: ${(error as Error).message}`;
+
     setTimeout(() => {
       loginErrorMessage.value = '';
     }, 5000);

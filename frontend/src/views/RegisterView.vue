@@ -30,6 +30,7 @@ function submitRegisterForm(): void {
     if (existingUser) {
       registrationErrorMessage.value =
         'The email address is already in use. Please use a different email.';
+
       setTimeout(() => {
         registrationErrorMessage.value = '';
       }, 5000);
@@ -38,10 +39,12 @@ function submitRegisterForm(): void {
 
     UserService.createUser(newUser);
     UserService.logInUser(email.value, password.value);
+
     clearRegisterForm();
     router.push('home');
   } catch (error: Error | unknown) {
     registrationErrorMessage.value = `An error occurred while creating the user. Please try again.<br>Error details: ${(error as Error).message}`;
+
     setTimeout(() => {
       registrationErrorMessage.value = '';
     }, 5000);

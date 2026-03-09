@@ -72,6 +72,7 @@ function initCharts(): void {
       CHART_COLOR,
     );
   }
+
   if (productionVolumeCanvas.value) {
     productionVolumeChart?.destroy();
     productionVolumeChart = buildChart(

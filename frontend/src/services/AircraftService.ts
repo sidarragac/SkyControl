@@ -33,6 +33,7 @@ export class AircraftService {
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
     const updatedAt = new Date().toISOString();
+
     useAircraftStore().aircrafts.push({ id, ...aircraft, createdAt, updatedAt });
   }
 
@@ -40,9 +41,11 @@ export class AircraftService {
     const index = useAircraftStore().aircrafts.findIndex(
       (aircraft) => aircraft.id === updatedAircraft.id,
     );
+
     if (index === -1) {
       throw new Error('Aircraft not found');
     }
+
     useAircraftStore().aircrafts[index] = {
       ...updatedAircraft,
       updatedAt: new Date().toISOString(),
@@ -54,6 +57,7 @@ export class AircraftService {
     if (index === -1) {
       throw new Error('Aircraft not found');
     }
+
     useAircraftStore().aircrafts.splice(index, 1);
   }
 
@@ -63,11 +67,13 @@ export class AircraftService {
 
   static getTotalAircrafts(): ComputedRef<number> {
     const store = useAircraftStore();
+
     return computed(() => store.aircrafts.length);
   }
 
   static getFleetHealth(): ComputedRef<number> {
     const store = useAircraftStore();
+
     return computed(() => {
       const total = store.aircrafts.length;
       if (total === 0) return 0;
@@ -89,6 +95,7 @@ export class AircraftService {
   > {
     const aircraftStore = useAircraftStore();
     const airlineStore = useAirlineStore();
+
     return computed(() =>
       [...aircraftStore.aircrafts]
         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
@@ -102,9 +109,11 @@ export class AircraftService {
           const diffMins = Math.floor(diffMs / 60000);
           const diffHours = Math.floor(diffMins / 60);
           let timeLabel = '';
+
           if (diffMins < 60) timeLabel = `${diffMins} minutes ago`;
           else if (diffHours < 24) timeLabel = `${diffHours} hours ago`;
           else timeLabel = `${Math.floor(diffHours / 24)} days ago`;
+
           return {
             id: aircraft.id,
             icon: isNew ? 'fa-plus' : 'fa-wrench',
@@ -120,11 +129,13 @@ export class AircraftService {
 
   static getFleetPresenceMap(): ComputedRef<Record<string, number>> {
     const store = useAircraftStore();
+
     return computed(() => {
       const map: Record<string, number> = {};
       store.aircrafts.forEach((a) => {
         map[a.manufacturerId] = (map[a.manufacturerId] ?? 0) + 1;
       });
+
       return map;
     });
   }
