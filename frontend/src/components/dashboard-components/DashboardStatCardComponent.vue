@@ -15,7 +15,7 @@ const props = defineProps<{
   trendNeutral?: boolean;
 }>();
 
-// Selectors
+// Reactive variables
 const trendColorClass = computed(() => {
   if (props.trendNeutral) return 'text-black-800/40';
   return props.trendPositive ? 'text-green-600' : 'text-red-500';

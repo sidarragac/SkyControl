@@ -23,7 +23,7 @@ const hubSearch = ref('');
 const isMapLoading = ref(true);
 
 // Functions
-async function initMap() {
+async function initMap(): Promise<void> {
   if (!mapContainer.value) return;
 
   const L = await import('leaflet');
@@ -46,7 +46,7 @@ async function initMap() {
   isMapLoading.value = false;
 }
 
-function renderMarkers(L: typeof import('leaflet')) {
+function renderMarkers(L: typeof import('leaflet')): void {
   if (!mapInstance) return;
 
   const filtered = hubMarkers.filter(

@@ -2,16 +2,16 @@
 <script setup lang="ts">
 // External imports
 import { computed } from 'vue';
-
 // Props
 const props = defineProps<{
   manufacturers: { name: string; count: number }[];
 }>();
 
-// Selectors
-const maxCount = computed(() => props.manufacturers[0]?.count ?? 1);
-
+// Non-reactive variables
 const barColors = ['bg-primary-900', 'bg-accent-500', 'bg-secondary-700', 'bg-primary-700'];
+
+// Reactive variables
+const maxCount = computed(() => props.manufacturers[0]?.count ?? 1);
 </script>
 
 <template>

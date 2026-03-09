@@ -2,23 +2,24 @@
 <script setup lang="ts">
 // External imports
 import { computed } from 'vue';
-
 // Internal imports
 import DashboardActivityComponent from '@/components/dashboard-components/DashboardActivityComponent.vue';
 import DashboardManufacturersComponent from '@/components/dashboard-components/DashboardManufacturersComponent.vue';
 import DashboardMapComponent from '@/components/dashboard-components/DashboardMapComponent.vue';
 import DashboardStatsGridComponent from '@/components/dashboard-components/DashboardStatsGridComponent.vue';
-import { DashboardService } from '@/services/DashboardService';
+import { AircraftService } from '@/services/AircraftService';
+import { AirlineService } from '@/services/AirlineService';
+import { ManufacturerService } from '@/services/ManufacturerService';
 import { UserService } from '@/services/UserService';
 
-// Selectors
+// Reactive variables
 const loggedInUser = computed(() => UserService.getLoggedInUser());
-const totalAircrafts = DashboardService.getTotalAircrafts();
-const activeAirlines = DashboardService.getActiveAirlinesCount();
-const manufacturersCount = DashboardService.getManufacturersCount();
-const fleetHealth = DashboardService.getFleetHealth();
-const topManufacturers = DashboardService.getTopManufacturers();
-const recentActivity = DashboardService.getRecentActivity();
+const totalAircrafts = AircraftService.getTotalAircrafts();
+const activeAirlines = AirlineService.getActiveAirlinesCount();
+const manufacturersCount = ManufacturerService.getManufacturersCount();
+const fleetHealth = AircraftService.getFleetHealth();
+const topManufacturers = ManufacturerService.getTopManufacturers();
+const recentActivity = AircraftService.getRecentActivity();
 </script>
 
 <template>
