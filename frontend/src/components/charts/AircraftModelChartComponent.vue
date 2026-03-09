@@ -5,9 +5,7 @@ import { ArcElement, Chart, DoughnutController, Legend, Tooltip } from 'chart.js
 import { onMounted, ref, watch } from 'vue';
 
 // Internal Imports
-import { ColorGeneratorUtil } from '@/utils/ColorGeneratroUtil';
-
-Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+import { ColorGeneratorUtil } from '@/utils/ColorGeneratorUtil';
 
 // Interfaces
 interface Props {
@@ -59,8 +57,7 @@ function renderChart() {
   });
 }
 
-onMounted(renderChart);
-
+// Watchers
 watch(
   () => props.data,
   () => {
@@ -68,14 +65,17 @@ watch(
   },
   { deep: true },
 );
+
+onMounted(() => {
+  Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+
+  renderChart();
+});
 </script>
 
 <template>
-  <div class="bg-white border border-slate-200 rounded-lg p-4">
-    <h3 class="text-lg font-semibold mb-4">
-      {{ props.name }}
-    </h3>
-
+  <div class="bg-white-100 p-4 rounded-lg border border-neutral-100 mb-6">
+    <h3 class="text-lg font-semibold text-black-900 mb-4">{{ props.name }}</h3>
     <canvas ref="canvasRef"></canvas>
   </div>
 </template>

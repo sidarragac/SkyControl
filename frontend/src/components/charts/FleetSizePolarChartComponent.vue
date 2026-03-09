@@ -12,9 +12,7 @@ import {
 import { onMounted, ref, watch } from 'vue';
 
 // Internal Imports
-import { ColorGeneratorUtil } from '@/utils/ColorGeneratroUtil';
-
-Chart.register(PolarAreaController, RadialLinearScale, ArcElement, Tooltip, Legend);
+import { ColorGeneratorUtil } from '@/utils/ColorGeneratorUtil';
 
 // Interfaces
 interface Props {
@@ -74,7 +72,11 @@ watch(
   { deep: true },
 );
 
-onMounted(renderChart);
+onMounted(() => {
+  Chart.register(PolarAreaController, RadialLinearScale, ArcElement, Tooltip, Legend);
+
+  renderChart();
+});
 </script>
 
 <template>
