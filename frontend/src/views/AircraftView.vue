@@ -13,7 +13,13 @@ import FilterBarComponent from '@/components/FilterBarComponent.vue';
 
 // Non-reactive Variables
 const aircrafts = AircraftService.getAircrafts();
-const tableHeaders = ['Aircraft', 'Airline', 'Manufacturer', 'Passenger Capacity', 'First Flight Date'];
+const tableHeaders = [
+  'Aircraft',
+  'Airline',
+  'Manufacturer',
+  'Passenger Capacity',
+  'First Flight Date',
+];
 
 // Reactive Variables
 const activeFilters = ref<Record<string, string | number>>({});
@@ -30,8 +36,9 @@ const tableData = computed(() => {
       FirstFlightDate: aircraft.firstFlightDate.split('T')[0],
       Airline: AirlineService.getAirlineById(aircraft.airlineId)?.name || 'Unknown',
       AirlineId: aircraft.airlineId,
-      Manufacturer: ManufacturerService.getManufacturerById(aircraft.manufacturerId)?.name || 'Unknown',
-      ManufacturerId: aircraft.manufacturerId
+      Manufacturer:
+        ManufacturerService.getManufacturerById(aircraft.manufacturerId)?.name || 'Unknown',
+      ManufacturerId: aircraft.manufacturerId,
     });
   });
   return data;
@@ -67,11 +74,19 @@ const filteredTableData = computed(() => {
   }
 
   if (dateSort === 'desc') {
-    result.sort((a, b) => new Date(b.FirstFlightDate as string).getTime() - new Date(a.FirstFlightDate as string).getTime());
+    result.sort(
+      (a, b) =>
+        new Date(b.FirstFlightDate as string).getTime() -
+        new Date(a.FirstFlightDate as string).getTime(),
+    );
   }
 
   if (dateSort === 'asc') {
-    result.sort((a, b) => new Date(a.FirstFlightDate as string).getTime() - new Date(b.FirstFlightDate as string).getTime());
+    result.sort(
+      (a, b) =>
+        new Date(a.FirstFlightDate as string).getTime() -
+        new Date(b.FirstFlightDate as string).getTime(),
+    );
   }
 
   return result;
@@ -153,7 +168,10 @@ const aircraftModelChartData = computed(() => {
       <p>Get to know some of the most representative aircrafts in the world</p>
     </header>
     <FilterBarComponent :filters="filtersConfig" @update:filters="activeFilters = $event" />
-    <AircraftModelChartComponent name="Aircraft Model Distribution" :data="aircraftModelChartData" />
+    <AircraftModelChartComponent
+      name="Aircraft Model Distribution"
+      :data="aircraftModelChartData"
+    />
     <DataTableComponent
       :headers="tableHeaders"
       :data="filteredTableData"

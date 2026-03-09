@@ -17,7 +17,12 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'home', component: HomeView, meta: { title: 'Home' } },
     { path: '/airlines', name: 'airlines', component: AirlinesView, meta: { title: 'Airlines' } },
-    { path: '/aircrafts', name: 'aircrafts', component: AircraftView, meta: { title: 'Aircrafts' } },
+    {
+      path: '/aircrafts',
+      name: 'aircrafts',
+      component: AircraftView,
+      meta: { title: 'Aircrafts' },
+    },
     {
       path: '/admin/create',
       name: 'admin-create',

@@ -1,24 +1,13 @@
 <!-- Developed by Santiago Idárraga -->
 <script setup lang="ts">
 // External imports
-import {
-  ArcElement,
-  Chart,
-  DoughnutController,
-  Legend,
-  Tooltip
-} from 'chart.js'
-import { onMounted, ref, watch } from 'vue'
+import { ArcElement, Chart, DoughnutController, Legend, Tooltip } from 'chart.js';
+import { onMounted, ref, watch } from 'vue';
 
 // Internal Imports
 import { ColorGeneratorUtil } from '@/utils/ColorGeneratroUtil';
 
-Chart.register(
-  DoughnutController,
-  ArcElement,
-  Tooltip,
-  Legend
-)
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
 // Interfaces
 interface Props {
@@ -30,56 +19,55 @@ interface Props {
 }
 
 // Props
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 // Non-reactive variables
-let chartInstance: Chart | null = null
-const dataLength: number = props.data.length
+let chartInstance: Chart | null = null;
+const dataLength: number = props.data.length;
 
 // Reactive variables
-const canvasRef = ref<HTMLCanvasElement | null>(null)
-
+const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 // Functions
 function renderChart() {
-  if (!canvasRef.value) return
+  if (!canvasRef.value) return;
 
   if (chartInstance) {
-    chartInstance.destroy()
+    chartInstance.destroy();
   }
 
   chartInstance = new Chart(canvasRef.value, {
     type: 'doughnut',
     data: {
-      labels: props.data.map(d => d.model),
+      labels: props.data.map((d) => d.model),
       datasets: [
         {
-          data: props.data.map(d => d.count),
+          data: props.data.map((d) => d.count),
           backgroundColor: ColorGeneratorUtil.generateColors(dataLength),
-          borderWidth: 1
-        }
-      ]
+          borderWidth: 1,
+        },
+      ],
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
-          position: 'bottom'
-        }
-      }
-    }
-  })
+          position: 'bottom',
+        },
+      },
+    },
+  });
 }
 
-onMounted(renderChart)
+onMounted(renderChart);
 
 watch(
   () => props.data,
   () => {
-    renderChart()
+    renderChart();
   },
-  { deep: true }
-)
+  { deep: true },
+);
 </script>
 
 <template>
