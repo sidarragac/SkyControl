@@ -1,14 +1,7 @@
 <!-- Developed by Santiago Idárraga -->
 <script setup lang="ts">
 // External imports
-import {
-  ArcElement,
-  Chart,
-  Legend,
-  PolarAreaController,
-  RadialLinearScale,
-  Tooltip,
-} from 'chart.js';
+import { ArcElement, Chart, DoughnutController, Legend, Tooltip } from 'chart.js';
 import { onMounted, ref, watch } from 'vue';
 
 // Internal Imports
@@ -18,8 +11,8 @@ import { ColorGeneratorUtil } from '@/utils/ColorGeneratorUtil';
 interface Props {
   name: string;
   data: {
-    airline: string;
-    aircraftCount: number;
+    model: string;
+    count: number;
   }[];
 }
 
@@ -34,7 +27,7 @@ const dataLength: number = props.data.length;
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 // Functions
-function renderChart(): void {
+function renderChart() {
   if (!canvasRef.value) return;
 
   if (chartInstance) {
@@ -42,13 +35,14 @@ function renderChart(): void {
   }
 
   chartInstance = new Chart(canvasRef.value, {
-    type: 'polarArea',
+    type: 'doughnut',
     data: {
-      labels: props.data.map((d) => d.airline),
+      labels: props.data.map((d) => d.model),
       datasets: [
         {
-          data: props.data.map((d) => d.aircraftCount),
+          data: props.data.map((d) => d.count),
           backgroundColor: ColorGeneratorUtil.generateColors(dataLength),
+          borderWidth: 1,
         },
       ],
     },
@@ -73,7 +67,7 @@ watch(
 );
 
 onMounted(() => {
-  Chart.register(PolarAreaController, RadialLinearScale, ArcElement, Tooltip, Legend);
+  Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 
   renderChart();
 });

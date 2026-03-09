@@ -3,7 +3,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 // Internal imports
-import AirlinesView from '@/views/AirlinesView.vue';
+import AircraftView from '@/views/AircraftView.vue';
+import AirlineView from '@/views/AirlineView.vue';
 import CreateView from '@/views/admin/CreateView.vue';
 import EditView from '@/views/admin/EditView.vue';
 import HomeView from '@/views/HomeView.vue';
@@ -15,7 +16,13 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', component: HomeView, meta: { title: 'Home' } },
-    { path: '/airlines', name: 'airlines', component: AirlinesView, meta: { title: 'Airlines' } },
+    { path: '/airlines', name: 'airlines', component: AirlineView, meta: { title: 'Airlines' } },
+    {
+      path: '/aircrafts',
+      name: 'aircrafts',
+      component: AircraftView,
+      meta: { title: 'Aircrafts' },
+    },
     {
       path: '/admin/create',
       name: 'admin-create',
