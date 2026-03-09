@@ -9,6 +9,7 @@ import CreateView from '@/views/admin/CreateView.vue';
 import EditView from '@/views/admin/EditView.vue';
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
+import ManufacturersView from '@/views/ManufacturerView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import { UserService } from '@/services/UserService';
 
@@ -22,6 +23,12 @@ const router = createRouter({
       name: 'aircrafts',
       component: AircraftView,
       meta: { title: 'Aircrafts' },
+    },
+    {
+      path: '/manufacturers',
+      name: 'manufacturers',
+      component: ManufacturersView,
+      meta: { title: 'Manufacturers' },
     },
     {
       path: '/admin/create',
@@ -57,16 +64,11 @@ router.afterEach((to) => {
 });
 
 // Admin Access Control
-router.beforeEach((to, from, next) => {
+router.beforeEach((to) => {
   const user = UserService.getLoggedInUser();
-
-  if (to.meta.requiresAdmin) {
-    if (!user || user.role !== 'admin') {
-      return next('/');
-    }
+  if (to.meta.requiresAdmin && (!user || user.role !== 'admin')) {
+    return '/';
   }
-
-  next();
 });
 
 export default router;

@@ -2,12 +2,12 @@
 // External imports
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
+import type { Ref } from 'vue';
 
 // Internal imports
 import type { CreateManufacturerDTO } from '@/dtos/CreateManufacturerDTO';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import type { UpdateManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
-import { useAircraftStore } from '@/stores/AircraftStore';
 import { useManufacturerStore } from '@/stores/ManufacturerStore';
 
 export class ManufacturerService {
@@ -49,30 +49,80 @@ export class ManufacturerService {
     useManufacturerStore().manufacturers.splice(index, 1);
   }
 
+  // Dashboard helpers
   static getManufacturersCount(): ComputedRef<number> {
     const store = useManufacturerStore();
     return computed(() => store.manufacturers.length);
   }
 
-  static getTopManufacturers(): ComputedRef<{ name: string; count: number }[]> {
-    const aircraftStore = useAircraftStore();
-    const manufacturerStore = useManufacturerStore();
-    return computed(() => {
-      const counts: Record<string, { name: string; count: number }> = {};
-      aircraftStore.aircrafts.forEach((aircraft) => {
-        const manufacturer = manufacturerStore.manufacturers.find(
-          (m) => m.id === aircraft.manufacturerId,
-        );
-        if (!manufacturer) return;
-        let entry = counts[manufacturer.id];
-        if (!entry) {
-          entry = counts[manufacturer.id] = { name: manufacturer.name, count: 0 };
-        }
-        entry.count++;
-      });
-      return Object.values(counts)
+  static getTopManufacturers(
+    fleetPresenceMap: Ref<Record<string, number>>,
+  ): ComputedRef<{ name: string; count: number }[]> {
+    const store = useManufacturerStore();
+    return computed(() =>
+      store.manufacturers
+        .map((m) => ({ name: m.name, count: fleetPresenceMap.value[m.id] ?? 0 }))
+        .filter((m) => m.count > 0)
         .sort((a, b) => b.count - a.count)
-        .slice(0, 4);
+        .slice(0, 4),
+    );
+  }
+
+  static getCountryOptions(): ComputedRef<string[]> {
+    const store = useManufacturerStore();
+    return computed(() => {
+      const countries = store.manufacturers.map((m) => m.country);
+      return ['All Countries', ...Array.from(new Set(countries)).sort()];
     });
+  }
+
+  static getFilteredManufacturers(
+    search: Ref<string>,
+    selectedCountry: Ref<string>,
+    fleetPresenceMap: Ref<Record<string, number>>,
+  ): ComputedRef<ManufacturerInterface[]> {
+    const store = useManufacturerStore();
+    return computed(() =>
+      store.manufacturers.filter((m) => {
+        const matchesSearch =
+          search.value === '' ||
+          m.name.toLowerCase().includes(search.value.toLowerCase()) ||
+          m.country.toLowerCase().includes(search.value.toLowerCase());
+        const matchesCountry =
+          selectedCountry.value === 'All Countries' || m.country === selectedCountry.value;
+        return matchesSearch && matchesCountry;
+      }),
+    );
+  }
+
+  static getMarketShareData(
+    fleetPresenceMap: Ref<Record<string, number>>,
+  ): ComputedRef<{ name: string; value: number }[]> {
+    const store = useManufacturerStore();
+    return computed(() => {
+      const total = Object.values(fleetPresenceMap.value).reduce((a, b) => a + b, 0) || 1;
+      return store.manufacturers.map((m) => ({
+        name: m.name.split(' ')[0] ?? m.name,
+        value: Math.round(((fleetPresenceMap.value[m.id] ?? 0) / total) * 100 * 10) / 10,
+      }));
+    });
+  }
+
+  static getProductionVolumeData(
+    fleetPresenceMap: Ref<Record<string, number>>,
+  ): ComputedRef<{ name: string; value: number }[]> {
+    const store = useManufacturerStore();
+    return computed(() =>
+      store.manufacturers.map((m) => ({
+        name: m.name.split(' ')[0] ?? m.name,
+        value: fleetPresenceMap.value[m.id] ?? 0,
+      })),
+    );
+  }
+
+  static getTotalProductionVolume(
+    fleetPresenceMap: Ref<Record<string, number>>,
+  ): ComputedRef<number> {
+    return computed(() => Object.values(fleetPresenceMap.value).reduce((a, b) => a + b, 0));
   }
 }

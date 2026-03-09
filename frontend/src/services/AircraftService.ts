@@ -25,6 +25,10 @@ export class AircraftService {
     return useAircraftStore().aircrafts;
   }
 
+  static getAircraftById(id: string): AircraftInterface | undefined {
+    return useAircraftStore().aircrafts.find((aircraft) => aircraft.id === id);
+  }
+
   static createAircraft(aircraft: CreateAircraftDTO): void {
     const id = crypto.randomUUID();
     const createdAt = new Date().toISOString();
@@ -72,11 +76,21 @@ export class AircraftService {
     });
   }
 
-  static getRecentActivity(): ComputedRef<RecentActivityItem[]> {
+  static getRecentActivity(): ComputedRef<
+    {
+      id: string;
+      icon: string;
+      iconBg: string;
+      iconColor: string;
+      title: string;
+      subtitle: string;
+      time: string;
+    }[]
+  > {
     const aircraftStore = useAircraftStore();
     const airlineStore = useAirlineStore();
-    return computed(() => {
-      return [...aircraftStore.aircrafts]
+    return computed(() =>
+      [...aircraftStore.aircrafts]
         .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
         .slice(0, 4)
         .map((aircraft) => {
@@ -100,7 +114,19 @@ export class AircraftService {
             subtitle: `${isNew ? 'added to' : 'updated in'} ${airline?.name ?? 'Unknown'} • ${aircraft.registry}`,
             time: timeLabel,
           };
-        });
+        }),
+    );
+  }
+
+  static getFleetPresenceMap(): ComputedRef<Record<string, number>> {
+    const store = useAircraftStore();
+    return computed(() => {
+      const map: Record<string, number> = {};
+      store.aircrafts.forEach((a) => {
+        map[a.manufacturerId] = (map[a.manufacturerId] ?? 0) + 1;
+      });
+      return map;
     });
   }
+
 }
