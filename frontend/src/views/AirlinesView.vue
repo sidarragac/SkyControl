@@ -10,6 +10,7 @@ import DataTableComponent from '@/components/DataTableComponent.vue';
 import FilterBarComponent from '@/components/FilterBarComponent.vue';
 import FleetSizePolarChartComponent from '@/components/charts/FleetSizePolarChartComponent.vue';
 
+// Non-reactive Variables
 const airlines = AirlineService.getAirlines();
 const tableHeaders = ['Airline', 'Country', 'Number Of Destinations', 'Favourite Aircraft'];
 
@@ -90,13 +91,13 @@ const filtersConfig = computed(() => [
 const fleetChartData = computed(() => {
   return filteredTableData.value.map((airline) => ({
     airline: airline.Name as string,
-    aircraftCount: AircraftService.getAircraftsByAirline(airline.Id as string).length,
+    aircraftCount: AircraftService.getAircraftsByAirlineId(airline.Id as string).length,
   }));
 });
 
 // Functions
 function getAirlineFavouriteAircraft(airlineId: string): string {
-  const aircrafts = AircraftService.getAircraftsByAirline(airlineId);
+  const aircrafts = AircraftService.getAircraftsByAirlineId(airlineId);
 
   if (aircrafts.length === 0) {
     return 'N/A';
