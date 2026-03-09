@@ -73,8 +73,7 @@ function renderChart(): void {
   });
 }
 
-onMounted(renderChart);
-
+// Watchers
 watch(
   () => props.data,
   () => {
@@ -82,6 +81,8 @@ watch(
   },
   { deep: true },
 );
+
+onMounted(renderChart);
 </script>
 
 <template>
