@@ -5,7 +5,6 @@ import { onMounted, onUnmounted, ref, watch } from 'vue';
 import type { Map as LeafletMap } from 'leaflet';
 
 // Non-reactive variables
-const mapContainer = ref<HTMLDivElement | null>(null);
 let mapInstance: LeafletMap | null = null;
 
 const hubMarkers = [
@@ -18,6 +17,7 @@ const hubMarkers = [
 ];
 
 // Reactive variables
+const mapContainer = ref<HTMLDivElement | null>(null);
 const mapFilter = ref<'regions' | 'airline'>('regions');
 const hubSearch = ref('');
 const isMapLoading = ref(true);

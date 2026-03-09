@@ -2,6 +2,7 @@
 // External imports
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
+
 // Internal imports
 import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';

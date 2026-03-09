@@ -2,6 +2,7 @@
 <script setup lang="ts">
 // External imports
 import { computed } from 'vue';
+
 // Props
 const props = defineProps<{
   manufacturers: { name: string; count: number }[];

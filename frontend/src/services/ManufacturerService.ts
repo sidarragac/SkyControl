@@ -2,6 +2,7 @@
 // External imports
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
+
 // Internal imports
 import type { CreateManufacturerDTO } from '@/dtos/CreateManufacturerDTO';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
