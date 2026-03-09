@@ -54,11 +54,11 @@ const filteredTableData = computed(() => {
       if (value === 'All') return true;
 
       if (key === 'Manufacturer') {
-        return row[key] === value;
+        return row['ManufacturerId'] === value;
       }
 
       if (key === 'Airline') {
-        return row[key] === value;
+        return row['AirlineId'] === value;
       }
 
       return true;
