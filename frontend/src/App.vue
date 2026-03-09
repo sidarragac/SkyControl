@@ -19,7 +19,7 @@ const loggedInUser = computed(() => UserService.getLoggedInUser());
 // Functions
 function submitLogoutForm() {
   UserService.logOutUser();
-  
+
   activeLink.value = 'home';
   isOpen.value = false;
 

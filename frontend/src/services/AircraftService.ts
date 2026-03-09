@@ -1,4 +1,4 @@
-// Developed by Mateo Pineda
+// Developed by Mateo Pineda, Santiago Idárraga
 // Internal imports
 import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
@@ -41,5 +41,9 @@ export class AircraftService {
     }
 
     useAircraftStore().aircrafts.splice(index, 1);
+  }
+
+  static getAircraftsByAirlineId(airlineId: string): AircraftInterface[] {
+    return useAircraftStore().aircrafts.filter((aircraft) => aircraft.airlineId === airlineId);
   }
 }

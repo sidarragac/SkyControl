@@ -1,8 +1,9 @@
-// Developed by Mateo Pineda
+// Developed by Mateo Pineda, Santiago Idárraga
 // External imports
 import { createRouter, createWebHistory } from 'vue-router';
 
 // Internal imports
+import AirlinesView from '@/views/AirlinesView.vue';
 import CreateView from '@/views/admin/CreateView.vue';
 import EditView from '@/views/admin/EditView.vue';
 import HomeView from '@/views/HomeView.vue';
@@ -14,6 +15,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', component: HomeView, meta: { title: 'Home' } },
+    { path: '/airlines', name: 'airlines', component: AirlinesView, meta: { title: 'Airlines' } },
     {
       path: '/admin/create',
       name: 'admin-create',
@@ -50,7 +52,7 @@ router.afterEach((to) => {
 // Admin Access Control
 router.beforeEach((to, from, next) => {
   const user = UserService.getLoggedInUser();
-  
+
   if (to.meta.requiresAdmin) {
     if (!user || user.role !== 'admin') {
       return next('/');
