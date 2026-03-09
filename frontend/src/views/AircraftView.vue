@@ -4,12 +4,12 @@
 import { computed, ref } from 'vue';
 
 // Internal imports
-import { AirlineService } from '@/services/AirlineService';
 import { AircraftService } from '@/services/AircraftService';
 import AircraftModelChartComponent from '@/components/charts/AircraftModelChartComponent.vue';
-import { ManufacturerService } from '@/services/ManufacturerService';
+import { AirlineService } from '@/services/AirlineService';
 import DataTableComponent from '@/components/DataTableComponent.vue';
 import FilterBarComponent from '@/components/FilterBarComponent.vue';
+import { ManufacturerService } from '@/services/ManufacturerService';
 
 // Non-reactive Variables
 const aircrafts = AircraftService.getAircrafts();
@@ -54,11 +54,11 @@ const filteredTableData = computed(() => {
       if (value === 'All') return true;
 
       if (key === 'Manufacturer') {
-        return row.ManufacturerId === value;
+        return row[key] === value;
       }
 
       if (key === 'Airline') {
-        return row.AirlineId === value;
+        return row[key] === value;
       }
 
       return true;
