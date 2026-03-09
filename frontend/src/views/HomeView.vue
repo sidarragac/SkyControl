@@ -19,7 +19,8 @@ const totalAircrafts = AircraftService.getTotalAircrafts();
 const activeAirlines = AirlineService.getActiveAirlinesCount();
 const manufacturersCount = ManufacturerService.getManufacturersCount();
 const fleetHealth = AircraftService.getFleetHealth();
-const topManufacturers = ManufacturerService.getTopManufacturers();
+const fleetPresenceMap = AircraftService.getFleetPresenceMap();
+const topManufacturers = ManufacturerService.getTopManufacturers(fleetPresenceMap);
 const recentActivity = AircraftService.getRecentActivity();
 </script>
 
