@@ -1,4 +1,4 @@
-// Developed by Mateo Pineda
+// Developed by Mateo Pineda, Santiago Idárraga
 // External imports
 import { createRouter, createWebHistory } from 'vue-router';
 

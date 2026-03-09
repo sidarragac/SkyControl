@@ -1,4 +1,4 @@
-// Developed by Mateo Pineda
+// Developed by Mateo Pineda, Santiago Idárraga
 export const airlineSeeder = [
   {
     id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',

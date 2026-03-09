@@ -1,4 +1,4 @@
-// Developed by Mateo Pineda
+// Developed by Mateo Pineda, Santiago Idárraga
 export const aircraftSeeder = [
   {
     id: '90000000-0000-4000-8000-000000000001',
