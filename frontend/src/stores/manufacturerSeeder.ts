@@ -30,4 +30,24 @@ export const manufacturerSeeder = [
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
+  {
+    id: '44444444-4444-4444-8444-444444444444',
+    name: 'Bombardier',
+    country: 'CA',
+    foundationDate: new Date('1942-09-16').toISOString(),
+    imageURL:
+      'https://image.cnbcfm.com/api/v1/image/108155304-241205-cn-23-tech-airplane-maintenance-v500_00_46_04Still005.png?v=1749137575&w=750&h=422&vtcrop=y',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: '55555555-5555-4555-8555-555555555555',
+    name: 'COMAC',
+    country: 'CN',
+    foundationDate: new Date('2008-05-11').toISOString(),
+    imageURL:
+      'https://image.cnbcfm.com/api/v1/image/108155304-241205-cn-23-tech-airplane-maintenance-v500_00_46_04Still005.png?v=1749137575&w=750&h=422&vtcrop=y',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
 ];
