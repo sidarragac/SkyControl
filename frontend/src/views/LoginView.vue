@@ -23,7 +23,7 @@ function submitLoginForm(): void {
     if (UserService.getLoggedInUser()) {
       clearLoginForm();
 
-      router.push('home');
+      router.push('/');
     } else {
       loginErrorMessage.value = 'Invalid email or password. Please try again.';
 
