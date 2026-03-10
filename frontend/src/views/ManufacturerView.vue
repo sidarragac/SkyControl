@@ -5,10 +5,10 @@ import { computed, ref, watch } from 'vue';
 
 // Internal imports
 import { AircraftService } from '@/services/AircraftService';
-import ManufacturerCardComponent from '@/components/manufacturers-components/ManufacturerCardComponent.vue';
-import ManufacturerChartsComponent from '@/components/manufacturers-components/ManufacturerChartsComponent.vue';
-import ManufacturerPaginationComponent from '@/components/manufacturers-components/ManufacturerPaginationComponent.vue';
-import ManufacturerSearchBarComponent from '@/components/manufacturers-components/ManufacturerSearchBarComponent.vue';
+import ManufacturerCardComponent from '@/components/manufacturers/ManufacturerCardComponent.vue';
+import ManufacturerChartsComponent from '@/components/manufacturers/ManufacturerChartsComponent.vue';
+import ManufacturerPaginationComponent from '@/components/manufacturers/ManufacturerPaginationComponent.vue';
+import ManufacturerSearchBarComponent from '@/components/manufacturers/ManufacturerSearchBarComponent.vue';
 import { ManufacturerService } from '@/services/ManufacturerService';
 
 // Non-reactive variables
