@@ -4,9 +4,9 @@
 import { ref } from 'vue';
 
 // Internal imports
-import AircraftFormComponent from '@/components/admin-components/AircraftFormComponent.vue';
-import AirlineFormComponent from '@/components/admin-components/AirlineFormComponent.vue';
-import ManufacturerFormComponent from '@/components/admin-components/ManufacturerFormComponent.vue';
+import AircraftFormComponent from '@/components/admin/AircraftFormComponent.vue';
+import AirlineFormComponent from '@/components/admin/AirlineFormComponent.vue';
+import ManufacturerFormComponent from '@/components/admin/ManufacturerFormComponent.vue';
 
 // Reactive variables
 const activeTab = ref('aircraft');

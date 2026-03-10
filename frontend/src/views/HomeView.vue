@@ -4,10 +4,10 @@
 import { computed } from 'vue';
 
 // Internal imports
-import DashboardActivityComponent from '@/components/dashboard-components/DashboardActivityComponent.vue';
-import DashboardManufacturersComponent from '@/components/dashboard-components/DashboardManufacturersComponent.vue';
-import DashboardMapComponent from '@/components/dashboard-components/DashboardMapComponent.vue';
-import DashboardStatsGridComponent from '@/components/dashboard-components/DashboardStatsGridComponent.vue';
+import DashboardActivityComponent from '@/components/dashboard/DashboardActivityComponent.vue';
+import DashboardManufacturersComponent from '@/components/dashboard/DashboardManufacturersComponent.vue';
+import DashboardMapComponent from '@/components/dashboard/DashboardMapComponent.vue';
+import DashboardStatsGridComponent from '@/components/dashboard/DashboardStatsGridComponent.vue';
 import { AircraftService } from '@/services/AircraftService';
 import { AirlineService } from '@/services/AirlineService';
 import { ManufacturerService } from '@/services/ManufacturerService';
