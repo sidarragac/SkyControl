@@ -73,12 +73,6 @@ defineProps<{
           <span class="text-[8px] font-bold text-black-800/50">+{{ fleetPresence - 3 }}</span>
         </div>
       </div>
-      <button
-        class="flex items-center gap-1 text-xs font-semibold text-primary-700 hover:text-accent-500 transition-colors"
-      >
-        Details
-        <i class="fas fa-chevron-right text-[10px]"></i>
-      </button>
     </div>
   </div>
 </template>

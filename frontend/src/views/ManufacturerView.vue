@@ -28,7 +28,6 @@ const countryOptions = ManufacturerService.getCountryOptions();
 const filteredManufacturers = ManufacturerService.getFilteredManufacturers(
   search,
   selectedCountry,
-  fleetPresenceMap,
 );
 const totalPages = computed(() =>
   Math.max(1, Math.ceil(filteredManufacturers.value.length / PAGE_SIZE)),
