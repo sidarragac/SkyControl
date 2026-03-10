@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import * as L from 'leaflet';
 import type { Map as LeafletMap } from 'leaflet';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import { MapData } from '@/interfaces/MapDataInterface';
+import type { MapData } from '@/interfaces/MapDataInterface';
 
 // Props
 const props = defineProps<{
@@ -143,7 +143,7 @@ onUnmounted((): void => {
     </div>
 
     <!-- Map -->
-    <div class="relative mx-5 mb-5 rounded-lg overflow-hidden h-[420px]">
+    <div class="relative mx-5 mb-5 rounded-lg overflow-hidden h-105">
       <div
         v-if="isMapLoading"
         class="absolute inset-0 bg-primary-900/10 flex items-center justify-center z-10 rounded-lg"
