@@ -92,7 +92,6 @@ export class AirlineService {
     });
   }
 
-
   static getNumberOfDestinations(airlineId: string): number {
     const airline = AirlineService.getAirlineById(airlineId);
 
