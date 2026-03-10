@@ -46,7 +46,7 @@ npm run dev
 ## More Information
 
 The app is also running on the internet
-- **URL**: http://34.29.111.155
+- **URL**: http://34.41.244.255
 - **Admin Credential**:
   - Email: admin@skycontrol.com
   - Password: admin123
