@@ -5,10 +5,11 @@ import 'leaflet/dist/leaflet.css';
 import * as L from 'leaflet';
 import type { Map as LeafletMap } from 'leaflet';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { MapData } from '@/interfaces/MapDataInterface';
 
 // Props
 const props = defineProps<{
-  mapData: { country: string; airlineCount: number; lat: number; lng: number }[];
+  mapData: MapData[];
 }>();
 
 // Non-reactive variables
