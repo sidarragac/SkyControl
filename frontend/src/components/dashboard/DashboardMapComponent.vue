@@ -4,10 +4,7 @@
 import 'leaflet/dist/leaflet.css';
 import * as L from 'leaflet';
 import type { Map as LeafletMap } from 'leaflet';
-import { onMounted } from 'vue';
-import { onUnmounted } from 'vue';
-import { ref } from 'vue';
-import { watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 // Props
 const props = defineProps<{
@@ -89,7 +86,6 @@ function renderMarkers(): void {
 
 async function refreshMarkers(): Promise<void> {
   if (!mapInstance) return;
-  const L = await import('leaflet');
   mapInstance.eachLayer((layer) => {
     if (layer instanceof L.Marker || layer instanceof L.Tooltip) {
       mapInstance!.removeLayer(layer);

@@ -4,11 +4,11 @@ import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
 
 // Internal imports
+import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import type { Country } from '@/types/SharedTypes';
 import { COUNTRY_COORDINATES } from '@/types/SharedTypes';
 import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
 import type { UpdateAirlineDTO } from '@/dtos/UpdateAirlineDTO';
-import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import { useAirlineStore } from '@/stores/AirlineStore';
 import type { MapData } from '@/interfaces/MapDataInterface';
 
