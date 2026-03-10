@@ -87,7 +87,6 @@ export class ManufacturerService {
   static getFilteredManufacturers(
     search: Ref<string>,
     selectedCountry: Ref<string>,
-    fleetPresenceMap: Ref<Record<string, number>>,
   ): ComputedRef<ManufacturerInterface[]> {
     const store = useManufacturerStore();
 

@@ -1,33 +1,28 @@
 <!-- Developed by Juan Jara -->
 <script setup lang="ts">
 // External imports
-import { onMounted, onUnmounted, ref, watch } from 'vue';
+import 'leaflet/dist/leaflet.css';
+import * as L from 'leaflet';
 import type { Map as LeafletMap } from 'leaflet';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { MapData } from '@/interfaces/MapDataInterface';
+
+// Props
+const props = defineProps<{
+  mapData: MapData[];
+}>();
 
 // Non-reactive variables
 let mapInstance: LeafletMap | null = null;
 
-const hubMarkers = [
-  { name: 'JFK', lat: 40.6413, lng: -73.7781, count: 1240 },
-  { name: 'LHR', lat: 51.477, lng: -0.4613, count: 2102 },
-  { name: 'DXB', lat: 25.2532, lng: 55.3657, count: 890 },
-  { name: 'HND', lat: 35.5494, lng: 139.7798, count: 650 },
-  { name: 'CDG', lat: 49.0097, lng: 2.5479, count: 980 },
-  { name: 'SIN', lat: 1.3644, lng: 103.9915, count: 720 },
-];
-
 // Reactive variables
 const mapContainer = ref<HTMLDivElement | null>(null);
-const mapFilter = ref<'regions' | 'airline'>('regions');
 const hubSearch = ref('');
 const isMapLoading = ref(true);
 
 // Functions
 async function initMap(): Promise<void> {
   if (!mapContainer.value) return;
-
-  const L = await import('leaflet');
-  await import('leaflet/dist/leaflet.css');
 
   mapInstance = L.map(mapContainer.value, {
     center: [20, 10],
@@ -41,19 +36,20 @@ async function initMap(): Promise<void> {
     maxZoom: 19,
   }).addTo(mapInstance);
 
-  renderMarkers(L);
+  renderMarkers();
   L.control.zoom({ position: 'bottomright' }).addTo(mapInstance);
   isMapLoading.value = false;
 }
 
-function renderMarkers(L: typeof import('leaflet')): void {
+function renderMarkers(): void {
   if (!mapInstance) return;
 
-  const filtered = hubMarkers.filter(
-    (h) => hubSearch.value === '' || h.name.toLowerCase().includes(hubSearch.value.toLowerCase()),
+  const filtered = props.mapData.filter(
+    (d) =>
+      hubSearch.value === '' || d.country.toLowerCase().includes(hubSearch.value.toLowerCase()),
   );
 
-  filtered.forEach((hub) => {
+  filtered.forEach((point) => {
     const icon = L.divIcon({
       className: '',
       html: `
@@ -69,7 +65,7 @@ function renderMarkers(L: typeof import('leaflet')): void {
       iconAnchor: [5, 5],
     });
 
-    const marker = L.marker([hub.lat, hub.lng], { icon }).addTo(mapInstance!);
+    const marker = L.marker([point.lat, point.lng], { icon }).addTo(mapInstance!);
 
     const tooltip = L.tooltip({
       permanent: true,
@@ -78,32 +74,45 @@ function renderMarkers(L: typeof import('leaflet')): void {
       className: 'hub-tooltip',
     })
       .setContent(
-        `<span style="font-size:10px;font-weight:700;color:#111827">${hub.name}: ${hub.count.toLocaleString()}</span>`,
+        `<span style="font-size:10px;font-weight:700;color:#111827">${point.country}: ${point.airlineCount} airline${point.airlineCount > 1 ? 's' : ''}</span>`,
       )
-      .setLatLng([hub.lat, hub.lng]);
+      .setLatLng([point.lat, point.lng]);
 
     mapInstance!.addLayer(tooltip);
-    marker.bindPopup(`<b>${hub.name}</b><br/>${hub.count.toLocaleString()} aircraft`);
+    marker.bindPopup(
+      `<b>${point.country}</b><br/>${point.airlineCount} airline${point.airlineCount > 1 ? 's' : ''}`,
+    );
   });
 }
 
-// Watchers
-watch(hubSearch, async () => {
+async function refreshMarkers(): Promise<void> {
   if (!mapInstance) return;
-  const L = await import('leaflet');
   mapInstance.eachLayer((layer) => {
     if (layer instanceof L.Marker || layer instanceof L.Tooltip) {
       mapInstance!.removeLayer(layer);
     }
   });
-  renderMarkers(L);
+  renderMarkers();
+}
+
+// Watchers
+watch(hubSearch, (): void => {
+  refreshMarkers();
 });
 
-onMounted(() => {
+watch(
+  () => props.mapData,
+  (): void => {
+    refreshMarkers();
+  },
+  { deep: true },
+);
+
+onMounted((): void => {
   initMap();
 });
 
-onUnmounted(() => {
+onUnmounted((): void => {
   if (mapInstance) {
     mapInstance.remove();
     mapInstance = null;
@@ -115,34 +124,10 @@ onUnmounted(() => {
   <div class="bg-white-100 rounded-xl shadow-sm border border-neutral-100/40 flex flex-col">
     <!-- Header -->
     <div class="flex items-center justify-between px-5 py-4 border-b border-neutral-100/40">
-      <h3 class="text-sm font-bold text-black-800">Global Aircraft Distribution</h3>
-      <div class="flex gap-2">
-        <button
-          @click="mapFilter = 'regions'"
-          :class="[
-            'px-3 py-1 rounded-full text-xs font-semibold transition-colors',
-            mapFilter === 'regions'
-              ? 'bg-primary-900 text-white-100'
-              : 'bg-neutral-100/60 text-black-800/60 hover:bg-neutral-100',
-          ]"
-        >
-          All Regions
-        </button>
-        <button
-          @click="mapFilter = 'airline'"
-          :class="[
-            'px-3 py-1 rounded-full text-xs font-semibold transition-colors',
-            mapFilter === 'airline'
-              ? 'bg-primary-900 text-white-100'
-              : 'bg-neutral-100/60 text-black-800/60 hover:bg-neutral-100',
-          ]"
-        >
-          By Airline
-        </button>
-      </div>
+      <h3 class="text-sm font-bold text-black-800">Global Airlines Distribution</h3>
     </div>
 
-    <!-- Hub Search -->
+    <!-- Search -->
     <div class="px-5 pt-3 pb-2">
       <div class="relative">
         <i
@@ -151,14 +136,14 @@ onUnmounted(() => {
         <input
           v-model="hubSearch"
           type="text"
-          placeholder="Search hubs (e.g. Heathrow)"
+          placeholder="Search by country code (e.g. US, CA)"
           class="w-full bg-white-200 text-black-800 text-sm rounded-lg pl-8 pr-4 py-2 border border-neutral-100 focus:outline-none focus:border-primary-700 placeholder:text-black-800/40"
         />
       </div>
     </div>
 
     <!-- Map -->
-    <div class="relative mx-5 mb-5 rounded-lg overflow-hidden" style="height: 300px">
+    <div class="relative mx-5 mb-5 rounded-lg overflow-hidden h-[420px]">
       <div
         v-if="isMapLoading"
         class="absolute inset-0 bg-primary-900/10 flex items-center justify-center z-10 rounded-lg"

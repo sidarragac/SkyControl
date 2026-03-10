@@ -46,22 +46,6 @@ watch([search, selectedCountry], (): void => {
 
 <template>
   <div class="flex flex-col h-full">
-    <!-- Top Bar -->
-    <header
-      class="flex items-center justify-between px-6 py-3 bg-white-100 border-b border-neutral-100/40 shadow-sm sticky top-0 z-10"
-    >
-      <div>
-        <p class="text-[11px] text-black-800/40 font-medium">
-          Dashboard &rsaquo;
-          <span class="text-primary-900 font-semibold">Manufacturers</span>
-        </p>
-        <h2 class="text-base font-bold text-black-800 leading-tight">Aircraft Manufacturers</h2>
-        <p class="text-[11px] text-black-800/50 mt-0.5">
-          Global market insights and manufacturer directory
-        </p>
-      </div>
-    </header>
-
     <!-- Content -->
     <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
       <!-- Charts -->
@@ -109,11 +93,6 @@ watch([search, selectedCountry], (): void => {
         :total-pages="totalPages"
         @update:current-page="currentPage = $event"
       />
-
-      <!-- Footer -->
-      <footer class="text-center text-[11px] text-black-800/30 pt-2 pb-1">
-        © {{ new Date().getFullYear() }} SkyControl System. All rights reserved.
-      </footer>
     </div>
   </div>
 </template>
