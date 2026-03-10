@@ -1,8 +1,8 @@
 <!-- Developed by Juan Jara -->
 <script setup lang="ts">
 // External imports
-import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { Chart, registerables } from 'chart.js';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 // Props
 const props = defineProps<{
@@ -110,9 +110,6 @@ onUnmounted(() => {
           </p>
           <p class="text-3xl font-bold text-black-800 mt-1">100%</p>
         </div>
-        <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-          +2.4%
-        </span>
       </div>
       <div style="height: 100px">
         <canvas ref="marketShareCanvas"></canvas>
@@ -130,9 +127,6 @@ onUnmounted(() => {
             {{ totalProductionVolume.toLocaleString() }}
           </p>
         </div>
-        <span class="text-xs font-semibold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">
-          -1.2%
-        </span>
       </div>
       <div style="height: 100px">
         <canvas ref="productionVolumeCanvas"></canvas>

@@ -25,7 +25,7 @@ const emit = defineEmits<{
         :value="search"
         @input="emit('update:search', ($event.target as HTMLInputElement).value)"
         type="text"
-        placeholder="Search manufacturers by name, HQ, or fleet size..."
+        placeholder="Search manufacturers by name"
         class="w-full bg-white-100 text-black-800 text-sm rounded-lg pl-9 pr-4 py-2.5 border border-neutral-100 focus:outline-none focus:border-primary-700 placeholder:text-black-800/40 shadow-sm"
       />
     </div>
@@ -45,13 +45,5 @@ const emit = defineEmits<{
         class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-black-800/40 text-[10px] pointer-events-none"
       ></i>
     </div>
-
-    <!-- Company Size (visual only) -->
-    <button
-      class="flex items-center gap-2 bg-white-100 text-black-800/60 text-sm rounded-lg px-4 py-2.5 border border-neutral-100 shadow-sm hover:border-primary-700 transition-colors"
-    >
-      <span>Company Size</span>
-      <i class="fas fa-sliders-h text-xs"></i>
-    </button>
   </div>
 </template>
