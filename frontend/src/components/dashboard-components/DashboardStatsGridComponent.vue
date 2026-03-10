@@ -20,8 +20,6 @@ defineProps<{
       icon="fa-fighter-jet"
       icon-bg-class="bg-primary-900/10"
       icon-color-class="text-primary-900"
-      trend="+2.4%"
-      :trend-positive="true"
     />
     <DashboardStatCardComponent
       label="Active Airlines"
@@ -29,8 +27,6 @@ defineProps<{
       icon="fa-globe"
       icon-bg-class="bg-accent-500/10"
       icon-color-class="text-accent-500"
-      trend="+1.2%"
-      :trend-positive="true"
     />
     <DashboardStatCardComponent
       label="Manufacturers"
@@ -38,8 +34,6 @@ defineProps<{
       icon="fa-industry"
       icon-bg-class="bg-secondary-700/10"
       icon-color-class="text-secondary-700"
-      trend="Primary"
-      :trend-neutral="true"
     />
     <DashboardStatCardComponent
       label="Fleet Health"
@@ -47,8 +41,6 @@ defineProps<{
       icon="fa-check-circle"
       icon-bg-class="bg-green-100"
       icon-color-class="text-green-600"
-      trend="-0.5%"
-      :trend-positive="false"
     />
   </div>
 </template>

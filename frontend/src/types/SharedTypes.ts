@@ -197,3 +197,25 @@ export const COUNTRIES = [
 ] as const;
 
 export type Country = (typeof COUNTRIES)[number];
+
+export const COUNTRY_COORDINATES: Partial<Record<Country, { lat: number; lng: number }>> = {
+  US: { lat: 38.9, lng: -77.0 },
+  CA: { lat: 45.4, lng: -75.7 },
+  MX: { lat: 19.4, lng: -99.1 },
+  GB: { lat: 51.5, lng: -0.1 },
+  FR: { lat: 48.9, lng: 2.3 },
+  DE: { lat: 52.5, lng: 13.4 },
+  ES: { lat: 40.4, lng: -3.7 },
+  IT: { lat: 41.9, lng: 12.5 },
+  HU: { lat: 47.5, lng: 19.0 },
+  HN: { lat: 14.1, lng: -87.2 },
+  PA: { lat: 9.0, lng: -79.5 },
+  CO: { lat: 4.7, lng: -74.1 },
+  AR: { lat: -34.6, lng: -58.4 },
+  PE: { lat: -12.0, lng: -77.0 },
+  EC: { lat: -0.2, lng: -78.5 },
+  CL: { lat: -33.5, lng: -70.6 },
+  CU: { lat: 23.1, lng: -82.4 },
+  DO: { lat: 18.5, lng: -69.9 },
+  BR: { lat: -15.8, lng: -47.9 },
+};
