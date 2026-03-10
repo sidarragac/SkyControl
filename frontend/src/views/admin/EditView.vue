@@ -5,13 +5,13 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 // Internal imports
-import AircraftFormComponent from '@/components/admin-components/AircraftFormComponent.vue';
+import AircraftFormComponent from '@/components/admin/AircraftFormComponent.vue';
 import { AircraftService } from '@/services/AircraftService';
-import AirlineFormComponent from '@/components/admin-components/AirlineFormComponent.vue';
+import AirlineFormComponent from '@/components/admin/AirlineFormComponent.vue';
 import { AirlineService } from '@/services/AirlineService';
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
-import ManufacturerFormComponent from '@/components/admin-components/ManufacturerFormComponent.vue';
+import ManufacturerFormComponent from '@/components/admin/ManufacturerFormComponent.vue';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import { ManufacturerService } from '@/services/ManufacturerService';
 
