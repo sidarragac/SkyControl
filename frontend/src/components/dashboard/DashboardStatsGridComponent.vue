@@ -1,7 +1,7 @@
 <!-- Developed by Juan Jara -->
 <script setup lang="ts">
 // Internal imports
-import DashboardStatCardComponent from '@/components/dashboard-components/DashboardStatCardComponent.vue';
+import DashboardStatCardComponent from '@/components/dashboard/DashboardStatCardComponent.vue';
 
 // Props
 defineProps<{
