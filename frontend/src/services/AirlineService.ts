@@ -5,6 +5,7 @@ import type { ComputedRef } from 'vue';
 
 // Internal imports
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
+import { AircraftService } from './AircraftService';
 import type { Country } from '@/types/SharedTypes';
 import { COUNTRY_COORDINATES } from '@/types/SharedTypes';
 import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
@@ -89,5 +90,43 @@ export class AirlineService {
 
       return result;
     });
+  }
+
+
+  static getNumberOfDestinations(airlineId: string): number {
+    const airline = AirlineService.getAirlineById(airlineId);
+
+    if (!airline) {
+      return 0;
+    }
+
+    return airline.destinations.length;
+  }
+
+  static getMostCommonAircraft(airlineId: string): string {
+    const aircrafts = AircraftService.getAircraftsByAirlineId(airlineId);
+
+    if (aircrafts.length === 0) {
+      return 'N/A';
+    }
+
+    const modelCount = new Map<string, number>();
+
+    aircrafts.forEach((aircraft) => {
+      const currentCount = modelCount.get(aircraft.model) || 0;
+      modelCount.set(aircraft.model, currentCount + 1);
+    });
+
+    let mostRepeatedModel = '';
+    let maxCount = 0;
+
+    modelCount.forEach((count, model) => {
+      if (count > maxCount) {
+        maxCount = count;
+        mostRepeatedModel = model;
+      }
+    });
+
+    return mostRepeatedModel;
   }
 }
