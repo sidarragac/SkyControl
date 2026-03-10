@@ -1,7 +1,10 @@
 // Developed by Mateo Pineda
+// External imports
+import { v4 as uuidv4 } from 'uuid'
+
 export const userSeeder = [
   {
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     name: 'John Doe',
     email: 'admin@skycontrol.com',
     password: 'admin123',
@@ -10,7 +13,7 @@ export const userSeeder = [
     updatedAt: new Date(),
   },
   {
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     name: 'Jane Smith',
     email: 'user@skycontrol.com',
     password: 'user123',

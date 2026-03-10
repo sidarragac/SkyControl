@@ -1,4 +1,7 @@
 // Developed by Mateo Pineda
+// External imports
+import { v4 as uuidv4 } from 'uuid'
+
 // Internal imports
 import type { CreateUserDTO } from '@/dtos/CreateUserDTO';
 import type { UserInterface } from '@/interfaces/UserInterface';
@@ -14,7 +17,7 @@ export class UserService {
   }
 
   static createUser(user: CreateUserDTO): void {
-    const id = crypto.randomUUID();
+    const id = uuidv4();
     const role = 'user';
     const createdAt = new Date();
     const updatedAt = new Date();

@@ -2,6 +2,7 @@
 // External imports
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
+import { v4 as uuidv4 } from 'uuid'
 
 // Internal imports
 import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
@@ -20,7 +21,7 @@ export class AircraftService {
   }
 
   static createAircraft(aircraft: CreateAircraftDTO): void {
-    const id = crypto.randomUUID();
+    const id = uuidv4();
     const createdAt = new Date().toISOString();
     const updatedAt = new Date().toISOString();
 

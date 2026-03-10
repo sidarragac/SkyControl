@@ -2,6 +2,7 @@
 // External imports
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
+import { v4 as uuidv4 } from 'uuid'
 
 // Internal imports
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
@@ -23,7 +24,7 @@ export class AirlineService {
   }
 
   static createAirline(airline: CreateAirlineDTO): void {
-    const id = crypto.randomUUID();
+    const id = uuidv4();
     const createdAt = new Date().toISOString();
     const updatedAt = new Date().toISOString();
 
