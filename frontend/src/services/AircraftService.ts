@@ -10,16 +10,6 @@ import type { UpdateAircraftDTO } from '@/dtos/UpdateAircraftDTO';
 import { useAircraftStore } from '@/stores/AircraftStore';
 import { useAirlineStore } from '@/stores/AirlineStore';
 
-interface RecentActivityItem {
-  id: string;
-  icon: string;
-  iconBg: string;
-  iconColor: string;
-  title: string;
-  subtitle: string;
-  time: string;
-}
-
 export class AircraftService {
   static getAircrafts(): AircraftInterface[] {
     return useAircraftStore().aircrafts;
