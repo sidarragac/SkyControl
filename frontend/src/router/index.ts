@@ -5,19 +5,29 @@ import { createRouter, createWebHistory } from 'vue-router';
 // Internal imports
 import AircraftView from '@/views/AircraftView.vue';
 import AirlineView from '@/views/AirlineView.vue';
+import { AuthService } from '@/services/AuthService';
 import CreateView from '@/views/admin/CreateView.vue';
 import EditView from '@/views/admin/EditView.vue';
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/auth/LoginView.vue';
 import ManufacturerView from '@/views/ManufacturerView.vue';
 import RegisterView from '@/views/auth/RegisterView.vue';
-import { UserService } from '@/services/UserService';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', name: 'home', component: HomeView, meta: { title: 'Home' } },
-    { path: '/airlines', name: 'airlines', component: AirlineView, meta: { title: 'Airlines' } },
+    {
+      path: '/',
+      name: 'home',
+      component: HomeView,
+      meta: { title: 'Home' },
+    },
+    {
+      path: '/airlines',
+      name: 'airlines',
+      component: AirlineView,
+      meta: { title: 'Airlines' },
+    },
     {
       path: '/aircrafts',
       name: 'aircrafts',
@@ -65,7 +75,7 @@ router.afterEach((to) => {
 
 // Admin Access Control
 router.beforeEach((to) => {
-  const user = UserService.getLoggedInUser();
+  const user = AuthService.getLoggedInUser();
   if (to.meta.requiresAdmin && (!user || user.role !== 'admin')) {
     return '/';
   }

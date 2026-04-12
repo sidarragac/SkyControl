@@ -5,7 +5,8 @@ import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
 // Internal imports
-import type { CreateUserDTO } from '@/dtos/CreateUserDTO';
+import { AuthService } from '@/services/AuthService';
+import type { CreateUserDTO } from '@/dtos/userDTO/CreateUserDTO';
 import { UserService } from '@/services/UserService';
 
 // Non-reactive variables
@@ -26,7 +27,7 @@ function submitRegisterForm(): void {
       password: password.value,
     };
 
-    const existingUser = UserService.validateExistingEmail(email.value);
+    const existingUser = AuthService.validateExistingEmail(email.value);
     if (existingUser) {
       registrationErrorMessage.value =
         'The email address is already in use. Please use a different email.';
@@ -38,7 +39,7 @@ function submitRegisterForm(): void {
     }
 
     UserService.createUser(newUser);
-    UserService.logInUser(email.value, password.value);
+    AuthService.logInUser(email.value, password.value);
 
     clearRegisterForm();
     router.push('home');

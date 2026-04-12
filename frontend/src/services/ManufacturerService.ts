@@ -3,12 +3,12 @@
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
 import type { Ref } from 'vue';
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
 
 // Internal imports
-import type { CreateManufacturerDTO } from '@/dtos/CreateManufacturerDTO';
+import type { CreateManufacturerDTO } from '@/dtos/manufacturerDTO/CreateManufacturerDTO';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
-import type { UpdateManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
+import type { UpdateManufacturerDTO } from '@/dtos/manufacturerDTO/UpdateManufacturerDTO';
 import { useManufacturerStore } from '@/stores/ManufacturerStore';
 
 export class ManufacturerService {
