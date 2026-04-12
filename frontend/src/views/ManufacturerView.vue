@@ -25,10 +25,7 @@ const marketShareData = ManufacturerService.getMarketShareData(fleetPresenceMap)
 const productionVolumeData = ManufacturerService.getProductionVolumeData(fleetPresenceMap);
 const totalProductionVolume = ManufacturerService.getTotalProductionVolume(fleetPresenceMap);
 const countryOptions = ManufacturerService.getCountryOptions();
-const filteredManufacturers = ManufacturerService.getFilteredManufacturers(
-  search,
-  selectedCountry,
-);
+const filteredManufacturers = ManufacturerService.getFilteredManufacturers(search, selectedCountry);
 const totalPages = computed(() =>
   Math.max(1, Math.ceil(filteredManufacturers.value.length / PAGE_SIZE)),
 );

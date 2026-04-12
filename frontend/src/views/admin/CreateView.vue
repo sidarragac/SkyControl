@@ -4,9 +4,9 @@
 import { ref } from 'vue';
 
 // Internal imports
-import AircraftFormComponent from '@/components/admin/AircraftFormComponent.vue';
-import AirlineFormComponent from '@/components/admin/AirlineFormComponent.vue';
-import ManufacturerFormComponent from '@/components/admin/ManufacturerFormComponent.vue';
+import AircraftCreateFormComponent from '@/components/admin/aircraft/AircraftCreateFormComponent.vue';
+import AirlineCreateFormComponent from '@/components/admin/airline/AirlineCreateFormComponent.vue';
+import ManufacturerCreateFormComponent from '@/components/admin/manufacturer/ManufacturerCreateFormComponent.vue';
 
 // Reactive variables
 const activeTab = ref('aircraft');
@@ -62,12 +62,12 @@ const activeTab = ref('aircraft');
     </nav>
 
     <!-- Aircraft Form -->
-    <AircraftFormComponent v-if="activeTab === 'aircraft'" :form-type="'create'" />
+    <AircraftCreateFormComponent v-if="activeTab === 'aircraft'" />
 
     <!-- Airline Form -->
-    <AirlineFormComponent v-if="activeTab === 'airline'" :form-type="'create'" />
+    <AirlineCreateFormComponent v-if="activeTab === 'airline'" />
 
     <!-- Manufacturer Form -->
-    <ManufacturerFormComponent v-if="activeTab === 'manufacturer'" :form-type="'create'" />
+    <ManufacturerCreateFormComponent v-if="activeTab === 'manufacturer'" />
   </div>
 </template>

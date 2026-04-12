@@ -2,12 +2,12 @@
 // External imports
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
 
 // Internal imports
-import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
+import type { CreateAircraftDTO } from '@/dtos/aircraftDTO/CreateAircraftDTO';
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
-import type { UpdateAircraftDTO } from '@/dtos/UpdateAircraftDTO';
+import type { UpdateAircraftDTO } from '@/dtos/aircraftDTO/UpdateAircraftDTO';
 import { useAircraftStore } from '@/stores/AircraftStore';
 import { useAirlineStore } from '@/stores/AirlineStore';
 

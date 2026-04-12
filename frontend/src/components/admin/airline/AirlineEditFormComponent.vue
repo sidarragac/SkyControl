@@ -4,19 +4,18 @@
 import { ref, watch } from 'vue';
 
 // Internal imports
-import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
-import { ManufacturerService } from '@/services/ManufacturerService';
+import type { AirlineInterface } from '@/interfaces/AirlineInterface';
+import { AirlineService } from '@/services/AirlineService';
 import { COUNTRIES } from '@/types/SharedTypes';
-import type { CreateManufacturerDTO } from '@/dtos/CreateManufacturerDTO';
-import ErrorMessageComponent from './ErrorMessageComponent.vue';
-import SuccessMessageComponent from './SuccessMessageComponent.vue';
-import type { UpdateManufacturerDTO } from '@/dtos/UpdateManufacturerDTO';
+import { CountryFormatterUtil } from '@/utils/CountryFormatterUtil';
+import ErrorMessageComponent from '../ErrorMessageComponent.vue';
+import SuccessMessageComponent from '../SuccessMessageComponent.vue';
+import type { UpdateAirlineDTO } from '@/dtos/airlineDTO/UpdateAirlineDTO';
 import UploadFileComponent from '../UploadFileComponent.vue';
 
 // Props
 const props = defineProps<{
-  modelValue?: ManufacturerInterface;
-  formType: 'create' | 'edit';
+  modelValue?: AirlineInterface;
 }>();
 
 // Emits
@@ -26,7 +25,7 @@ const emit = defineEmits(['delete']);
 const form = ref({
   name: props.modelValue?.name || '',
   country: props.modelValue?.country || 'AF',
-  foundationDate: props.modelValue?.foundationDate.split('T')[0] || '',
+  destinations: props.modelValue?.destinations?.join(', ') || '',
   imageURL: props.modelValue?.imageURL || '',
 });
 
@@ -34,32 +33,23 @@ const successMessage = ref('');
 const errorMessage = ref('');
 
 // Functions
-function submitManufacturerForm(): void {
+function submitAirlineEditForm(): void {
   if (!form.value.imageURL) {
     alert('Please upload an image before submitting the form.');
     return;
   }
 
   try {
-    if (props.formType === 'create') {
-      const newManufacturer = createManufacturerEntry();
-      ManufacturerService.createManufacturer(newManufacturer);
+    const updatedAirline = updateAirlineEntry();
+    AirlineService.updateAirline(updatedAirline);
 
-      successMessage.value = 'Manufacturer entry created succesfully!';
-
-      clearManufacturerForm();
-    } else if (props.formType === 'edit' && props.modelValue) {
-      const updatedManufacturer = updateManufacturerEntry();
-      ManufacturerService.updateManufacturer(updatedManufacturer);
-
-      successMessage.value = 'Manufacturer entry updated successfully!';
-    }
+    successMessage.value = 'Airline entry updated successfully!';
 
     setTimeout(() => {
       successMessage.value = '';
     }, 3000);
   } catch (error: Error | unknown) {
-    errorMessage.value = `An error occurred in the Manufacturer form. Please try again.<br>Error details: ${(error as Error).message}`;
+    errorMessage.value = `An error occurred in the Airline form. Please try again.<br>Error details: ${(error as Error).message}`;
 
     setTimeout(() => {
       errorMessage.value = '';
@@ -67,46 +57,28 @@ function submitManufacturerForm(): void {
   }
 }
 
-function createManufacturerEntry(): CreateManufacturerDTO {
-  const newManufacturer: CreateManufacturerDTO = {
-    name: form.value.name,
-    country: form.value.country,
-    foundationDate: new Date(form.value.foundationDate).toISOString(),
-    imageURL: form.value.imageURL,
-  };
-
-  return newManufacturer;
-}
-
-function updateManufacturerEntry(): UpdateManufacturerDTO {
+function updateAirlineEntry(): UpdateAirlineDTO {
   if (!props.modelValue) {
     throw new Error('No airline data provided for update.');
   }
 
-  const updatedManufacturer: UpdateManufacturerDTO = {
+  const updatedAirline: UpdateAirlineDTO = {
     id: props.modelValue.id,
     name: form.value.name,
     country: form.value.country,
-    foundationDate: new Date(form.value.foundationDate).toISOString(),
+    destinations: CountryFormatterUtil.formatDestinations(form.value.destinations as string),
     imageURL: form.value.imageURL,
     createdAt: props.modelValue.createdAt,
   };
 
-  return updatedManufacturer;
+  return updatedAirline;
 }
 
-function clearManufacturerForm(): void {
-  form.value.name = '';
-  form.value.country = 'AF';
-  form.value.foundationDate = '';
-  form.value.imageURL = '';
-}
-
-function deleteManufacturerEntry(id: string): void {
+function deleteAirlineEntry(id: string): void {
   if (
     confirm('Are you sure you want to delete this airline entry? This action cannot be undone.')
   ) {
-    ManufacturerService.deleteManufacturer(id);
+    AirlineService.deleteAirline(id);
     emit('delete');
   }
 }
@@ -118,7 +90,7 @@ watch(
     if (newModelValue) {
       form.value.name = newModelValue.name || '';
       form.value.country = newModelValue.country || 'AF';
-      form.value.foundationDate = newModelValue.foundationDate?.split('T')[0] || '';
+      form.value.destinations = newModelValue.destinations.join(', ') || '';
       form.value.imageURL = newModelValue.imageURL || '';
     }
   },
@@ -127,23 +99,13 @@ watch(
 
 <template>
   <!-- Success Message -->
-  <SuccessMessageComponent
-    :class="props.formType === 'edit' ? 'mx-8' : ''"
-    :success-message="successMessage"
-  />
+  <SuccessMessageComponent :class="'mx-8'" :success-message="successMessage" />
 
   <!-- Error Message -->
-  <ErrorMessageComponent
-    :class="props.formType === 'edit' ? 'mx-8' : ''"
-    :error-message="errorMessage"
-  />
+  <ErrorMessageComponent :class="'mx-8'" :error-message="errorMessage" />
 
   <!-- Form Content -->
-  <form
-    :method="props.formType === 'create' ? 'POST' : 'PUT'"
-    :class="['space-y-8', props.formType === 'edit' ? 'px-8 pb-20' : '']"
-    @submit.prevent="submitManufacturerForm()"
-  >
+  <form :method="'PUT'" :class="'space-y-8 px-8 pb-20'" @submit.prevent="submitAirlineEditForm()">
     <!-- Section: General Information -->
     <section class="bg-neutral-100 p-6 rounded-xl border border-neutral-100">
       <h3 class="text-lg text-primary-900 font-bold mb-6 flex items-center gap-2">
@@ -182,15 +144,16 @@ watch(
         </div>
 
         <div class="space-y-2">
-          <label class="text-sm text-primary-700 font-semibold" for="foundationDate"
-            >Foundation Date</label
+          <label class="text-sm text-primary-700 font-semibold" for="destinations"
+            >Destinations</label
           >
           <input
-            v-model="form.foundationDate"
+            v-model="form.destinations"
             class="w-full bg-white-100 text-black-800 border border-neutral-100 rounded-lg p-3 text-sm focus:ring-primary focus:border-accent-500 focus:outline-none"
-            type="date"
-            name="foundationDate"
-            id="foundationDate"
+            placeholder="List of cities separated by commas"
+            type="text"
+            name="destinations"
+            id="destinations"
             required
           />
         </div>
@@ -198,12 +161,7 @@ watch(
     </section>
 
     <!-- Section: Media & Documentation -->
-    <UploadFileComponent v-if="props.formType === 'create'" v-model:imageURL="form.imageURL" />
-
-    <div
-      v-if="props.formType === 'edit'"
-      class="p-6 rounded-xl border border-neutral-100 bg-neutral-100 flex"
-    >
+    <div class="p-6 rounded-xl border border-neutral-100 bg-neutral-100 flex">
       <div class="flex-1 flex flex-col">
         <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-primary-900">
           Selected Media
@@ -227,29 +185,19 @@ watch(
     <!-- Form Actions -->
     <div class="flex items-center justify-end gap-4 pt-4">
       <button
-        v-if="props.formType === 'create'"
-        class="px-6 py-3 text-sm font-bold text-black-800 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
         type="button"
-        @click="clearManufacturerForm()"
-      >
-        Discard Changes
-      </button>
-
-      <button
-        v-if="props.formType === 'edit'"
-        type="button"
-        @click="deleteManufacturerEntry(props.modelValue?.id as string)"
+        @click="deleteAirlineEntry(props.modelValue?.id as string)"
         class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-red-500/50 text-red-700 font-bold hover:bg-red-700 hover:text-white-100 transition-all cursor-pointer"
       >
         <i class="fas fa-trash text-lg"></i>
-        Delete Manufacturer
+        Delete Airline
       </button>
 
       <button
         class="px-8 py-3 text-sm font-bold text-black-900 bg-accent-500 hover:bg-accent-500/90 rounded-lg shadow-lg shadow-primary/20 transition-all cursor-pointer"
         type="submit"
       >
-        Save Manufacturer Entry
+        Save Airline Entry
       </button>
     </div>
   </form>

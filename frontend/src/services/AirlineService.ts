@@ -2,15 +2,15 @@
 // External imports
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
 
 // Internal imports
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import { AircraftService } from './AircraftService';
 import type { Country } from '@/types/SharedTypes';
 import { COUNTRY_COORDINATES } from '@/types/SharedTypes';
-import type { CreateAirlineDTO } from '@/dtos/CreateAirlineDTO';
-import type { UpdateAirlineDTO } from '@/dtos/UpdateAirlineDTO';
+import type { CreateAirlineDTO } from '@/dtos/airlineDTO/CreateAirlineDTO';
+import type { UpdateAirlineDTO } from '@/dtos/airlineDTO/UpdateAirlineDTO';
 import { useAirlineStore } from '@/stores/AirlineStore';
 import type { MapData } from '@/interfaces/MapDataInterface';
 

@@ -1,17 +1,17 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 
 // Internal imports
-import AircraftFormComponent from '@/components/admin/AircraftFormComponent.vue';
+import AircraftEditFormComponent from '@/components/admin/aircraft/AircraftEditFormComponent.vue';
 import { AircraftService } from '@/services/AircraftService';
-import AirlineFormComponent from '@/components/admin/AirlineFormComponent.vue';
+import AirlineEditFormComponent from '@/components/admin/airline/AirlineEditFormComponent.vue';
 import { AirlineService } from '@/services/AirlineService';
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
-import ManufacturerFormComponent from '@/components/admin/ManufacturerFormComponent.vue';
+import ManufacturerEditFormComponent from '@/components/admin/manufacturer/ManufacturerEditFormComponent.vue';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import { ManufacturerService } from '@/services/ManufacturerService';
 
@@ -21,6 +21,38 @@ const activeObject = ref<AircraftInterface | AirlineInterface | ManufacturerInte
 const originalObject = ref<AircraftInterface | AirlineInterface | ManufacturerInterface | null>(
   null,
 );
+
+const searchQuery = ref('');
+const objects = computed(() => getObjectList());
+const filteredObjects = computed(() => {
+  if (!searchQuery.value) {
+    return objects.value;
+  }
+
+  return objects.value.filter((object) => {
+    if ('registry' in object) {
+      return (
+        object.registry.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+        object.model.toLowerCase().includes(searchQuery.value.toLowerCase())
+      );
+    } else if ('destinations' in object) {
+      return object.name.toLowerCase().includes(searchQuery.value.toLowerCase());
+    } else if ('foundationDate' in object) {
+      return object.name.toLowerCase().includes(searchQuery.value.toLowerCase());
+    }
+
+    return false;
+  });
+});
+
+const currentPage = ref(1);
+const objectsPerPage = 10;
+const paginatedObjects = computed(() => {
+  const start = (currentPage.value - 1) * objectsPerPage;
+  const end = start + objectsPerPage;
+  return filteredObjects.value.slice(start, end);
+});
+const totalPages = computed(() => Math.ceil(filteredObjects.value.length / objectsPerPage));
 
 // Functions
 function getObjectList(): AircraftInterface[] | AirlineInterface[] | ManufacturerInterface[] {
@@ -35,13 +67,23 @@ function getObjectList(): AircraftInterface[] | AirlineInterface[] | Manufacture
       return [];
   }
 }
+
+// Watchers
+watch(searchQuery, () => {
+  currentPage.value = 1;
+});
+
+watch(selectedObjectClass, () => {
+  currentPage.value = 1;
+  activeObject.value = null;
+});
 </script>
 <template>
   <div class="flex-1 flex overflow-hidden">
     <!-- Left Sidebar: Aircraft List -->
     <aside class="w-80 border-r border-primary-700 flex flex-col bg-primary-900 shrink-0">
       <!-- Object Class Selection (Aircraft | Airline | Manufacturer) -->
-      <div class="p-4 border-b border-primary-700">
+      <div class="p-4">
         <div class="flex items-center justify-between mb-4 px-1">
           <select
             v-model="selectedObjectClass"
@@ -57,10 +99,26 @@ function getObjectList(): AircraftInterface[] | AirlineInterface[] | Manufacture
         </div>
       </div>
 
+      <!-- Search Bar -->
+      <div class="flex flex-col h-12 w-full px-5 pb-2 border-b border-primary-700">
+        <div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-white-200">
+          <div class="text-primary-700 flex items-center justify-center pl-3">
+            <i class="fas fa-search"></i>
+          </div>
+
+          <input
+            v-model="searchQuery"
+            class="pl-2 bg-transparent border-none text-sm w-full focus:ring-0 placeholder:text-black-900/50 focus:outline-none"
+            placeholder="Search list of entries"
+            value=""
+          />
+        </div>
+      </div>
+
       <!-- List Items -->
       <div class="flex-1 overflow-y-auto custom-scrollbar">
         <div
-          v-for="object in getObjectList()"
+          v-for="object in paginatedObjects"
           :key="object.id"
           @click="
             activeObject = { ...object };
@@ -132,6 +190,34 @@ function getObjectList(): AircraftInterface[] | AirlineInterface[] | Manufacture
             </div>
           </div>
         </div>
+
+        <div v-if="paginatedObjects.length === 0" class="text-white-200 text-center mt-5">
+          No results found
+        </div>
+
+        <!-- Pagination Controls -->
+        <div
+          v-if="paginatedObjects.length > 0"
+          class="flex justify-center gap-2 p-2 bg-primary-900 border-t border-primary-700"
+        >
+          <button
+            @click="currentPage = Math.max(1, currentPage - 1)"
+            :disabled="currentPage === 1"
+            class="px-3 py-1 bg-primary-700 text-white rounded disabled:opacity-50 cursor-pointer disabled:cursor-auto"
+          >
+            Prev
+          </button>
+
+          <span class="text-white-200 px-2"> Page {{ currentPage }} of {{ totalPages }} </span>
+
+          <button
+            @click="currentPage = Math.min(totalPages, currentPage + 1)"
+            :disabled="currentPage === totalPages"
+            class="px-3 py-1 bg-primary-700 text-white rounded disabled:opacity-50 cursor-pointer disabled:cursor-auto"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </aside>
 
@@ -164,10 +250,9 @@ function getObjectList(): AircraftInterface[] | AirlineInterface[] | Manufacture
         </div>
 
         <!-- Form Content -->
-        <AircraftFormComponent
+        <AircraftEditFormComponent
           v-if="activeObject && 'registry' in activeObject"
           v-model="activeObject"
-          :form-type="'edit'"
           @delete="activeObject = null"
         />
       </div>
@@ -186,10 +271,9 @@ function getObjectList(): AircraftInterface[] | AirlineInterface[] | Manufacture
         </div>
 
         <!-- Form Content -->
-        <AirlineFormComponent
+        <AirlineEditFormComponent
           v-if="activeObject && 'destinations' in activeObject"
           v-model="activeObject"
-          :form-type="'edit'"
           @delete="activeObject = null"
         />
       </div>
@@ -208,10 +292,9 @@ function getObjectList(): AircraftInterface[] | AirlineInterface[] | Manufacture
         </div>
 
         <!-- Form Content -->
-        <ManufacturerFormComponent
+        <ManufacturerEditFormComponent
           v-if="activeObject && 'foundationDate' in activeObject"
           v-model="activeObject"
-          :form-type="'edit'"
           @delete="activeObject = null"
         />
       </div>

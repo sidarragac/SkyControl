@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
 // Internal imports
-import { UserService } from '@/services/UserService';
+import { AuthService } from '@/services/AuthService';
 
 // Non-reactive variables
 const router = useRouter();
@@ -18,9 +18,9 @@ const loginErrorMessage = ref('');
 // Finctions
 function submitLoginForm(): void {
   try {
-    UserService.logInUser(email.value, password.value);
+    AuthService.logInUser(email.value, password.value);
 
-    if (UserService.getLoggedInUser()) {
+    if (AuthService.getLoggedInUser()) {
       clearLoginForm();
 
       router.push('/');

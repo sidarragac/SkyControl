@@ -7,17 +7,15 @@ import { ref, watch } from 'vue';
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import { AircraftService } from '@/services/AircraftService';
 import { AirlineService } from '@/services/AirlineService';
-import type { CreateAircraftDTO } from '@/dtos/CreateAircraftDTO';
-import ErrorMessageComponent from './ErrorMessageComponent.vue';
+import ErrorMessageComponent from '../ErrorMessageComponent.vue';
 import { ManufacturerService } from '@/services/ManufacturerService';
-import SuccessMessageComponent from './SuccessMessageComponent.vue';
-import type { UpdateAircraftDTO } from '@/dtos/UpdateAircraftDTO';
+import SuccessMessageComponent from '../SuccessMessageComponent.vue';
+import type { UpdateAircraftDTO } from '@/dtos/aircraftDTO/UpdateAircraftDTO';
 import UploadFileComponent from '../UploadFileComponent.vue';
 
 // Props
 const props = defineProps<{
   modelValue?: AircraftInterface;
-  formType: 'create' | 'edit';
 }>();
 
 // Emits
@@ -41,26 +39,17 @@ const successMessage = ref('');
 const errorMessage = ref('');
 
 // Functions
-function submitAircraftForm(): void {
+function submitAircraftEditForm(): void {
   if (!form.value.imageURL) {
     alert('Please upload an image before submitting the form.');
     return;
   }
 
   try {
-    if (props.formType === 'create') {
-      const newAircraft = createAircraftEntry();
-      AircraftService.createAircraft(newAircraft);
+    const updatedAircraft = updateAircraftEntry();
+    AircraftService.updateAircraft(updatedAircraft);
 
-      successMessage.value = 'Aircraft entry created succesfully!';
-
-      clearAircraftForm();
-    } else if (props.formType === 'edit' && props.modelValue) {
-      const updatedAircraft = updateAircraftEntry();
-      AircraftService.updateAircraft(updatedAircraft);
-
-      successMessage.value = 'Aircraft entry updated successfully!';
-    }
+    successMessage.value = 'Aircraft entry updated successfully!';
 
     setTimeout(() => {
       successMessage.value = '';
@@ -72,21 +61,6 @@ function submitAircraftForm(): void {
       errorMessage.value = '';
     }, 10000);
   }
-}
-
-function createAircraftEntry(): CreateAircraftDTO {
-  const newAircraft: CreateAircraftDTO = {
-    registry: form.value.registry,
-    model: form.value.model,
-    passengerCapacity: Number(form.value.passengerCapacity),
-    status: form.value.status,
-    firstFlightDate: new Date(form.value.firstFlightDate).toISOString(),
-    imageURL: form.value.imageURL,
-    airlineId: form.value.airlineId,
-    manufacturerId: form.value.manufacturerId,
-  };
-
-  return newAircraft;
 }
 
 function updateAircraftEntry(): UpdateAircraftDTO {
@@ -108,17 +82,6 @@ function updateAircraftEntry(): UpdateAircraftDTO {
   };
 
   return updatedAircraft;
-}
-
-function clearAircraftForm(): void {
-  form.value.registry = '';
-  form.value.model = '';
-  form.value.passengerCapacity = 0;
-  form.value.status = 'active';
-  form.value.firstFlightDate = '';
-  form.value.imageURL = '';
-  form.value.airlineId = '';
-  form.value.manufacturerId = '';
 }
 
 function deleteAircraftEntry(id: string): void {
@@ -150,23 +113,13 @@ watch(
 
 <template>
   <!-- Success Message -->
-  <SuccessMessageComponent
-    :class="props.formType === 'edit' ? 'mx-8' : ''"
-    :success-message="successMessage"
-  />
+  <SuccessMessageComponent :class="'mx-8'" :success-message="successMessage" />
 
   <!-- Error Message -->
-  <ErrorMessageComponent
-    :class="props.formType === 'edit' ? 'mx-8' : ''"
-    :error-message="errorMessage"
-  />
+  <ErrorMessageComponent :class="'mx-8'" :error-message="errorMessage" />
 
   <!-- Form Content -->
-  <form
-    :method="props.formType === 'create' ? 'POST' : 'PUT'"
-    :class="['space-y-8', props.formType === 'edit' ? 'px-8 pb-20' : '']"
-    @submit.prevent="submitAircraftForm()"
-  >
+  <form :method="'PUT'" :class="'space-y-8 px-8 pb-20'" @submit.prevent="submitAircraftEditForm()">
     <!-- Section: General Information -->
     <section class="bg-neutral-100 p-6 rounded-xl border border-neutral-100">
       <h3 class="text-lg text-primary-900 font-bold mb-6 flex items-center gap-2">
@@ -243,12 +196,7 @@ watch(
     </section>
 
     <!-- Section: Media -->
-    <UploadFileComponent v-if="props.formType === 'create'" v-model:imageURL="form.imageURL" />
-
-    <div
-      v-if="props.formType === 'edit'"
-      class="p-6 rounded-xl border border-neutral-100 bg-neutral-100 flex"
-    >
+    <div class="p-6 rounded-xl border border-neutral-100 bg-neutral-100 flex">
       <div class="flex-1 flex flex-col">
         <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-primary-900">
           Selected Media
@@ -324,16 +272,6 @@ watch(
     <!-- Form Actions -->
     <div class="flex items-center justify-end gap-4 pt-4">
       <button
-        v-if="props.formType === 'create'"
-        class="px-6 py-3 text-sm font-bold text-black-800 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
-        type="button"
-        @click="clearAircraftForm()"
-      >
-        Discard Changes
-      </button>
-
-      <button
-        v-if="props.formType === 'edit'"
         type="button"
         @click="deleteAircraftEntry(props.modelValue?.id as string)"
         class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-red-500/50 text-red-700 font-bold hover:bg-red-700 hover:text-white-100 transition-all cursor-pointer"

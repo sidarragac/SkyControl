@@ -5,7 +5,7 @@ import { computed, ref } from 'vue';
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 
 // Internal imports
-import { UserService } from '@/services/UserService';
+import { AuthService } from './services/AuthService';
 
 // Non-reactive variables
 const route = useRoute();
@@ -14,11 +14,11 @@ const router = useRouter();
 // Reactive variables
 const isOpen = ref(false);
 const activeLink = ref('home');
-const loggedInUser = computed(() => UserService.getLoggedInUser());
+const loggedInUser = computed(() => AuthService.getLoggedInUser());
 
 // Functions
 function submitLogoutForm() {
-  UserService.logOutUser();
+  AuthService.logOutUser();
 
   activeLink.value = 'home';
   isOpen.value = false;
