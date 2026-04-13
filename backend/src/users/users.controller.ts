@@ -12,9 +12,9 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':email')
-  findOne(@Param('email') email: string): Promise<User | null> {
-    return this.usersService.findOne(email);
+  @Get(':id')
+  findById(@Param('id') id: string): Promise<User | null> {
+    return this.usersService.findById(id);
   }
 
   @Post()
