@@ -1,3 +1,4 @@
+// Internal imports
 import type { Role } from 'src/types/UsersTypes';
 
 export class UserOutputDto {

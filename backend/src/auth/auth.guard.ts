@@ -1,3 +1,4 @@
+// External imports
 import {
   CanActivate,
   ExecutionContext,
@@ -7,19 +8,23 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
+// Internal imports
+import type { JWTPayloadInterface } from 'src/interfaces/auth/JWTPayloadInterface';
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<Request>();
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
       throw new UnauthorizedException();
     }
     try {
-      const payload = await this.jwtService.verifyAsync(token);
+      const payload =
+        await this.jwtService.verifyAsync<JWTPayloadInterface>(token);
       request['user'] = payload;
     } catch {
       throw new UnauthorizedException();

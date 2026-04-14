@@ -1,5 +1,8 @@
+// External imports
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+
+// Internal imports
 import { UsersService } from '../users/users.service';
 
 @Injectable()

@@ -1,3 +1,4 @@
+// External imports
 import {
   Entity,
   Column,
@@ -5,6 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+// Internal imports
 import type { Role } from 'src/types/UsersTypes';
 
 @Entity()
