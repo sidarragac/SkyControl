@@ -1,6 +1,7 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
+import axios from 'axios';
 import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
@@ -19,7 +20,7 @@ const password = ref('');
 const registrationErrorMessage = ref('');
 
 // Functions
-function submitRegisterForm(): void {
+async function submitRegisterForm(): Promise<void> {
   try {
     const newUser: CreateUserDTO = {
       name: name.value,
@@ -27,24 +28,18 @@ function submitRegisterForm(): void {
       password: password.value,
     };
 
-    const existingUser = AuthService.validateExistingEmail(email.value);
-    if (existingUser) {
-      registrationErrorMessage.value =
-        'The email address is already in use. Please use a different email.';
+    const createdUser = await UserService.createUser(newUser);
 
-      setTimeout(() => {
-        registrationErrorMessage.value = '';
-      }, 5000);
-      return;
-    }
-
-    UserService.createUser(newUser);
-    AuthService.logInUser(email.value, password.value);
+    await AuthService.logInUser(createdUser.email, createdUser.password);
 
     clearRegisterForm();
     router.push('home');
   } catch (error: Error | unknown) {
-    registrationErrorMessage.value = `An error occurred while creating the user. Please try again.<br>Error details: ${(error as Error).message}`;
+    if (axios.isAxiosError(error)) {
+      registrationErrorMessage.value =
+        error.response?.data?.message ||
+        `An error occurred while creating the user. Please try again.`;
+    }
 
     setTimeout(() => {
       registrationErrorMessage.value = '';

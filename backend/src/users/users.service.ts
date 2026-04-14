@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -23,7 +23,13 @@ export class UsersService {
     return this.usersRepository.findOneBy({ email });
   }
 
-  create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const existingUser = await this.findByEmail(createUserDto.email);
+
+    if (existingUser) {
+      throw new BadRequestException('The email address is already in use');
+    }
+
     const user = this.usersRepository.create({
       ...createUserDto,
       role: 'user',
