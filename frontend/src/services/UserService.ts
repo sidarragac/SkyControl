@@ -1,6 +1,6 @@
 // Developed by Mateo Pineda
 // External imports
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 // Internal imports
 import type { CreateUserDTO } from '@/dtos/userDTO/CreateUserDTO';
@@ -8,16 +8,12 @@ import type { UserInterface } from '@/interfaces/UserInterface';
 import { useUserStore } from '@/stores/UserStore';
 
 export class UserService {
-  static getUsers(): UserInterface[] {
-    return useUserStore().users;
-  }
+  private static readonly API_URL = 'http://localhost:3000/api/';
 
-  static createUser(user: CreateUserDTO): void {
-    const id = uuidv4();
-    const role = 'user';
-    const createdAt = new Date();
-    const updatedAt = new Date();
+  public static async createUser(user: CreateUserDTO): Promise<UserInterface> {
+    const response = await axios.post(`${this.API_URL}users`, user);
+    const newUser = response.data;
 
-    useUserStore().users.push({ id, ...user, role, createdAt, updatedAt });
+    return newUser;
   }
 }
