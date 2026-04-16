@@ -1,11 +1,12 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
-import { computed, ref } from 'vue';
+import { ref, onUpdated } from 'vue';
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 
 // Internal imports
 import { AuthService } from './services/AuthService';
+import type { BackendUserDTO } from './dtos/userDTO/BackendUserDTO';
 
 // Non-reactive variables
 const route = useRoute();
@@ -14,17 +15,24 @@ const router = useRouter();
 // Reactive variables
 const isOpen = ref(false);
 const activeLink = ref('home');
-const loggedInUser = computed(() => AuthService.getLoggedInUser());
+const loggedInUser = ref<BackendUserDTO | null>(null);
 
 // Functions
 function submitLogoutForm() {
   AuthService.logOutUser();
+
+  loggedInUser.value = null;
 
   activeLink.value = 'home';
   isOpen.value = false;
 
   router.push('/login');
 }
+
+// Hooks
+onUpdated(async () => {
+  loggedInUser.value = await AuthService.getLoggedInUser();
+});
 </script>
 
 <template>

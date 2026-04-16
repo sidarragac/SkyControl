@@ -74,8 +74,8 @@ router.afterEach((to) => {
 });
 
 // Admin Access Control
-router.beforeEach((to) => {
-  const user = AuthService.getLoggedInUser();
+router.beforeEach(async (to) => {
+  const user = await AuthService.getLoggedInUser();
   if (to.meta.requiresAdmin && (!user || user.role !== 'admin')) {
     return '/';
   }

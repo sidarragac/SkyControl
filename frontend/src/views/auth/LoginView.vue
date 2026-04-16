@@ -1,6 +1,7 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
+import axios from 'axios';
 import { ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
@@ -16,23 +17,25 @@ const password = ref('');
 const loginErrorMessage = ref('');
 
 // Finctions
-function submitLoginForm(): void {
+async function submitLoginForm(): Promise<void> {
   try {
-    AuthService.logInUser(email.value, password.value);
+    await AuthService.logInUser(email.value, password.value);
 
-    if (AuthService.getLoggedInUser()) {
+    const loggedInUser = await AuthService.getLoggedInUser();
+
+    if (loggedInUser) {
       clearLoginForm();
 
       router.push('/');
-    } else {
-      loginErrorMessage.value = 'Invalid email or password. Please try again.';
-
-      setTimeout(() => {
-        loginErrorMessage.value = '';
-      }, 5000);
     }
   } catch (error: Error | unknown) {
-    loginErrorMessage.value = `An error occurred while logging in. Please try again.<br>Error details: ${(error as Error).message}`;
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 401) {
+        loginErrorMessage.value = 'Invalid email or password. Please try again.';
+      } else {
+        loginErrorMessage.value = `An unexpected error occurred: ${(error as Error).message}`;
+      }
+    }
 
     setTimeout(() => {
       loginErrorMessage.value = '';
