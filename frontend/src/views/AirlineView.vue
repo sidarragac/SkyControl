@@ -6,16 +6,31 @@ import { computed, ref } from 'vue';
 // Internal imports
 import { AirlineService } from '@/services/AirlineService';
 import { AircraftService } from '@/services/AircraftService';
-import DataTableComponent from '@/components/DataTableComponent.vue';
+import DisplayDataComponent from '@/components/DisplayDataComponent.vue';
 import FilterBarComponent from '@/components/FilterBarComponent.vue';
 import FleetSizePolarChartComponent from '@/components/charts/FleetSizePolarChartComponent.vue';
+import TablePaginationComponent from '@/components/TablePaginationComponent.vue';
 
 // Non-reactive Variables
 const airlines = AirlineService.getAirlines();
+
 const tableHeaders = ['Airline', 'Country', 'Number Of Destinations', 'Favourite Aircraft'];
 
+const tableDataKeys = tableHeaders.map((header) => {
+  return header.split(' ').join('');
+});
+
+const mainTextKey = 'Name';
+const imageKey = 'ImageURL';
+const itemsPerPage = 5;
+
 // Reactive Variables
+const currentPage = ref(1);
 const activeFilters = ref<Record<string, string | number>>({});
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredTableData.value.length / itemsPerPage);
+});
 
 const tableData = computed(() => {
   const data: Record<string, unknown>[] = [];
@@ -57,6 +72,13 @@ const filteredTableData = computed(() => {
   }
 
   return result;
+});
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+
+  return filteredTableData.value.slice(start, end);
 });
 
 const countryOptions = computed(() => {
@@ -103,12 +125,53 @@ const fleetChartData = computed(() => {
     </header>
     <FilterBarComponent :filters="filtersConfig" @update:filters="activeFilters = $event" />
     <FleetSizePolarChartComponent name="Fleet Size per Airline" :data="fleetChartData" />
-    <DataTableComponent
-      :headers="tableHeaders"
-      :data="filteredTableData"
-      :useDisplayInFirstColumn="true"
-      mainTextKey="Name"
-      imageKey="ImageURL"
+    <div class="overflow-x-auto rounded-lg border border-neutral-100">
+      <table class="w-full border-collapse bg-white-100 text-left text-sm">
+        <thead class="bg-white-200">
+          <tr>
+            <th
+              v-for="(header, index) in tableHeaders"
+              :key="index"
+              class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100"
+            >
+              {{ header }}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-neutral-100">
+          <tr
+            v-for="(row, index) in paginatedData"
+            :key="index"
+            class="hover:bg-white-200 transition-colors"
+          >
+            <td
+              v-for="(header, headerIndex) in tableDataKeys"
+              :key="headerIndex"
+              class="px-6 py-4 text-black-800"
+            >
+              <DisplayDataComponent
+                v-if="headerIndex === 0"
+                :mainText="row[mainTextKey] as string"
+                :imageURL="row[imageKey] as string"
+              />
+              <slot v-else :name="header" :row="row" :value="row[header]">
+                {{ row[header] }}
+              </slot>
+            </td>
+          </tr>
+          <tr v-if="paginatedData.length === 0">
+            <td :colspan="tableHeaders.length" class="px-6 py-8 text-center text-black-800">
+              No data available.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <TablePaginationComponent
+      v-model:currentPage="currentPage"
+      :totalPages="totalPages"
+      :itemsPerPage="itemsPerPage"
+      :dataLength="filteredTableData.length"
     />
   </div>
 </template>
