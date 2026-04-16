@@ -7,7 +7,6 @@ import { computed, ref } from 'vue';
 import { AirlineService } from '@/services/AirlineService';
 import { AircraftService } from '@/services/AircraftService';
 import DisplayDataComponent from '@/components/DisplayDataComponent.vue';
-import FilterBarComponent from '@/components/FilterBarComponent.vue';
 import FleetSizePolarChartComponent from '@/components/charts/FleetSizePolarChartComponent.vue';
 import TablePaginationComponent from '@/components/TablePaginationComponent.vue';
 
@@ -26,7 +25,10 @@ const itemsPerPage = 5;
 
 // Reactive Variables
 const currentPage = ref(1);
-const activeFilters = ref<Record<string, string | number>>({});
+const activeFilters = ref<Record<string, string | number>>({
+  Country: 'All',
+  DestinationsSort: 'All',
+});
 
 const totalPages = computed(() => {
   return Math.ceil(filteredTableData.value.length / itemsPerPage);
@@ -81,6 +83,13 @@ const paginatedData = computed(() => {
   return filteredTableData.value.slice(start, end);
 });
 
+const fleetChartData = computed(() => {
+  return filteredTableData.value.map((airline) => ({
+    airline: airline.Name as string,
+    aircraftCount: AircraftService.getAircraftsByAirlineId(airline.Id as string).length,
+  }));
+});
+
 const countryOptions = computed(() => {
   const countries = new Set<string>();
 
@@ -94,28 +103,6 @@ const countryOptions = computed(() => {
   }));
 });
 
-const filtersConfig = computed(() => [
-  {
-    label: 'Country',
-    key: 'Country',
-    options: countryOptions.value,
-  },
-  {
-    label: 'Sort by Destinations',
-    key: 'DestinationsSort',
-    options: [
-      { label: 'Highest to Lowest', value: 'desc' },
-      { label: 'Lowest to Highest', value: 'asc' },
-    ],
-  },
-]);
-
-const fleetChartData = computed(() => {
-  return filteredTableData.value.map((airline) => ({
-    airline: airline.Name as string,
-    aircraftCount: AircraftService.getAircraftsByAirlineId(airline.Id as string).length,
-  }));
-});
 </script>
 <template>
   <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
@@ -123,7 +110,39 @@ const fleetChartData = computed(() => {
       <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Airlines Information</h2>
       <p>Get to know some of the most well known airlines in the world</p>
     </header>
-    <FilterBarComponent :filters="filtersConfig" @update:filters="activeFilters = $event" />
+    <div class="flex flex-wrap gap-4 mb-4">
+      <div class="flex flex-col">
+        <!-- Filter by Country-->
+        <label class="text-sm font-medium text-black-800 mb-1">
+          Country
+        </label>
+
+        <select
+          v-model="activeFilters['Country']"
+          class="px-3 py-2 border border-neutral-100 rounded-lg bg-white-100 text-black-800 text-sm focus:ring-2 focus:ring-primary-700 focus:border-primary-700"
+        >
+          <option value="All">All</option>
+
+          <option v-for="option in countryOptions" :key="option.label" :value="option.value">
+            {{ option.value }}
+          </option>
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <!-- Sort by Number of Destinations -->
+        <label class="text-sm font-medium text-black-800 mb-1">
+          Sort By Number of Destinations
+        </label>
+
+        <select
+          v-model="activeFilters['DestinationsSort']"
+          class="px-3 py-2 border border-neutral-100 rounded-lg bg-white-100 text-black-800 text-sm focus:ring-2 focus:ring-primary-700 focus:border-primary-700"
+        >
+          <option value="desc">Highest to Lowest</option>
+          <option value="asc">Lowest to Highest</option>
+        </select>
+      </div>
+    </div>
     <FleetSizePolarChartComponent name="Fleet Size per Airline" :data="fleetChartData" />
     <div class="overflow-x-auto rounded-lg border border-neutral-100">
       <table class="w-full border-collapse bg-white-100 text-left text-sm">
