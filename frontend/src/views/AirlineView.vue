@@ -13,11 +13,8 @@ import TablePaginationComponent from '@/components/TablePaginationComponent.vue'
 // Non-reactive Variables
 const airlines = AirlineService.getAirlines();
 
-const tableHeaders = ['Airline', 'Country', 'Number Of Destinations', 'Favourite Aircraft'];
-
-const tableDataKeys = tableHeaders.map((header) => {
-  return header.split(' ').join('');
-});
+const tableDataKeys = ['Airline', 'Country', 'NumberOfDestinations', 'FavouriteAircraft'];
+const tableColumnCount = tableDataKeys.length;
 
 const mainTextKey = 'Name';
 const imageKey = 'ImageURL';
@@ -148,12 +145,17 @@ const countryOptions = computed(() => {
       <table class="w-full border-collapse bg-white-100 text-left text-sm">
         <thead class="bg-white-200">
           <tr>
-            <th
-              v-for="(header, index) in tableHeaders"
-              :key="index"
-              class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100"
-            >
-              {{ header }}
+            <th class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100">
+              Airline
+            </th>
+            <th class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100">
+              Country
+            </th>
+            <th class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100">
+              Number of Destinations
+            </th>
+            <th class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100">
+              Favourite Aircraft
             </th>
           </tr>
         </thead>
@@ -179,7 +181,7 @@ const countryOptions = computed(() => {
             </td>
           </tr>
           <tr v-if="paginatedData.length === 0">
-            <td :colspan="tableHeaders.length" class="px-6 py-8 text-center text-black-800">
+            <td :colspan="tableColumnCount" class="px-6 py-8 text-center text-black-800">
               No data available.
             </td>
           </tr>

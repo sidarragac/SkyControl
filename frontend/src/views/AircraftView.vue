@@ -14,17 +14,8 @@ import TablePaginationComponent from '@/components/TablePaginationComponent.vue'
 // Non-reactive Variables
 const aircrafts = AircraftService.getAircrafts();
 
-const tableHeaders = [
-  'Aircraft',
-  'Airline',
-  'Manufacturer',
-  'Passenger Capacity',
-  'First Flight Date',
-];
-
-const tableDataKeys = tableHeaders.map((header) => {
-  return header.split(' ').join('');
-});
+const tableDataKeys = ['Aircraft', 'Airline', 'Manufacturer', 'PassengerCapacity', 'FirstFlightDate'];
+const tableColumnCount = tableDataKeys.length;
 
 const mainTextKey = 'Registry';
 const secondaryTextKey = 'Model';
@@ -232,12 +223,20 @@ const airlineOptions = computed(() => {
       <table class="w-full border-collapse bg-white-100 text-left text-sm">
         <thead class="bg-white-200">
           <tr>
-            <th
-              v-for="(header, index) in tableHeaders"
-              :key="index"
-              class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100"
-            >
-              {{ header }}
+            <th class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100">
+              Aircraft
+            </th>
+            <th class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100">
+              Airline
+            </th>
+            <th class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100">
+              Manufacturer
+            </th>
+            <th class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100">
+              Passenger Capacity
+            </th>
+            <th class="px-6 py-4 font-semibold text-black-900 border-b border-neutral-100">
+              First Flight Date
             </th>
           </tr>
         </thead>
@@ -264,7 +263,7 @@ const airlineOptions = computed(() => {
             </td>
           </tr>
           <tr v-if="paginatedData.length === 0">
-            <td :colspan="tableHeaders.length" class="px-6 py-8 text-center text-black-800">
+            <td :colspan="tableColumnCount" class="px-6 py-8 text-center text-black-800">
               No data available.
             </td>
           </tr>
