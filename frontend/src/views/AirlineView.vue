@@ -124,7 +124,7 @@ const countryOptions = computed(() => {
           <option value="All">All</option>
 
           <option v-for="option in countryOptions" :key="option.label" :value="option.value">
-            {{ option.value }}
+            {{ option.label }}
           </option>
         </select>
       </div>

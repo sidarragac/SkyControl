@@ -8,7 +8,6 @@ import { AircraftService } from '@/services/AircraftService';
 import AircraftModelChartComponent from '@/components/charts/AircraftModelChartComponent.vue';
 import { AirlineService } from '@/services/AirlineService';
 import DisplayDataComponent from '@/components/DisplayDataComponent.vue';
-import FilterBarComponent from '@/components/FilterBarComponent.vue';
 import { ManufacturerService } from '@/services/ManufacturerService';
 import TablePaginationComponent from '@/components/TablePaginationComponent.vue';
 
@@ -115,6 +114,20 @@ const paginatedData = computed(() => {
   return filteredTableData.value.slice(start, end);
 });
 
+const aircraftModelChartData = computed(() => {
+  const counts = new Map<string, number>();
+
+  filteredTableData.value.forEach((aircraft) => {
+    const model = aircraft.Model as string;
+    counts.set(model, (counts.get(model) || 0) + 1);
+  });
+
+  return Array.from(counts.entries()).map(([model, count]) => ({
+    model,
+    count,
+  }));
+});
+
 const manufacturerOptions = computed(() => {
   const manufacturers = new Map<string, string>();
 
@@ -140,49 +153,6 @@ const airlineOptions = computed(() => {
     value: id,
   }));
 });
-
-const filtersConfig = computed(() => [
-  {
-    label: 'Manufacturer',
-    key: 'Manufacturer',
-    options: manufacturerOptions.value,
-  },
-  {
-    label: 'Airline',
-    key: 'Airline',
-    options: airlineOptions.value,
-  },
-  {
-    label: 'Sort by Passenger Capacity',
-    key: 'CapacitySort',
-    options: [
-      { label: 'Highest to Lowest', value: 'desc' },
-      { label: 'Lowest to Highest', value: 'asc' },
-    ],
-  },
-  {
-    label: 'Sort by First Flight Date',
-    key: 'DateSort',
-    options: [
-      { label: 'Newest to Oldest', value: 'desc' },
-      { label: 'Oldest to Newest', value: 'asc' },
-    ],
-  },
-]);
-
-const aircraftModelChartData = computed(() => {
-  const counts = new Map<string, number>();
-
-  filteredTableData.value.forEach((aircraft) => {
-    const model = aircraft.Model as string;
-    counts.set(model, (counts.get(model) || 0) + 1);
-  });
-
-  return Array.from(counts.entries()).map(([model, count]) => ({
-    model,
-    count,
-  }));
-});
 </script>
 <template>
   <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
@@ -190,7 +160,70 @@ const aircraftModelChartData = computed(() => {
       <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Aircraft Information</h2>
       <p>Get to know some of the most representative aircrafts in the world</p>
     </header>
-    <FilterBarComponent :filters="filtersConfig" @update:filters="activeFilters = $event" />
+    <div class="flex flex-wrap gap-4 mb-4">
+      <div class="flex flex-col">
+        <!-- Filter by Manufacturer-->
+        <label class="text-sm font-medium text-black-800 mb-1">
+          Manufacturer
+        </label>
+
+        <select
+          v-model="activeFilters['Manufacturer']"
+          class="px-3 py-2 border border-neutral-100 rounded-lg bg-white-100 text-black-800 text-sm focus:ring-2 focus:ring-primary-700 focus:border-primary-700"
+        >
+          <option value="All">All</option>
+
+          <option v-for="option in manufacturerOptions" :key="option.label" :value="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <!-- Filter by Airline -->
+        <label class="text-sm font-medium text-black-800 mb-1">
+          Airline
+        </label>
+
+        <select
+          v-model="activeFilters['Airline']"
+          class="px-3 py-2 border border-neutral-100 rounded-lg bg-white-100 text-black-800 text-sm focus:ring-2 focus:ring-primary-700 focus:border-primary-700"
+        >
+          <option value="All">All</option>
+
+          <option v-for="option in airlineOptions" :key="option.label" :value="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <!-- Sort by Passenger Capacity -->
+        <label class="text-sm font-medium text-black-800 mb-1">
+          Sort By Passenger Capacity
+        </label>
+
+        <select
+          v-model="activeFilters['CapacitySort']"
+          class="px-3 py-2 border border-neutral-100 rounded-lg bg-white-100 text-black-800 text-sm focus:ring-2 focus:ring-primary-700 focus:border-primary-700"
+        >
+          <option value="desc">Highest to Lowest</option>
+          <option value="asc">Lowest to Highest</option>
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <!-- Sort by First Flight Date -->
+        <label class="text-sm font-medium text-black-800 mb-1">
+          Sort By First Flight Date
+        </label>
+
+        <select
+          v-model="activeFilters['DateSort']"
+          class="px-3 py-2 border border-neutral-100 rounded-lg bg-white-100 text-black-800 text-sm focus:ring-2 focus:ring-primary-700 focus:border-primary-700"
+        >
+          <option value="desc">Newest to Oldest</option>
+          <option value="asc">Oldest to Newest</option>
+        </select>
+      </div>
+    </div>
     <AircraftModelChartComponent
       name="Aircraft Model Distribution"
       :data="aircraftModelChartData"
