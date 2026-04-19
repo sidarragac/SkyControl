@@ -30,7 +30,7 @@ export class Aircraft {
   @Column({ type: 'int' })
   passengerCapacity: number;
 
-  @Column({ type: 'enum' })
+  @Column({ type: 'varchar' })
   status: Status;
 
   @Column({ type: 'date' })

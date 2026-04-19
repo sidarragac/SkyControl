@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 // Internal imports
 import { AircraftsModule } from './aircrafts/aircrafts.module';
-import { AirlinesModule } from './airlines/airlines.modules';
+import { AirlinesModule } from './airlines/airlines.module';
 import { AuthModule } from './auth/auth.module';
 import { ManufacturersModule } from './manufacturers/manufacturers.module';
 import { UsersModule } from './users/users.module';

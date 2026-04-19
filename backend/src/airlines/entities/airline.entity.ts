@@ -3,9 +3,13 @@ import {
   Entity,
   Column,
   CreateDateColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+// Internal Imports
+import { Aircraft } from 'src/aircrafts/entities/aircraft.entity';
 
 @Entity()
 export class Airline {
@@ -23,6 +27,9 @@ export class Airline {
 
   @Column({ type: 'varchar', nullable: true })
   imageURL: string;
+
+  @OneToMany('Aircraft', 'airline')
+  aircrafts: Aircraft[];
 
   @CreateDateColumn()
   createdAt: Date;
