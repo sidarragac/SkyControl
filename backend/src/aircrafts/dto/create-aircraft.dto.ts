@@ -37,7 +37,7 @@ export class CreateAircraftDto {
   @Min(1)
   passengerCapacity: number;
 
-  @IsEnum(Status)
+  @IsString()
   status: Status;
 
   @IsNotEmpty()
