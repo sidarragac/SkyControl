@@ -14,16 +14,16 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  async findAll(): Promise<User[]> {
+    return await this.usersRepository.find();
   }
 
-  findById(id: string): Promise<User | null> {
-    return this.usersRepository.findOneBy({ id });
+  async findById(id: string): Promise<User | null> {
+    return await this.usersRepository.findOneBy({ id });
   }
 
-  findByEmail(email: string): Promise<User | null> {
-    return this.usersRepository.findOneBy({ email });
+  async findByEmail(email: string): Promise<User | null> {
+    return await this.usersRepository.findOneBy({ email });
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -38,10 +38,10 @@ export class UsersService {
       role: 'user',
     });
 
-    return this.usersRepository.save(user);
+    return await this.usersRepository.save(user);
   }
 
-  async createAdmin() {
+  async createAdmin(): Promise<User> {
     const admin = this.usersRepository.create({
       name: 'Admin',
       email: 'admin@skycontrol.com',
@@ -49,6 +49,6 @@ export class UsersService {
       role: 'admin',
     });
 
-    return this.usersRepository.save(admin);
+    return await this.usersRepository.save(admin);
   }
 }
