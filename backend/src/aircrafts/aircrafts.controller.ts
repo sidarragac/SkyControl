@@ -21,13 +21,15 @@ export class AircraftsController {
   constructor(private readonly aircraftsService: AircraftsService) {}
 
   @Post()
-  create(@Body() createAircraftDto: CreateAircraftDto): Promise<Aircraft> {
-    return this.aircraftsService.create(createAircraftDto);
+  async create(
+    @Body() createAircraftDto: CreateAircraftDto,
+  ): Promise<Aircraft> {
+    return await this.aircraftsService.create(createAircraftDto);
   }
 
   @Get()
-  findAll(): Promise<Aircraft[]> {
-    return this.aircraftsService.findAll();
+  async findAll(): Promise<Aircraft[]> {
+    return await this.aircraftsService.findAll();
   }
 
   @Get(':id')
