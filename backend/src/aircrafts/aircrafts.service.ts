@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 // Internal Imports
 import { Aircraft } from './entities/aircraft.entity';
@@ -26,7 +26,7 @@ export class AircraftsService {
     private readonly airlinesService: AirlinesService,
   ) {}
 
-  async create(createAircraftDto: CreateAircraftDto) {
+  async create(createAircraftDto: CreateAircraftDto): Promise<Aircraft> {
     const existingAircraft = await this.findOneByRegistry(
       createAircraftDto.registry,
     );
@@ -37,7 +37,7 @@ export class AircraftsService {
       );
     }
     const manufacturer = await this.manufacturersService.findOneById(
-      createAircraftDto.manufacturerId,
+      createAircraftDto.manufacturer,
     );
 
     if (!manufacturer) {
@@ -45,8 +45,8 @@ export class AircraftsService {
     }
 
     if (
-      createAircraftDto.airlineId &&
-      !this.airlinesService.findOneById(createAircraftDto.airlineId)
+      createAircraftDto.airline &&
+      !this.airlinesService.findOneById(createAircraftDto.airline)
     ) {
       throw new NotFoundException('Airline not found');
     }
@@ -55,15 +55,18 @@ export class AircraftsService {
     return await this.aircraftRepository.save(aircraft);
   }
 
-  async findAll() {
+  async findAll(): Promise<Aircraft[]> {
     return await this.aircraftRepository.find();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Aircraft | null> {
     return await this.aircraftRepository.findOneBy({ id });
   }
 
-  async update(id: string, updateAircraftDto: UpdateAircraftDto) {
+  async update(
+    id: string,
+    updateAircraftDto: UpdateAircraftDto,
+  ): Promise<UpdateResult> {
     const aircraft = await this.findOne(id);
     if (!aircraft) {
       throw new NotFoundException('Aircraft not found');
@@ -72,11 +75,11 @@ export class AircraftsService {
     return await this.aircraftRepository.update(id, updateAircraftDto);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<DeleteResult> {
     return await this.aircraftRepository.delete(id);
   }
 
-  private async findOneByRegistry(registry: string) {
+  private async findOneByRegistry(registry: string): Promise<Aircraft | null> {
     return await this.aircraftRepository.findOneBy({ registry });
   }
 }

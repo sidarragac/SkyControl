@@ -50,9 +50,9 @@ export class CreateAircraftDto {
 
   @IsOptional()
   @IsUUID('4')
-  airlineId: string;
+  airline: string;
 
   @IsNotEmpty()
   @IsUUID('4')
-  manufacturerId: string;
+  manufacturer: string;
 }
