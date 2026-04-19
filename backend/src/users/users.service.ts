@@ -14,15 +14,15 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.usersRepository.find();
   }
 
-  findById(id: string): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     return this.usersRepository.findOneBy({ id });
   }
 
-  findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOneBy({ email });
   }
 

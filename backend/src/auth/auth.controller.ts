@@ -15,7 +15,7 @@ import {
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
-import { UserOutputDto } from '../users/dto/user-output.dto';
+import { User } from 'src/users/entities/user.entity';
 import type { UserRequestInterface } from 'src/interfaces/auth/UserRequestInterface';
 import { UsersService } from 'src/users/users.service';
 
@@ -34,24 +34,13 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('profile')
-  async getProfile(
-    @Request() req: UserRequestInterface,
-  ): Promise<UserOutputDto> {
+  async getProfile(@Request() req: UserRequestInterface): Promise<User> {
     const user = await this.usersService.findById(req.user.sub);
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    const userOutputDto = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
-
-    return userOutputDto;
+    return user;
   }
 }
