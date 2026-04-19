@@ -5,12 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 // Internal imports
 import { Manufacturer } from './entities/manufacturer.entity';
-import { ManufacturerController } from './manufacturer.controller';
-import { ManufacturerService } from './manufacturer.service';
+import { ManufacturersController } from './manufacturers.controller';
+import { ManufacturersService } from './manufacturers.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Manufacturer])],
-  controllers: [ManufacturerController],
-  providers: [ManufacturerService],
+  controllers: [ManufacturersController],
+  providers: [ManufacturersService],
 })
-export class ManufacturerModule {}
+export class ManufacturersModule {}

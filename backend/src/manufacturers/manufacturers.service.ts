@@ -15,7 +15,7 @@ import { Manufacturer } from './entities/manufacturer.entity';
 import { UpdateManufacturerDto } from './dto/update-manufacturer.dto';
 
 @Injectable()
-export class ManufacturerService {
+export class ManufacturersService {
   constructor(
     @InjectRepository(Manufacturer)
     private readonly manufacturerRepository: Repository<Manufacturer>,

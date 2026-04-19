@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // Internal imports
-import { ManufacturerModule } from './manufacturer/manufacturer.module';
+import { ManufacturersModule } from './manufacturers/manufacturers.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -17,7 +17,7 @@ import { UsersModule } from './users/users.module';
     }),
     AuthModule,
     UsersModule,
-    ManufacturerModule,
+    ManufacturersModule,
   ],
 })
 export class AppModule {}

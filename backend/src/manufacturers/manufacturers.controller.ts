@@ -7,27 +7,27 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ManufacturerService } from './manufacturer.service';
+import { ManufacturersService } from './manufacturers.service';
 import { CreateManufacturerDto } from './dto/create-manufacturer.dto';
 import { UpdateManufacturerDto } from './dto/update-manufacturer.dto';
 
-@Controller('manufacturer')
-export class ManufacturerController {
-  constructor(private readonly manufacturerService: ManufacturerService) {}
+@Controller('manufacturers')
+export class ManufacturersController {
+  constructor(private readonly manufacturersService: ManufacturersService) {}
 
   @Post()
   async create(@Body() createManufacturerDto: CreateManufacturerDto) {
-    return await this.manufacturerService.create(createManufacturerDto);
+    return await this.manufacturersService.create(createManufacturerDto);
   }
 
   @Get()
   async findAll() {
-    return await this.manufacturerService.findAll();
+    return await this.manufacturersService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.manufacturerService.findOneById(id);
+    return await this.manufacturersService.findOneById(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class ManufacturerController {
     @Param('id') id: string,
     @Body() updateManufacturerDto: UpdateManufacturerDto,
   ) {
-    return await this.manufacturerService.update(id, updateManufacturerDto);
+    return await this.manufacturersService.update(id, updateManufacturerDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.manufacturerService.remove(id);
+    return await this.manufacturersService.remove(id);
   }
 }
