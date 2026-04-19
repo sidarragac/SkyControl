@@ -41,7 +41,7 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  async createAdmin() {
+  async createAdmin(): Promise<User> {
     const admin = this.usersRepository.create({
       name: 'Admin',
       email: 'admin@skycontrol.com',

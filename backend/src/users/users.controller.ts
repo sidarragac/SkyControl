@@ -11,12 +11,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  findAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): Promise<User | null> {
+  async findById(@Param('id') id: string): Promise<User | null> {
     return this.usersService.findById(id);
   }
 
@@ -26,7 +26,7 @@ export class UsersController {
   }
 
   @Post('create-admin')
-  createAdmin() {
+  async createAdmin(): Promise<User> {
     return this.usersService.createAdmin();
   }
 }
