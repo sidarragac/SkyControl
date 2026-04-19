@@ -29,10 +29,10 @@ export class Manufacturer {
   @Column({ type: 'varchar' })
   imageUrl: string;
 
-  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'datetime' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({ type: 'datetime' })
   updatedAt: Date;
 
   @OneToMany(() => Aircraft, (aircraft) => aircraft.manufacturer)
