@@ -3,9 +3,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+// Internal imports
+import { Aircraft } from '../../aircrafts/entities/aircraft.entity';
 
 @Entity({ name: 'manufacturers' })
 export class Manufacturer {
@@ -29,4 +34,11 @@ export class Manufacturer {
 
   @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @OneToMany(() => Aircraft, (aircraft) => aircraft.manufacturer)
+  @JoinColumn({
+    referencedColumnName: 'id',
+    nullable: true,
+  })
+  aircrafts: Aircraft[];
 }

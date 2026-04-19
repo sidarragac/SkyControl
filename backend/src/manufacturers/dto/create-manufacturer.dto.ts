@@ -1,8 +1,19 @@
 // Developed by Santiago Idárraga
 
 // External imports
-import { IsDate, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsString,
+  IsArray,
+  IsUrl,
+  MaxLength,
+  IsOptional,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+
+// Internal imports
+import { Aircraft } from '../../aircrafts/entities/aircraft.entity';
 
 export class CreateManufacturerDto {
   @IsString()
@@ -20,6 +31,13 @@ export class CreateManufacturerDto {
   @IsDate()
   foundationDate: Date;
 
+  @IsNotEmpty()
   @IsString()
+  @IsUrl()
   imageUrl: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  aircrafts?: Aircraft[];
 }

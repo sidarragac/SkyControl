@@ -6,8 +6,8 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 // Internal imports
 import { CreateManufacturerDto } from './dto/create-manufacturer.dto';
@@ -21,7 +21,9 @@ export class ManufacturersService {
     private readonly manufacturerRepository: Repository<Manufacturer>,
   ) {}
 
-  async create(createManufacturerDto: CreateManufacturerDto) {
+  async create(
+    createManufacturerDto: CreateManufacturerDto,
+  ): Promise<Manufacturer> {
     const existingManufacturer = await this.findOneByName(
       createManufacturerDto.name,
     );
@@ -35,11 +37,11 @@ export class ManufacturersService {
     return await this.manufacturerRepository.save(createManufacturerDto);
   }
 
-  async findAll() {
+  async findAll(): Promise<Manufacturer[]> {
     return await this.manufacturerRepository.find();
   }
 
-  async findOneById(id: string) {
+  async findOneById(id: string): Promise<Manufacturer> {
     const manufacturer = await this.manufacturerRepository.findOneBy({ id });
     if (!manufacturer) {
       throw new NotFoundException(`Manufacturer ${id} not found`);
@@ -48,7 +50,10 @@ export class ManufacturersService {
     return manufacturer;
   }
 
-  async update(id: string, updateManufacturerDto: UpdateManufacturerDto) {
+  async update(
+    id: string,
+    updateManufacturerDto: UpdateManufacturerDto,
+  ): Promise<UpdateResult> {
     const manufacturer = await this.findOneById(id);
     if (!manufacturer) {
       throw new NotFoundException(`Manufacturer ${id} not found`);
@@ -57,7 +62,7 @@ export class ManufacturersService {
     return await this.manufacturerRepository.update(id, updateManufacturerDto);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<DeleteResult> {
     const manufacturer = await this.findOneById(id);
     if (!manufacturer) {
       throw new NotFoundException(`Manufacturer ${id} not found`);
@@ -66,7 +71,7 @@ export class ManufacturersService {
     return await this.manufacturerRepository.delete(id);
   }
 
-  private async findOneByName(name: string) {
+  private async findOneByName(name: string): Promise<Manufacturer | null> {
     return await this.manufacturerRepository.findOneBy({ name });
   }
 }
