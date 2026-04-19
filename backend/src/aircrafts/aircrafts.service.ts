@@ -21,7 +21,6 @@ export class AircraftsService {
   constructor(
     @InjectRepository(Aircraft)
     private readonly aircraftRepository: Repository<Aircraft>,
-
     private readonly manufacturersService: ManufacturersService,
     private readonly airlinesService: AirlinesService,
   ) {}
