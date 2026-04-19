@@ -16,6 +16,8 @@ import {
 import { Type } from 'class-transformer';
 
 // Internal Imports
+import { Airline } from '../../airlines/entities/airline.entity';
+import { Manufacturer } from '../../manufacturers/entities/manufacturer.entity';
 import type { Status } from '../../types/AircraftsTypes';
 
 export class CreateAircraftDto {
@@ -50,9 +52,9 @@ export class CreateAircraftDto {
 
   @IsOptional()
   @IsUUID('4')
-  airline: string;
+  airline: Airline;
 
   @IsNotEmpty()
   @IsUUID('4')
-  manufacturer: string;
+  manufacturer: Manufacturer;
 }

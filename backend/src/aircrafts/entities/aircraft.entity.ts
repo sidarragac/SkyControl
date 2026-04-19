@@ -49,7 +49,7 @@ export class Aircraft {
   @JoinColumn({
     referencedColumnName: 'id',
   })
-  airline: string;
+  airline: Airline;
 
   @ManyToOne(() => Manufacturer, (manufacturer) => manufacturer.aircrafts, {
     eager: true,
@@ -57,5 +57,5 @@ export class Aircraft {
   @JoinColumn({
     referencedColumnName: 'id',
   })
-  manufacturer: string;
+  manufacturer: Manufacturer;
 }
