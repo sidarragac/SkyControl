@@ -5,11 +5,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 // Internal Imports
+import { Airline } from '../../airlines/entities/airline.entity';
+import { Manufacturer } from '../../manufacturers/entities/manufacturer.entity';
 import { Status } from '../../types/AircraftsTypes';
 
 @Entity()
@@ -35,15 +39,23 @@ export class Aircraft {
   @Column({ type: 'varchar' })
   imageURL: string;
 
-  @Column({ type: 'uuid', nullable: true })
-  airlineId: string;
-
-  @Column({ type: 'uuid' })
-  manufacturerId: string;
-
   @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @ManyToOne(() => Airline, (airline) => airline.aircrafts, { eager: true })
+  @JoinColumn({
+    referencedColumnName: 'id',
+  })
+  airline: string;
+
+  @ManyToOne(() => Manufacturer, (manufacturer) => manufacturer.aircrafts, {
+    eager: true,
+  })
+  @JoinColumn({
+    referencedColumnName: 'id',
+  })
+  manufacturer: string;
 }
