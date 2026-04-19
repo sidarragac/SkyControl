@@ -2,10 +2,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 // Internal imports
+import { Airline } from './entities/airline.entity';
 import { CreateAirlineDto } from './dto/create-airline.dto';
 import { UpdateAirlineDto } from './dto/update-airline.dto';
-import { Airline } from './entities/airline.entity';
 
 @Injectable()
 export class AirlinesService {

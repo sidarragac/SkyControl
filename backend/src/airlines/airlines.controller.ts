@@ -1,20 +1,21 @@
 // External imports
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   Post,
   Patch,
-  Delete,
   Param,
-  Body,
   UseGuards,
 } from '@nestjs/common';
+
 // Internal imports
+import { Airline } from './entities/airline.entity';
+import { AirlinesService } from './airlines.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateAirlineDto } from './dto/create-airline.dto';
 import { UpdateAirlineDto } from './dto/update-airline.dto';
-import { Airline } from './entities/airline.entity';
-import { AirlinesService } from './airlines.service';
 
 @UseGuards(AuthGuard)
 @Controller('airlines')
