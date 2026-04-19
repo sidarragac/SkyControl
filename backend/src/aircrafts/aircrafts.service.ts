@@ -35,19 +35,16 @@ export class AircraftsService {
         `Aircraft ${createAircraftDto.registry} already exists`,
       );
     }
-    const manufacturer = await this.manufacturersService.findOneById(
-      createAircraftDto.manufacturer,
+    const manufacturer = await this.manufacturersService.findById(
+      createAircraftDto.manufacturer.id,
     );
 
     if (!manufacturer) {
       throw new NotFoundException('Manufacturer not found');
     }
 
-    if (
-      createAircraftDto.airline &&
-      !this.airlinesService.findOneById(createAircraftDto.airline)
-    ) {
-      throw new NotFoundException('Airline not found');
+    if (createAircraftDto.airline) {
+      await this.airlinesService.findById(createAircraftDto.airline.id);
     }
 
     const aircraft = this.aircraftRepository.create(createAircraftDto);
