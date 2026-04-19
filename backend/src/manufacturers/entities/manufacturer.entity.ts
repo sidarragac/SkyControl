@@ -38,7 +38,6 @@ export class Manufacturer {
   @OneToMany(() => Aircraft, (aircraft) => aircraft.manufacturer)
   @JoinColumn({
     referencedColumnName: 'id',
-    nullable: true,
   })
   aircrafts: Aircraft[];
 }

@@ -14,7 +14,7 @@ import {
 // Internal Imports
 import { Airline } from '../../airlines/entities/airline.entity';
 import { Manufacturer } from '../../manufacturers/entities/manufacturer.entity';
-import { Status } from '../../types/AircraftsTypes';
+import type { Status } from '../../types/AircraftsTypes';
 
 @Entity()
 export class Aircraft {
@@ -30,7 +30,7 @@ export class Aircraft {
   @Column({ type: 'int' })
   passengerCapacity: number;
 
-  @Column({ type: 'enum', enum: Status })
+  @Column({ type: 'enum' })
   status: Status;
 
   @Column({ type: 'date' })

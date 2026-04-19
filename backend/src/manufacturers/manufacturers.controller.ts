@@ -34,7 +34,7 @@ export class ManufacturersController {
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Manufacturer> {
-    return await this.manufacturersService.findOneById(id);
+    return await this.manufacturersService.findById(id);
   }
 
   @Patch(':id')
