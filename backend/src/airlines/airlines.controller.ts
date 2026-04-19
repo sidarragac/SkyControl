@@ -23,13 +23,13 @@ export class AirlinesController {
   constructor(private readonly airlinesService: AirlinesService) {}
 
   @Get()
-  findAll(): Promise<Airline[]> {
-    return this.airlinesService.findAll();
+  async findAll(): Promise<Airline[]> {
+    return await this.airlinesService.findAll();
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): Promise<Airline> {
-    return this.airlinesService.findById(id);
+  async findById(@Param('id') id: string): Promise<Airline> {
+    return await this.airlinesService.findById(id);
   }
 
   @Post()

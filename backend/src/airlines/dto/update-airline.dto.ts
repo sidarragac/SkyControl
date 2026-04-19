@@ -1,9 +1,6 @@
 // Internal imports
+import { PartialType } from '@nestjs/mapped-types';
 import { CreateAirlineDto } from './create-airline.dto';
 
-export class UpdateAirlineDto implements Partial<CreateAirlineDto> {
-  name?: string;
-  country?: string;
-  destinations?: string[];
-  imageURL?: string;
-}
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+export class UpdateAirlineDto extends PartialType(CreateAirlineDto) {}
