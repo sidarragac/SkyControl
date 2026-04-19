@@ -12,12 +12,12 @@ export class UsersController {
 
   @Get()
   async findAll(): Promise<User[]> {
-    return this.usersService.findAll();
+    return await this.usersService.findAll();
   }
 
   @Get(':id')
   async findById(@Param('id') id: string): Promise<User | null> {
-    return this.usersService.findById(id);
+    return await this.usersService.findById(id);
   }
 
   @Post()
@@ -27,6 +27,6 @@ export class UsersController {
 
   @Post('create-admin')
   async createAdmin(): Promise<User> {
-    return this.usersService.createAdmin();
+    return await this.usersService.createAdmin();
   }
 }

@@ -15,15 +15,15 @@ export class UsersService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    return await this.usersRepository.find();
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.usersRepository.findOneBy({ id });
+    return await this.usersRepository.findOneBy({ id });
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.usersRepository.findOneBy({ email });
+    return await this.usersRepository.findOneBy({ email });
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -38,7 +38,7 @@ export class UsersService {
       role: 'user',
     });
 
-    return this.usersRepository.save(user);
+    return await this.usersRepository.save(user);
   }
 
   async createAdmin(): Promise<User> {
@@ -49,6 +49,6 @@ export class UsersService {
       role: 'admin',
     });
 
-    return this.usersRepository.save(admin);
+    return await this.usersRepository.save(admin);
   }
 }
