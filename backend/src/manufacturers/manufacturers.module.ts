@@ -12,5 +12,6 @@ import { ManufacturersService } from './manufacturers.service';
   imports: [TypeOrmModule.forFeature([Manufacturer])],
   controllers: [ManufacturersController],
   providers: [ManufacturersService],
+  exports: [ManufacturersService],
 })
 export class ManufacturersModule {}
