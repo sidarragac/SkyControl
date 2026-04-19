@@ -15,8 +15,8 @@ export class AirlinesService {
     private airlinesRepository: Repository<Airline>,
   ) {}
 
-  findAll(): Promise<Airline[]> {
-    return this.airlinesRepository.find();
+  async findAll(): Promise<Airline[]> {
+    return await this.airlinesRepository.find();
   }
 
   async findById(id: string): Promise<Airline> {

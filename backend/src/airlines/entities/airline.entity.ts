@@ -12,16 +12,16 @@ export class Airline {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
   name: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 2, nullable: false })
   country: string;
 
-  @Column('simple-array')
+  @Column({ type: 'simple-array', nullable: true })
   destinations: string[];
 
-  @Column()
+  @Column({ type: 'varchar', nullable: true })
   imageURL: string;
 
   @CreateDateColumn()
