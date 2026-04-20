@@ -8,7 +8,7 @@ import { AircraftService } from '@/services/AircraftService';
 import AircraftModelChartComponent from '@/components/charts/AircraftModelChartComponent.vue';
 import { AirlineService } from '@/services/AirlineService';
 import DisplayDataComponent from '@/components/DisplayDataComponent.vue';
-import { ManufacturerService } from '@/services/ManufacturerService';
+import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import TablePaginationComponent from '@/components/TablePaginationComponent.vue';
 
 // Non-reactive Variables
@@ -31,6 +31,7 @@ const itemsPerPage = 5;
 // Reactive Variables
 const currentPage = ref(1);
 const activeFilters = ref<Record<string, string | number>>({});
+const manufacturers = ref<ManufacturerInterface[]>([]);
 
 const totalPages = computed(() => {
   return Math.ceil(filteredTableData.value.length / itemsPerPage);
@@ -49,7 +50,7 @@ const tableData = computed(() => {
       Airline: AirlineService.getAirlineById(aircraft.airlineId)?.name || 'Unknown',
       AirlineId: aircraft.airlineId,
       Manufacturer:
-        ManufacturerService.getManufacturerByIdSync(aircraft.manufacturerId)?.name || 'Unknown',
+        manufacturers.value.find((m) => m.id === aircraft.manufacturerId)?.name || 'Unknown',
       ManufacturerId: aircraft.manufacturerId,
     });
   });

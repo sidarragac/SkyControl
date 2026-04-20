@@ -27,11 +27,6 @@ export class ManufacturersController {
     return await this.manufacturersService.create(createManufacturerDto);
   }
 
-  @Post('seed')
-  async seed(): Promise<Manufacturer[]> {
-    return await this.manufacturersService.seed();
-  }
-
   @Get()
   async findAll(): Promise<Manufacturer[]> {
     return await this.manufacturersService.findAll();

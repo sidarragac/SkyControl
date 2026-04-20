@@ -7,19 +7,8 @@ import type { CreateManufacturerDTO } from '@/dtos/manufacturerDTO/CreateManufac
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import type { UpdateManufacturerDTO } from '@/dtos/manufacturerDTO/UpdateManufacturerDTO';
 
-let manufacturerCache: Map<string, ManufacturerInterface> = new Map();
-
 export class ManufacturerService {
   private static readonly API_URL = 'http://localhost:3000/api/';
-
-  static async loadCache(): Promise<void> {
-    const manufacturers = await ManufacturerService.getManufacturers();
-    manufacturerCache = new Map(manufacturers.map((m) => [m.id, m]));
-  }
-
-  static getManufacturerByIdSync(id: string): ManufacturerInterface | undefined {
-    return manufacturerCache.get(id);
-  }
 
   static async getManufacturers(): Promise<ManufacturerInterface[]> {
     const response = await axios.get(`${ManufacturerService.API_URL}manufacturers`);

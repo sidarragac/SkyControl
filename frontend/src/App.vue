@@ -7,7 +7,6 @@ import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 // Internal imports
 import { AuthService } from './services/AuthService';
 import type { BackendUserDTO } from './dtos/userDTO/BackendUserDTO';
-import { ManufacturerService } from './services/ManufacturerService';
 
 // Non-reactive variables
 const route = useRoute();
@@ -37,7 +36,6 @@ onUpdated(async () => {
 });
 
 onMounted(async () => {
-  await ManufacturerService.loadCache();
   isReady.value = true;
 });
 </script>
@@ -216,7 +214,7 @@ onMounted(async () => {
       </aside>
 
       <main class="flex-1 flex flex-col overflow-y-auto overflow-x-hidden bg-white-200">
-        <RouterView v-if="isReady" />
+        <RouterView />
       </main>
     </div>
   </body>
