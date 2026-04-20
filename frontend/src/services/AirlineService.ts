@@ -32,8 +32,8 @@ export class AirlineService {
     return createdAirline;
   }
 
-  static async updateAirline(airline: UpdateAirlineDTO): Promise<AirlineInterface> {
-    const updatedAirline = await axios.patch(`${AirlineService.apiUrl}airlines/${airline.id}`, airline)
+  static async updateAirline(airline: UpdateAirlineDTO, airlineId: string): Promise<AirlineInterface> {
+    const updatedAirline = await axios.patch(`${AirlineService.apiUrl}airlines/${airlineId}`, airline)
       .then((response) => response.data);
 
     return updatedAirline;
