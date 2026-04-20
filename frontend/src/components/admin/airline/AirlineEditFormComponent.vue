@@ -33,7 +33,7 @@ const successMessage = ref('');
 const errorMessage = ref('');
 
 // Functions
-function submitAirlineEditForm(): void {
+async function submitAirlineEditForm(): Promise<void> {
   if (!form.value.imageURL) {
     alert('Please upload an image before submitting the form.');
     return;
@@ -41,7 +41,7 @@ function submitAirlineEditForm(): void {
 
   try {
     const updatedAirline = updateAirlineEntry();
-    AirlineService.updateAirline(updatedAirline);
+    await AirlineService.updateAirline(updatedAirline);
 
     successMessage.value = 'Airline entry updated successfully!';
 
@@ -74,11 +74,11 @@ function updateAirlineEntry(): UpdateAirlineDTO {
   return updatedAirline;
 }
 
-function deleteAirlineEntry(id: string): void {
+async function deleteAirlineEntry(id: string): Promise<void> {
   if (
     confirm('Are you sure you want to delete this airline entry? This action cannot be undone.')
   ) {
-    AirlineService.deleteAirline(id);
+    await AirlineService.deleteAirline(id);
     emit('delete');
   }
 }

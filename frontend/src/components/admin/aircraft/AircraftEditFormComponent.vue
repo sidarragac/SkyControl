@@ -1,13 +1,15 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
 // Internal imports
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import { AircraftService } from '@/services/AircraftService';
+import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import { AirlineService } from '@/services/AirlineService';
 import ErrorMessageComponent from '../ErrorMessageComponent.vue';
+import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import { ManufacturerService } from '@/services/ManufacturerService';
 import SuccessMessageComponent from '../SuccessMessageComponent.vue';
 import type { UpdateAircraftDTO } from '@/dtos/aircraftDTO/UpdateAircraftDTO';
@@ -33,13 +35,13 @@ const form = ref({
   manufacturerId: props.modelValue?.manufacturerId || '',
 });
 
-const manufacturers = ManufacturerService.getManufacturers();
-const airlines = AirlineService.getAirlines();
+const manufacturers = ref<ManufacturerInterface[]>([]);
+const airlines = ref<AirlineInterface[]>([]);
 const successMessage = ref('');
 const errorMessage = ref('');
 
 // Functions
-function submitAircraftEditForm(): void {
+async function submitAircraftEditForm(): Promise<void> {
   if (!form.value.imageURL) {
     alert('Please upload an image before submitting the form.');
     return;
@@ -47,7 +49,7 @@ function submitAircraftEditForm(): void {
 
   try {
     const updatedAircraft = updateAircraftEntry();
-    AircraftService.updateAircraft(updatedAircraft);
+    await AircraftService.updateAircraft(updatedAircraft);
 
     successMessage.value = 'Aircraft entry updated successfully!';
 
@@ -61,6 +63,11 @@ function submitAircraftEditForm(): void {
       errorMessage.value = '';
     }, 10000);
   }
+}
+
+async function loadData() {
+  manufacturers.value = await ManufacturerService.getManufacturers();
+  airlines.value = await AirlineService.getAirlines();
 }
 
 function updateAircraftEntry(): UpdateAircraftDTO {
@@ -84,11 +91,11 @@ function updateAircraftEntry(): UpdateAircraftDTO {
   return updatedAircraft;
 }
 
-function deleteAircraftEntry(id: string): void {
+async function deleteAircraftEntry(id: string): Promise<void> {
   if (
     confirm('Are you sure you want to delete this aircraft entry? This action cannot be undone.')
   ) {
-    AircraftService.deleteAircraft(id);
+    await AircraftService.deleteAircraft(id);
     emit('delete');
   }
 }
@@ -109,6 +116,11 @@ watch(
     }
   },
 );
+
+// Hooks
+onMounted(() => {
+  loadData();
+});
 </script>
 
 <template>

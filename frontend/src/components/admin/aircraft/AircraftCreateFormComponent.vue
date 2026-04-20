@@ -1,13 +1,15 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 // Internal imports
 import { AircraftService } from '@/services/AircraftService';
+import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import { AirlineService } from '@/services/AirlineService';
 import type { CreateAircraftDTO } from '@/dtos/aircraftDTO/CreateAircraftDTO';
 import ErrorMessageComponent from '../ErrorMessageComponent.vue';
+import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import { ManufacturerService } from '@/services/ManufacturerService';
 import type { Status } from '@/types/AircraftTypes';
 import SuccessMessageComponent from '../SuccessMessageComponent.vue';
@@ -25,13 +27,13 @@ const form = ref({
   manufacturerId: '',
 });
 
-const manufacturers = ManufacturerService.getManufacturers();
-const airlines = AirlineService.getAirlines();
+const manufacturers = ref<ManufacturerInterface[]>([]);
+const airlines = ref<AirlineInterface[]>([]);
 const successMessage = ref('');
 const errorMessage = ref('');
 
 // Functions
-function submitAircraftCreateForm(): void {
+async function submitAircraftCreateForm(): Promise<void> {
   if (!form.value.imageURL) {
     alert('Please upload an image before submitting the form.');
     return;
@@ -39,7 +41,7 @@ function submitAircraftCreateForm(): void {
 
   try {
     const newAircraft = createAircraftEntry();
-    AircraftService.createAircraft(newAircraft);
+    await AircraftService.createAircraft(newAircraft);
 
     successMessage.value = 'Aircraft entry created succesfully!';
 
@@ -72,6 +74,11 @@ function createAircraftEntry(): CreateAircraftDTO {
   return newAircraft;
 }
 
+async function loadData() {
+  manufacturers.value = await ManufacturerService.getManufacturers();
+  airlines.value = await AirlineService.getAirlines();
+}
+
 function clearAircraftForm(): void {
   form.value.registry = '';
   form.value.model = '';
@@ -82,6 +89,11 @@ function clearAircraftForm(): void {
   form.value.airlineId = '';
   form.value.manufacturerId = '';
 }
+
+// Hooks
+onMounted(() => {
+  loadData();
+});
 </script>
 
 <template>

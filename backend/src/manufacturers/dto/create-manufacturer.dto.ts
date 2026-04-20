@@ -33,8 +33,7 @@ export class CreateManufacturerDto {
 
   @IsNotEmpty()
   @IsString()
-  @IsUrl()
-  imageUrl: string;
+  imageURL: string;
 
   @IsOptional()
   @IsArray()

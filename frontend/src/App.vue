@@ -1,7 +1,7 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
-import { ref, onUpdated } from 'vue';
+import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 
 // Internal imports
@@ -29,9 +29,13 @@ function submitLogoutForm() {
   router.push('/login');
 }
 
-// Hooks
-onUpdated(async () => {
+async function loadUser() {
   loggedInUser.value = await AuthService.getLoggedInUser();
+}
+
+// Hooks
+onMounted(() => {
+  loadUser();
 });
 </script>
 

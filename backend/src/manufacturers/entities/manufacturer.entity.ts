@@ -27,7 +27,7 @@ export class Manufacturer {
   foundationDate: Date;
 
   @Column({ type: 'varchar' })
-  imageUrl: string;
+  imageURL: string;
 
   @CreateDateColumn({ type: 'datetime' })
   createdAt: Date;

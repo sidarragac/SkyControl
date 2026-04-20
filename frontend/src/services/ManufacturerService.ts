@@ -20,13 +20,20 @@ export class ManufacturerService {
     return response.data;
   }
 
-  static async createManufacturer(manufacturer: CreateManufacturerDTO): Promise<ManufacturerInterface> {
+  static async createManufacturer(
+    manufacturer: CreateManufacturerDTO,
+  ): Promise<ManufacturerInterface> {
     const response = await axios.post(`${ManufacturerService.API_URL}manufacturers`, manufacturer);
     return response.data;
   }
 
-  static async updateManufacturer(manufacturer: UpdateManufacturerDTO): Promise<ManufacturerInterface> {
-    const response = await axios.patch(`${ManufacturerService.API_URL}manufacturers/${manufacturer.id}`, manufacturer);
+  static async updateManufacturer(
+    manufacturer: UpdateManufacturerDTO,
+  ): Promise<ManufacturerInterface> {
+    const response = await axios.patch(
+      `${ManufacturerService.API_URL}manufacturers/${manufacturer.id}`,
+      manufacturer,
+    );
     return response.data;
   }
 

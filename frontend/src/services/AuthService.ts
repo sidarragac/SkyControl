@@ -2,9 +2,7 @@
 import axios from 'axios';
 
 // Internal imports
-import type { UserInterface } from '@/interfaces/UserInterface';
 import type { BackendUserDTO } from '@/dtos/userDTO/BackendUserDTO';
-import { useUserStore } from '@/stores/UserStore';
 
 export class AuthService {
   private static readonly API_URL = 'http://localhost:3000/api/';
