@@ -11,7 +11,6 @@ export class AircraftService {
   private static readonly apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   static async getAircrafts(): Promise<AircraftInterface[]> {
-    console.log(AircraftService.apiUrl);
     return await axios.get(`${AircraftService.apiUrl}aircrafts`)
       .then((response) => response.data);
   }
