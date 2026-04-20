@@ -152,9 +152,7 @@ const airlineOptions = computed(() => {
 // onMounted
 onMounted(async () => {
   try {
-    console.log('Fetching aircrafts...');
     aircrafts.value = await AircraftService.getAircrafts();
-    console.log('Aircrafts fetched:', aircrafts.value);
   } finally {
     isLoading.value = false;
   }
