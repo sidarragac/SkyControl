@@ -1,19 +1,16 @@
 <!-- Developed by Santiago Idárraga -->
 <script setup lang="ts">
 // External imports
-import { computed, ref } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 
 // Internal imports
+import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import { AircraftService } from '@/services/AircraftService';
 import AircraftModelChartComponent from '@/components/charts/AircraftModelChartComponent.vue';
-import { AirlineService } from '@/services/AirlineService';
 import DisplayDataComponent from '@/components/DisplayDataComponent.vue';
-import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import TablePaginationComponent from '@/components/TablePaginationComponent.vue';
 
 // Non-reactive Variables
-const aircrafts = AircraftService.getAircrafts();
-
 const tableDataKeys = [
   'Aircraft',
   'Airline',
@@ -29,9 +26,10 @@ const imageKey = 'ImageURL';
 const itemsPerPage = 5;
 
 // Reactive Variables
+const aircrafts = ref<AircraftInterface[]>([]);
 const currentPage = ref(1);
 const activeFilters = ref<Record<string, string | number>>({});
-const manufacturers = ref<ManufacturerInterface[]>([]);
+const isLoading = ref(true);
 
 const totalPages = computed(() => {
   return Math.ceil(filteredTableData.value.length / itemsPerPage);
@@ -39,7 +37,7 @@ const totalPages = computed(() => {
 
 const tableData = computed(() => {
   const data: Record<string, unknown>[] = [];
-  aircrafts.forEach((aircraft) => {
+  aircrafts.value.forEach((aircraft) => {
     data.push({
       Id: aircraft.id,
       Registry: aircraft.registry,
@@ -47,11 +45,10 @@ const tableData = computed(() => {
       ImageURL: aircraft.imageURL,
       PassengerCapacity: aircraft.passengerCapacity,
       FirstFlightDate: aircraft.firstFlightDate.split('T')[0],
-      Airline: AirlineService.getAirlineById(aircraft.airlineId)?.name || 'Unknown',
-      AirlineId: aircraft.airlineId,
-      Manufacturer:
-        manufacturers.value.find((m) => m.id === aircraft.manufacturerId)?.name || 'Unknown',
-      ManufacturerId: aircraft.manufacturerId,
+      Airline: aircraft.airline?.name || 'Unassigned',
+      AirlineId: aircraft.airline?.id,
+      Manufacturer: aircraft.manufacturer.name,
+      ManufacturerId: aircraft.manufacturer.id,
     });
   });
   return data;
@@ -151,9 +148,20 @@ const airlineOptions = computed(() => {
     value: id,
   }));
 });
+
+// onMounted
+onMounted(async () => {
+  try {
+    console.log('Fetching aircrafts...');
+    aircrafts.value = await AircraftService.getAircrafts();
+    console.log('Aircrafts fetched:', aircrafts.value);
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
 <template>
-  <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
+  <div v-if="!isLoading" class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
     <header class="mb-8">
       <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Aircraft Information</h2>
       <p>Get to know some of the most representative aircrafts in the world</p>
@@ -275,5 +283,8 @@ const airlineOptions = computed(() => {
       :itemsPerPage="itemsPerPage"
       :dataLength="filteredTableData.length"
     />
+  </div>
+  <div v-else class="flex justify-center py-20">
+    <p>Obteniendo aeronaves...</p>
   </div>
 </template>

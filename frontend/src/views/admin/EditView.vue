@@ -266,6 +266,7 @@ onMounted(() => {
           v-if="activeObject && 'registry' in activeObject"
           v-model="activeObject"
           @delete="activeObject = null"
+          @updated="loadObjects()"
         />
       </div>
 
@@ -287,6 +288,7 @@ onMounted(() => {
           v-if="activeObject && 'destinations' in activeObject"
           v-model="activeObject"
           @delete="activeObject = null"
+          @updated="loadObjects()"
         />
       </div>
 

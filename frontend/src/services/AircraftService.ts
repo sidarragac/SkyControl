@@ -27,8 +27,8 @@ export class AircraftService {
     return createdAircraft;
   }
 
-  static async updateAircraft(aircraft: UpdateAircraftDTO): Promise<AircraftInterface> {
-    const updatedAircraft = await axios.patch(`${AircraftService.apiUrl}aircrafts/${aircraft.id}`, aircraft)
+  static async updateAircraft(aircraft: UpdateAircraftDTO, aircraftId: string): Promise<AircraftInterface> {
+    const updatedAircraft = await axios.patch(`${AircraftService.apiUrl}aircrafts/${aircraftId}`, aircraft)
       .then((response) => response.data);
 
     return updatedAircraft;

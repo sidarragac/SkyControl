@@ -2,4 +2,4 @@
 // Internal imports
 import type { AirlineInterface } from '@/interfaces/AirlineInterface.js';
 
-export type UpdateAirlineDTO = Omit<AirlineInterface, 'updatedAt'>;
+export type UpdateAirlineDTO = Omit<AirlineInterface, 'id' | 'createdAt' | 'updatedAt'>;

@@ -8,7 +8,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { UpdateResult, DeleteResult } from 'typeorm';
+import { DeleteResult } from 'typeorm';
 
 // Internal Imports
 import { Aircraft } from './entities/aircraft.entity';
@@ -41,7 +41,7 @@ export class AircraftsController {
   async update(
     @Param('id') id: string,
     @Body() updateAircraftDto: UpdateAircraftDto,
-  ): Promise<UpdateResult> {
+  ): Promise<Aircraft> {
     return await this.aircraftsService.update(id, updateAircraftDto);
   }
 

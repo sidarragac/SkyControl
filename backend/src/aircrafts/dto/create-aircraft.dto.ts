@@ -3,10 +3,8 @@
 // External Imports
 import {
   IsDate,
-  IsEnum,
   IsInt,
   IsNotEmpty,
-  IsOptional,
   IsString,
   IsUrl,
   IsUUID,
@@ -16,8 +14,6 @@ import {
 import { Type } from 'class-transformer';
 
 // Internal Imports
-import { Airline } from '../../airlines/entities/airline.entity';
-import { Manufacturer } from '../../manufacturers/entities/manufacturer.entity';
 import type { Status } from '../../types/AircraftsTypes';
 
 export class CreateAircraftDto {
@@ -50,11 +46,11 @@ export class CreateAircraftDto {
   @IsUrl()
   imageURL: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsUUID('4')
-  airline: Airline;
+  airlineId: string;
 
   @IsNotEmpty()
   @IsUUID('4')
-  manufacturer: Manufacturer;
+  manufacturerId: string;
 }

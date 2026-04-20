@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 
 // Internal Imports
 import { Aircraft } from './entities/aircraft.entity';
@@ -26,28 +26,27 @@ export class AircraftsService {
   ) {}
 
   async create(createAircraftDto: CreateAircraftDto): Promise<Aircraft> {
+    const { manufacturerId, airlineId, ...aircraftData } = createAircraftDto;
     const existingAircraft = await this.findOneByRegistry(
-      createAircraftDto.registry,
+      aircraftData.registry,
     );
 
     if (existingAircraft) {
       throw new ConflictException(
-        `Aircraft ${createAircraftDto.registry} already exists`,
+        `Aircraft ${aircraftData.registry} already exists`,
       );
     }
-    const manufacturer = await this.manufacturersService.findById(
-      createAircraftDto.manufacturer.id,
-    );
 
-    if (!manufacturer) {
-      throw new NotFoundException('Manufacturer not found');
-    }
+    const manufacturer =
+      await this.manufacturersService.findById(manufacturerId);
 
-    if (createAircraftDto.airline) {
-      await this.airlinesService.findById(createAircraftDto.airline.id);
-    }
+    const airline = await this.airlinesService.findById(airlineId);
 
-    const aircraft = this.aircraftRepository.create(createAircraftDto);
+    const aircraft = this.aircraftRepository.create({
+      ...aircraftData,
+      airline,
+      manufacturer,
+    });
     return await this.aircraftRepository.save(aircraft);
   }
 
@@ -62,13 +61,29 @@ export class AircraftsService {
   async update(
     id: string,
     updateAircraftDto: UpdateAircraftDto,
-  ): Promise<UpdateResult> {
-    const aircraft = await this.findOne(id);
+  ): Promise<Aircraft> {
+    const { manufacturerId, airlineId, ...aircraftData } = updateAircraftDto;
+    const aircraft = await this.aircraftRepository.preload({
+      id,
+      ...aircraftData,
+    });
+
     if (!aircraft) {
-      throw new NotFoundException('Aircraft not found');
+      throw new NotFoundException(`Aircraft with id ${id} not found`);
     }
 
-    return await this.aircraftRepository.update(id, updateAircraftDto);
+    if (airlineId) {
+      const airline = await this.airlinesService.findById(airlineId);
+      aircraft.airline = airline;
+    }
+
+    if (manufacturerId) {
+      const manufacturer =
+        await this.manufacturersService.findById(manufacturerId);
+      aircraft.manufacturer = manufacturer;
+    }
+
+    return await this.aircraftRepository.save(aircraft);
   }
 
   async remove(id: string): Promise<DeleteResult> {

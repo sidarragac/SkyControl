@@ -7,17 +7,14 @@ import {
   Post,
   Param,
   Patch,
-  UseGuards,
 } from '@nestjs/common';
 
 // Internal imports
 import { Airline } from './entities/airline.entity';
 import { AirlinesService } from './airlines.service';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateAirlineDto } from './dto/create-airline.dto';
 import { UpdateAirlineDto } from './dto/update-airline.dto';
 
-@UseGuards(AuthGuard)
 @Controller('airlines')
 export class AirlinesController {
   constructor(private readonly airlinesService: AirlinesService) {}

@@ -19,7 +19,7 @@ const props = defineProps<{
 }>();
 
 // Emits
-const emit = defineEmits(['delete']);
+const emit = defineEmits(['delete', 'updated']);
 
 // Reactive variables
 const form = ref({
@@ -40,8 +40,15 @@ async function submitAirlineEditForm(): Promise<void> {
   }
 
   try {
+    if (!props.modelValue) {
+      throw new Error('No manufacturer data provided for update.');
+    }
+
+    const airlineId = props.modelValue.id;
     const updatedAirline = updateAirlineEntry();
-    await AirlineService.updateAirline(updatedAirline);
+
+    await AirlineService.updateAirline(updatedAirline, airlineId);
+    emit('updated');
 
     successMessage.value = 'Airline entry updated successfully!';
 
@@ -63,12 +70,10 @@ function updateAirlineEntry(): UpdateAirlineDTO {
   }
 
   const updatedAirline: UpdateAirlineDTO = {
-    id: props.modelValue.id,
     name: form.value.name,
     country: form.value.country,
     destinations: CountryFormatterUtil.formatDestinations(form.value.destinations as string),
     imageURL: form.value.imageURL,
-    createdAt: props.modelValue.createdAt,
   };
 
   return updatedAirline;
