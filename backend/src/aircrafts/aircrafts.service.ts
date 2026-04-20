@@ -26,7 +26,6 @@ export class AircraftsService {
   ) {}
 
   async create(createAircraftDto: CreateAircraftDto): Promise<Aircraft> {
-    console.log('Create DTO:', createAircraftDto);
     const { manufacturerId, airlineId, ...aircraftData } = createAircraftDto;
     const existingAircraft = await this.findOneByRegistry(
       aircraftData.registry,
@@ -63,7 +62,6 @@ export class AircraftsService {
     id: string,
     updateAircraftDto: UpdateAircraftDto,
   ): Promise<Aircraft> {
-    console.log('Update DTO:', updateAircraftDto);
     const { manufacturerId, airlineId, ...aircraftData } = updateAircraftDto;
     const aircraft = await this.aircraftRepository.preload({
       id,
