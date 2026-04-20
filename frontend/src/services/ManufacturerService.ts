@@ -29,9 +29,10 @@ export class ManufacturerService {
 
   static async updateManufacturer(
     manufacturer: UpdateManufacturerDTO,
+    manufacturerId: string,
   ): Promise<ManufacturerInterface> {
     const response = await axios.patch(
-      `${ManufacturerService.API_URL}manufacturers/${manufacturer.id}`,
+      `${ManufacturerService.API_URL}manufacturers/${manufacturerId}`,
       manufacturer,
     );
     return response.data;
