@@ -1,7 +1,7 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
-import { ref, onUpdated, onMounted } from 'vue';
+import { ref, onUpdated } from 'vue';
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 
 // Internal imports
@@ -16,7 +16,6 @@ const router = useRouter();
 const isOpen = ref(false);
 const activeLink = ref('home');
 const loggedInUser = ref<BackendUserDTO | null>(null);
-const isReady = ref(false);
 
 // Functions
 function submitLogoutForm() {
@@ -33,10 +32,6 @@ function submitLogoutForm() {
 // Hooks
 onUpdated(async () => {
   loggedInUser.value = await AuthService.getLoggedInUser();
-});
-
-onMounted(async () => {
-  isReady.value = true;
 });
 </script>
 
