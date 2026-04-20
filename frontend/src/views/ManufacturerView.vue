@@ -4,6 +4,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 // Internal imports
 import { AircraftService } from '@/services/AircraftService';
+import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import ManufacturerCardComponent from '@/components/manufacturers/ManufacturerCardComponent.vue';
 import ManufacturerChartsComponent from '@/components/manufacturers/ManufacturerChartsComponent.vue';
 import ManufacturerPaginationComponent from '@/components/manufacturers/ManufacturerPaginationComponent.vue';
@@ -13,10 +14,10 @@ import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 
 // Non-reactive variables
 const PAGE_SIZE = 6;
-const aircrafts = AircraftService.getAircrafts();
 
 // Reactive variables
 const manufacturers = ref<ManufacturerInterface[]>([]);
+const aircrafts = ref<AircraftInterface[]>([]);
 const search = ref('');
 const selectedCountry = ref('All Countries');
 const currentPage = ref(1);
@@ -32,8 +33,8 @@ const marketShareData = computed(() => {
 
 const fleetPresenceMap = computed(() => {
   const map: Record<string, number> = {};
-  aircrafts.forEach((a) => {
-    map[a.manufacturerId] = (map[a.manufacturerId] ?? 0) + 1;
+  aircrafts.value.forEach((aircraft) => {
+    map[aircraft.manufacturer.id] = (map[aircraft.manufacturer.id] ?? 0) + 1;
   });
   return map;
 });
@@ -87,6 +88,7 @@ watch([search, selectedCountry], (): void => {
 // Lifecycle
 onMounted(async () => {
   manufacturers.value = await ManufacturerService.getManufacturers();
+  aircrafts.value = await AircraftService.getAircrafts();
 });
 </script>
 
