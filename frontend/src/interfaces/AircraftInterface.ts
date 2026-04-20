@@ -1,5 +1,7 @@
 // Developed by Mateo Pineda
 // Internal imports
+import type { AirlineInterface } from '@/interfaces/AirlineInterface';
+import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import type { Status } from '@/types/AircraftTypes';
 
 export interface AircraftInterface {
@@ -10,8 +12,8 @@ export interface AircraftInterface {
   status: Status;
   firstFlightDate: string;
   imageURL: string;
-  airlineId: string;
-  manufacturerId: string;
+  airline: AirlineInterface;
+  manufacturer: ManufacturerInterface;
   createdAt: string;
   updatedAt: string;
 }
