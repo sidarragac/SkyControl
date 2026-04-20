@@ -91,7 +91,9 @@ function clearAircraftForm(): void {
 }
 
 // Hooks
-onMounted(loadData);
+onMounted(() => {
+  loadData();
+});
 </script>
 
 <template>

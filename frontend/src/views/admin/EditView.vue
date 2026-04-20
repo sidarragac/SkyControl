@@ -86,7 +86,9 @@ watch(selectedObjectClass, () => {
 });
 
 // Hooks
-onMounted(loadObjects);
+onMounted(() => {
+  loadObjects();
+});
 </script>
 <template>
   <div class="flex-1 flex overflow-hidden">

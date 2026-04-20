@@ -118,7 +118,9 @@ watch(
 );
 
 // Hooks
-onMounted(loadData);
+onMounted(() => {
+  loadData();
+});
 </script>
 
 <template>
