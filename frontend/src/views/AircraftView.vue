@@ -14,7 +14,13 @@ import TablePaginationComponent from '@/components/TablePaginationComponent.vue'
 // Non-reactive Variables
 const aircrafts = AircraftService.getAircrafts();
 
-const tableDataKeys = ['Aircraft', 'Airline', 'Manufacturer', 'PassengerCapacity', 'FirstFlightDate'];
+const tableDataKeys = [
+  'Aircraft',
+  'Airline',
+  'Manufacturer',
+  'PassengerCapacity',
+  'FirstFlightDate',
+];
 const tableColumnCount = tableDataKeys.length;
 
 const mainTextKey = 'Registry';
@@ -43,7 +49,7 @@ const tableData = computed(() => {
       Airline: AirlineService.getAirlineById(aircraft.airlineId)?.name || 'Unknown',
       AirlineId: aircraft.airlineId,
       Manufacturer:
-        ManufacturerService.getManufacturerById(aircraft.manufacturerId)?.name || 'Unknown',
+        ManufacturerService.getManufacturerByIdSync(aircraft.manufacturerId)?.name || 'Unknown',
       ManufacturerId: aircraft.manufacturerId,
     });
   });
@@ -154,9 +160,7 @@ const airlineOptions = computed(() => {
     <div class="flex flex-wrap gap-4 mb-4">
       <div class="flex flex-col">
         <!-- Filter by Manufacturer-->
-        <label class="text-sm font-medium text-black-800 mb-1">
-          Manufacturer
-        </label>
+        <label class="text-sm font-medium text-black-800 mb-1"> Manufacturer </label>
 
         <select
           v-model="activeFilters['Manufacturer']"
@@ -171,9 +175,7 @@ const airlineOptions = computed(() => {
       </div>
       <div class="flex flex-col">
         <!-- Filter by Airline -->
-        <label class="text-sm font-medium text-black-800 mb-1">
-          Airline
-        </label>
+        <label class="text-sm font-medium text-black-800 mb-1"> Airline </label>
 
         <select
           v-model="activeFilters['Airline']"
@@ -188,9 +190,7 @@ const airlineOptions = computed(() => {
       </div>
       <div class="flex flex-col">
         <!-- Sort by Passenger Capacity -->
-        <label class="text-sm font-medium text-black-800 mb-1">
-          Sort By Passenger Capacity
-        </label>
+        <label class="text-sm font-medium text-black-800 mb-1"> Sort By Passenger Capacity </label>
 
         <select
           v-model="activeFilters['CapacitySort']"
@@ -202,9 +202,7 @@ const airlineOptions = computed(() => {
       </div>
       <div class="flex flex-col">
         <!-- Sort by First Flight Date -->
-        <label class="text-sm font-medium text-black-800 mb-1">
-          Sort By First Flight Date
-        </label>
+        <label class="text-sm font-medium text-black-800 mb-1"> Sort By First Flight Date </label>
 
         <select
           v-model="activeFilters['DateSort']"

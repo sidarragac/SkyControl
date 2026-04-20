@@ -1,141 +1,49 @@
 // Developed by Mateo Pineda, Juan Jara
-// External imports
-import { computed } from 'vue';
-import type { ComputedRef } from 'vue';
-import type { Ref } from 'vue';
-import { v4 as uuidv4 } from 'uuid';
-
 // Internal imports
+import { apiRequest } from '@/api/api';
 import type { CreateManufacturerDTO } from '@/dtos/manufacturerDTO/CreateManufacturerDTO';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import type { UpdateManufacturerDTO } from '@/dtos/manufacturerDTO/UpdateManufacturerDTO';
-import { useManufacturerStore } from '@/stores/ManufacturerStore';
+
+let manufacturerCache: Map<string, ManufacturerInterface> = new Map();
 
 export class ManufacturerService {
-  static getManufacturers(): ManufacturerInterface[] {
-    return useManufacturerStore().manufacturers;
+  static async loadCache(): Promise<void> {
+    const manufacturers = await ManufacturerService.getManufacturers();
+    manufacturerCache = new Map(manufacturers.map((m) => [m.id, m]));
   }
 
-  static getManufacturerById(id: string): ManufacturerInterface | undefined {
-    return useManufacturerStore().manufacturers.find((manufacturer) => manufacturer.id === id);
+  static getManufacturerByIdSync(id: string): ManufacturerInterface | undefined {
+    return manufacturerCache.get(id);
   }
 
-  static createManufacturer(manufacturer: CreateManufacturerDTO): void {
-    const id = uuidv4();
-    const createdAt = new Date().toISOString();
-    const updatedAt = new Date().toISOString();
-
-    useManufacturerStore().manufacturers.push({ id, ...manufacturer, createdAt, updatedAt });
+  static async getManufacturers(): Promise<ManufacturerInterface[]> {
+    return await apiRequest<ManufacturerInterface[]>('/manufacturers');
   }
 
-  static updateManufacturer(updatedManufacturer: UpdateManufacturerDTO): void {
-    const index = useManufacturerStore().manufacturers.findIndex(
-      (manufacturer) => manufacturer.id === updatedManufacturer.id,
-    );
-
-    if (index === -1) {
-      throw new Error('Manufacturer not found');
-    }
-
-    useManufacturerStore().manufacturers[index] = {
-      ...updatedManufacturer,
-      updatedAt: new Date().toISOString(),
-    };
+  static async getManufacturerById(id: string): Promise<ManufacturerInterface> {
+    return await apiRequest<ManufacturerInterface>(`/manufacturers/${id}`);
   }
 
-  static deleteManufacturer(id: string): void {
-    const index = useManufacturerStore().manufacturers.findIndex(
-      (manufacturer) => manufacturer.id === id,
-    );
-
-    if (index === -1) {
-      throw new Error('Manufacturer not found');
-    }
-
-    useManufacturerStore().manufacturers.splice(index, 1);
-  }
-
-  // Dashboard helpers
-  static getManufacturersCount(): ComputedRef<number> {
-    const store = useManufacturerStore();
-
-    return computed(() => store.manufacturers.length);
-  }
-
-  static getTopManufacturers(
-    fleetPresenceMap: Ref<Record<string, number>>,
-  ): ComputedRef<{ name: string; count: number }[]> {
-    const store = useManufacturerStore();
-
-    return computed(() =>
-      store.manufacturers
-        .map((m) => ({ name: m.name, count: fleetPresenceMap.value[m.id] ?? 0 }))
-        .filter((m) => m.count > 0)
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 4),
-    );
-  }
-
-  static getCountryOptions(): ComputedRef<string[]> {
-    const store = useManufacturerStore();
-
-    return computed(() => {
-      const countries = store.manufacturers.map((m) => m.country);
-      return ['All Countries', ...Array.from(new Set(countries)).sort()];
+  static async createManufacturer(
+    manufacturer: CreateManufacturerDTO,
+  ): Promise<ManufacturerInterface> {
+    return await apiRequest<ManufacturerInterface>('/manufacturers', {
+      method: 'POST',
+      body: JSON.stringify(manufacturer),
     });
   }
 
-  static getFilteredManufacturers(
-    search: Ref<string>,
-    selectedCountry: Ref<string>,
-  ): ComputedRef<ManufacturerInterface[]> {
-    const store = useManufacturerStore();
-
-    return computed(() =>
-      store.manufacturers.filter((m) => {
-        const matchesSearch =
-          search.value === '' ||
-          m.name.toLowerCase().includes(search.value.toLowerCase()) ||
-          m.country.toLowerCase().includes(search.value.toLowerCase());
-        const matchesCountry =
-          selectedCountry.value === 'All Countries' || m.country === selectedCountry.value;
-
-        return matchesSearch && matchesCountry;
-      }),
-    );
-  }
-
-  static getMarketShareData(
-    fleetPresenceMap: Ref<Record<string, number>>,
-  ): ComputedRef<{ name: string; value: number }[]> {
-    const store = useManufacturerStore();
-
-    return computed(() => {
-      const total = Object.values(fleetPresenceMap.value).reduce((a, b) => a + b, 0) || 1;
-
-      return store.manufacturers.map((m) => ({
-        name: m.name.split(' ')[0] ?? m.name,
-        value: Math.round(((fleetPresenceMap.value[m.id] ?? 0) / total) * 100 * 10) / 10,
-      }));
+  static async updateManufacturer(
+    manufacturer: UpdateManufacturerDTO,
+  ): Promise<ManufacturerInterface> {
+    return await apiRequest<ManufacturerInterface>(`/manufacturers/${manufacturer.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(manufacturer),
     });
   }
 
-  static getProductionVolumeData(
-    fleetPresenceMap: Ref<Record<string, number>>,
-  ): ComputedRef<{ name: string; value: number }[]> {
-    const store = useManufacturerStore();
-
-    return computed(() =>
-      store.manufacturers.map((m) => ({
-        name: m.name.split(' ')[0] ?? m.name,
-        value: fleetPresenceMap.value[m.id] ?? 0,
-      })),
-    );
-  }
-
-  static getTotalProductionVolume(
-    fleetPresenceMap: Ref<Record<string, number>>,
-  ): ComputedRef<number> {
-    return computed(() => Object.values(fleetPresenceMap.value).reduce((a, b) => a + b, 0));
+  static async deleteManufacturer(id: string): Promise<void> {
+    await apiRequest<void>(`/manufacturers/${id}`, { method: 'DELETE' });
   }
 }

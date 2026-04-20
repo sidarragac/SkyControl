@@ -1,12 +1,13 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
-import { ref, onUpdated } from 'vue';
+import { ref, onUpdated, onMounted } from 'vue';
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 
 // Internal imports
 import { AuthService } from './services/AuthService';
 import type { BackendUserDTO } from './dtos/userDTO/BackendUserDTO';
+import { ManufacturerService } from './services/ManufacturerService';
 
 // Non-reactive variables
 const route = useRoute();
@@ -16,6 +17,7 @@ const router = useRouter();
 const isOpen = ref(false);
 const activeLink = ref('home');
 const loggedInUser = ref<BackendUserDTO | null>(null);
+const isReady = ref(false);
 
 // Functions
 function submitLogoutForm() {
@@ -32,6 +34,11 @@ function submitLogoutForm() {
 // Hooks
 onUpdated(async () => {
   loggedInUser.value = await AuthService.getLoggedInUser();
+});
+
+onMounted(async () => {
+  await ManufacturerService.loadCache();
+  isReady.value = true;
 });
 </script>
 
@@ -209,7 +216,7 @@ onUpdated(async () => {
       </aside>
 
       <main class="flex-1 flex flex-col overflow-y-auto overflow-x-hidden bg-white-200">
-        <RouterView />
+        <RouterView v-if="isReady" />
       </main>
     </div>
   </body>
