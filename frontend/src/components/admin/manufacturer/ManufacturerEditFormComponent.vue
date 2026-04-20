@@ -32,7 +32,7 @@ const successMessage = ref('');
 const errorMessage = ref('');
 
 // Functions
-function submitManufacturerEditForm(): void {
+async function submitManufacturerEditForm(): Promise<void> {
   if (!form.value.imageURL) {
     alert('Please upload an image before submitting the form.');
     return;
@@ -40,7 +40,7 @@ function submitManufacturerEditForm(): void {
 
   try {
     const updatedManufacturer = updateManufacturerEntry();
-    ManufacturerService.updateManufacturer(updatedManufacturer);
+    await ManufacturerService.updateManufacturer(updatedManufacturer);
 
     successMessage.value = 'Manufacturer entry updated successfully!';
 
@@ -48,7 +48,7 @@ function submitManufacturerEditForm(): void {
       successMessage.value = '';
     }, 3000);
   } catch (error: Error | unknown) {
-    errorMessage.value = `An error occurred in the Manufacturer form. Please try again.<br>Error details: ${(error as Error).message}`;
+    errorMessage.value = `An error occurred in the manufacturer form. Please try again.<br>Error details: ${(error as Error).message}`;
 
     setTimeout(() => {
       errorMessage.value = '';
@@ -58,7 +58,7 @@ function submitManufacturerEditForm(): void {
 
 function updateManufacturerEntry(): UpdateManufacturerDTO {
   if (!props.modelValue) {
-    throw new Error('No airline data provided for update.');
+    throw new Error('No manufacturer data provided for update.');
   }
 
   const updatedManufacturer: UpdateManufacturerDTO = {
@@ -73,11 +73,13 @@ function updateManufacturerEntry(): UpdateManufacturerDTO {
   return updatedManufacturer;
 }
 
-function deleteManufacturerEntry(id: string): void {
+async function deleteManufacturerEntry(id: string): Promise<void> {
   if (
-    confirm('Are you sure you want to delete this airline entry? This action cannot be undone.')
+    confirm(
+      'Are you sure you want to delete this manufacturer entry? This action cannot be undone.',
+    )
   ) {
-    ManufacturerService.deleteManufacturer(id);
+    await ManufacturerService.deleteManufacturer(id);
     emit('delete');
   }
 }

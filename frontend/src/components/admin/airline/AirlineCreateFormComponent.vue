@@ -25,7 +25,7 @@ const successMessage = ref('');
 const errorMessage = ref('');
 
 // Functions
-function submitAirlineCreateForm(): void {
+async function submitAirlineCreateForm(): Promise<void> {
   if (!form.value.imageURL) {
     alert('Please upload an image before submitting the form.');
     return;
@@ -33,7 +33,7 @@ function submitAirlineCreateForm(): void {
 
   try {
     const newAirline = createAirlineEntry();
-    AirlineService.createAirline(newAirline);
+    await AirlineService.createAirline(newAirline);
 
     successMessage.value = 'Airline entry created succesfully!';
 

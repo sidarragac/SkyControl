@@ -24,7 +24,7 @@ const successMessage = ref('');
 const errorMessage = ref('');
 
 // Functions
-function submitManufacturerCreateForm(): void {
+async function submitManufacturerCreateForm(): Promise<void> {
   if (!form.value.imageURL) {
     alert('Please upload an image before submitting the form.');
     return;
@@ -32,7 +32,7 @@ function submitManufacturerCreateForm(): void {
 
   try {
     const newManufacturer = createManufacturerEntry();
-    ManufacturerService.createManufacturer(newManufacturer);
+    await ManufacturerService.createManufacturer(newManufacturer);
 
     successMessage.value = 'Manufacturer entry created succesfully!';
 

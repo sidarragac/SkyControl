@@ -1,7 +1,7 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 
 // Internal imports
@@ -23,7 +23,7 @@ const originalObject = ref<AircraftInterface | AirlineInterface | ManufacturerIn
 );
 
 const searchQuery = ref('');
-const objects = computed(() => getObjectList());
+const objects = ref<AircraftInterface[] | AirlineInterface[] | ManufacturerInterface[]>([]);
 const filteredObjects = computed(() => {
   if (!searchQuery.value) {
     return objects.value;
@@ -55,17 +55,23 @@ const paginatedObjects = computed(() => {
 const totalPages = computed(() => Math.ceil(filteredObjects.value.length / objectsPerPage));
 
 // Functions
-function getObjectList(): AircraftInterface[] | AirlineInterface[] | ManufacturerInterface[] {
+async function getObjectList(): Promise<
+  AircraftInterface[] | AirlineInterface[] | ManufacturerInterface[]
+> {
   switch (selectedObjectClass.value) {
     case 'aircraft':
-      return AircraftService.getAircrafts();
+      return await AircraftService.getAircrafts();
     case 'airline':
-      return AirlineService.getAirlines();
+      return await AirlineService.getAirlines();
     case 'manufacturer':
-      return ManufacturerService.getManufacturers();
+      return await ManufacturerService.getManufacturers();
     default:
       return [];
   }
+}
+
+async function loadObjects() {
+  objects.value = await getObjectList();
 }
 
 // Watchers
@@ -76,7 +82,11 @@ watch(searchQuery, () => {
 watch(selectedObjectClass, () => {
   currentPage.value = 1;
   activeObject.value = null;
+  loadObjects();
 });
+
+// Hooks
+onMounted(loadObjects);
 </script>
 <template>
   <div class="flex-1 flex overflow-hidden">

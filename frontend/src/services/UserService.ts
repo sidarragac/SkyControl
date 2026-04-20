@@ -5,7 +5,6 @@ import axios from 'axios';
 // Internal imports
 import type { CreateUserDTO } from '@/dtos/userDTO/CreateUserDTO';
 import type { UserInterface } from '@/interfaces/UserInterface';
-import { useUserStore } from '@/stores/UserStore';
 
 export class UserService {
   private static readonly API_URL = 'http://localhost:3000/api/';
