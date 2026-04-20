@@ -1,59 +1,51 @@
 // Developed by Mateo Pineda, Juan Jara, Santiago Idárraga
 // External imports
-import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 // Internal imports
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import { AircraftService } from './AircraftService';
 import type { CreateAirlineDTO } from '@/dtos/airlineDTO/CreateAirlineDTO';
 import type { UpdateAirlineDTO } from '@/dtos/airlineDTO/UpdateAirlineDTO';
-import { useAirlineStore } from '@/stores/AirlineStore';
 
 export class AirlineService {
-  static getAirlines(): AirlineInterface[] {
-    return useAirlineStore().airlines;
+  private static readonly apiUrl = import.meta.env.VITE_API_BASE_URL;
+
+  static async getAirlines(): Promise<AirlineInterface[]> {
+    const airlines = await axios.get(`${AirlineService.apiUrl}airlines`)
+      .then((response) => response.data);
+
+    return airlines;
   }
 
-  static getAirlineById(id: string): AirlineInterface | undefined {
-    return useAirlineStore().airlines.find((airline) => airline.id === id);
+  static async getAirlineById(id: string): Promise<AirlineInterface | undefined> {
+    const airline = await axios.get(`${AirlineService.apiUrl}airlines/${id}`)
+      .then((response) => response.data);
+
+    return airline;
   }
 
-  static createAirline(airline: CreateAirlineDTO): void {
-    const id = uuidv4();
-    const createdAt = new Date().toISOString();
-    const updatedAt = new Date().toISOString();
+  static async createAirline(airline: CreateAirlineDTO): Promise<AirlineInterface> {
+    const createdAirline = await axios.post(`${AirlineService.apiUrl}airlines`, airline)
+      .then((response) => response.data);
 
-    useAirlineStore().airlines.push({ id, ...airline, createdAt, updatedAt });
+    return createdAirline;
   }
 
-  static updateAirline(updatedAirline: UpdateAirlineDTO): void {
-    const index = useAirlineStore().airlines.findIndex(
-      (airline) => airline.id === updatedAirline.id,
-    );
+  static async updateAirline(airline: UpdateAirlineDTO): Promise<AirlineInterface> {
+    const updatedAirline = await axios.patch(`${AirlineService.apiUrl}airlines/${airline.id}`, airline)
+      .then((response) => response.data);
 
-    if (index === -1) {
-      throw new Error('Airline not found');
-    }
-
-    useAirlineStore().airlines[index] = {
-      ...updatedAirline,
-      updatedAt: new Date().toISOString(),
-    };
+    return updatedAirline;
   }
 
-  static deleteAirline(id: string): void {
-    const index = useAirlineStore().airlines.findIndex((airline) => airline.id === id);
-
-    if (index === -1) {
-      throw new Error('Airline not found');
-    }
-
-    useAirlineStore().airlines.splice(index, 1);
+  static async deleteAirline(id: string): Promise<void> {
+    await axios.delete(`${AirlineService.apiUrl}airlines/${id}`);
   }
 
   // Dashboard helpers
-  static getNumberOfDestinations(airlineId: string): number {
-    const airline = AirlineService.getAirlineById(airlineId);
+  static async getNumberOfDestinations(airlineId: string): Promise<number> {
+    const airline = await AirlineService.getAirlineById(airlineId);
 
     if (!airline) {
       return 0;
@@ -62,8 +54,8 @@ export class AirlineService {
     return airline.destinations.length;
   }
 
-  static getMostCommonAircraft(airlineId: string): string {
-    const aircrafts = AircraftService.getAircraftsByAirlineId(airlineId);
+  static async getMostCommonAircraft(airlineId: string): Promise<string> {
+    const aircrafts = await AircraftService.getAircraftsByAirlineId(airlineId);
 
     if (aircrafts.length === 0) {
       return 'N/A';
