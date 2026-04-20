@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 
 // Emits
-const emit = defineEmits(['delete']);
+const emit = defineEmits(['delete', 'updated']);
 
 // Reactive variables
 const form = ref({
@@ -39,8 +39,16 @@ async function submitManufacturerEditForm(): Promise<void> {
   }
 
   try {
+    if (!props.modelValue) {
+      throw new Error('No manufacturer data provided for update.');
+    }
+
     const updatedManufacturer = updateManufacturerEntry();
-    await ManufacturerService.updateManufacturer(updatedManufacturer);
+    const manufacturerId = props.modelValue.id;
+
+    await ManufacturerService.updateManufacturer(updatedManufacturer, manufacturerId);
+
+    emit('updated');
 
     successMessage.value = 'Manufacturer entry updated successfully!';
 
@@ -57,17 +65,11 @@ async function submitManufacturerEditForm(): Promise<void> {
 }
 
 function updateManufacturerEntry(): UpdateManufacturerDTO {
-  if (!props.modelValue) {
-    throw new Error('No manufacturer data provided for update.');
-  }
-
   const updatedManufacturer: UpdateManufacturerDTO = {
-    id: props.modelValue.id,
     name: form.value.name,
     country: form.value.country,
     foundationDate: new Date(form.value.foundationDate).toISOString(),
     imageURL: form.value.imageURL,
-    createdAt: props.modelValue.createdAt,
   };
 
   return updatedManufacturer;

@@ -308,6 +308,7 @@ onMounted(() => {
           v-if="activeObject && 'foundationDate' in activeObject"
           v-model="activeObject"
           @delete="activeObject = null"
+          @updated="loadObjects()"
         />
       </div>
 
