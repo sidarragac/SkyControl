@@ -99,7 +99,6 @@ const countryOptions = computed(() => {
     value: country,
   }));
 });
-
 </script>
 <template>
   <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
@@ -110,9 +109,7 @@ const countryOptions = computed(() => {
     <div class="flex flex-wrap gap-4 mb-4">
       <div class="flex flex-col">
         <!-- Filter by Country-->
-        <label class="text-sm font-medium text-black-800 mb-1">
-          Country
-        </label>
+        <label class="text-sm font-medium text-black-800 mb-1"> Country </label>
 
         <select
           v-model="activeFilters['Country']"
