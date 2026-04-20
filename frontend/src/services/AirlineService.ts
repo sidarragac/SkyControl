@@ -18,7 +18,7 @@ export class AirlineService {
     return airlines;
   }
 
-  static async getAirlineById(id: string): Promise<AirlineInterface | undefined> {
+  static async getAirlineById(id: string): Promise<AirlineInterface> {
     const airline = await axios.get(`${AirlineService.apiUrl}airlines/${id}`)
       .then((response) => response.data);
 

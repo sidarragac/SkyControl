@@ -21,7 +21,7 @@ const props = defineProps<{
 }>();
 
 // Emits
-const emit = defineEmits(['delete']);
+const emit = defineEmits(['delete', 'updated']);
 
 // Reactive variables
 const form = ref({
@@ -31,8 +31,8 @@ const form = ref({
   status: props.modelValue?.status || 'active',
   firstFlightDate: props.modelValue?.firstFlightDate.split('T')[0] || '',
   imageURL: props.modelValue?.imageURL || '',
-  airlineId: props.modelValue?.airlineId || '',
-  manufacturerId: props.modelValue?.manufacturerId || '',
+  airlineId: props.modelValue?.airline.id || '',
+  manufacturerId: props.modelValue?.manufacturer.id || '',
 });
 
 const manufacturers = ref<ManufacturerInterface[]>([]);
@@ -49,7 +49,9 @@ async function submitAircraftEditForm(): Promise<void> {
 
   try {
     const updatedAircraft = updateAircraftEntry();
-    await AircraftService.updateAircraft(updatedAircraft);
+
+    await AircraftService.updateAircraft(updatedAircraft, props.modelValue?.id || '');
+    emit('updated');
 
     successMessage.value = 'Aircraft entry updated successfully!';
 
@@ -76,7 +78,6 @@ function updateAircraftEntry(): UpdateAircraftDTO {
   }
 
   const updatedAircraft: UpdateAircraftDTO = {
-    id: props.modelValue.id,
     registry: form.value.registry,
     model: form.value.model,
     passengerCapacity: Number(form.value.passengerCapacity),
@@ -85,7 +86,6 @@ function updateAircraftEntry(): UpdateAircraftDTO {
     imageURL: form.value.imageURL,
     airlineId: form.value.airlineId,
     manufacturerId: form.value.manufacturerId,
-    createdAt: props.modelValue.createdAt,
   };
 
   return updatedAircraft;
@@ -111,14 +111,15 @@ watch(
       form.value.status = newModelValue.status || 'active';
       form.value.firstFlightDate = newModelValue.firstFlightDate?.split('T')[0] || '';
       form.value.imageURL = newModelValue.imageURL || '';
-      form.value.airlineId = newModelValue.airlineId || '';
-      form.value.manufacturerId = newModelValue.manufacturerId || '';
+      form.value.airlineId = newModelValue.airline?.id || '';
+      form.value.manufacturerId = newModelValue.manufacturer?.id || '';
     }
   },
 );
 
 // Hooks
 onMounted(() => {
+  console.log(props.modelValue);
   loadData();
 });
 </script>

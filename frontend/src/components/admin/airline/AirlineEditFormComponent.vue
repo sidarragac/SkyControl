@@ -19,7 +19,7 @@ const props = defineProps<{
 }>();
 
 // Emits
-const emit = defineEmits(['delete']);
+const emit = defineEmits(['delete', 'updated']);
 
 // Reactive variables
 const form = ref({
@@ -48,6 +48,7 @@ async function submitAirlineEditForm(): Promise<void> {
     const updatedAirline = updateAirlineEntry();
 
     await AirlineService.updateAirline(updatedAirline, airlineId);
+    emit('updated');
 
     successMessage.value = 'Airline entry updated successfully!';
 
