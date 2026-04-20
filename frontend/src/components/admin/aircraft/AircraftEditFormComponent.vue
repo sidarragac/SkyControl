@@ -119,7 +119,6 @@ watch(
 
 // Hooks
 onMounted(() => {
-  console.log(props.modelValue);
   loadData();
 });
 </script>

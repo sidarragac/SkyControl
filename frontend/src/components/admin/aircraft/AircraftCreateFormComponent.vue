@@ -41,7 +41,6 @@ async function submitAircraftCreateForm(): Promise<void> {
 
   try {
     const newAircraft = createAircraftEntry();
-    console.log('Submitting new aircraft entry:', newAircraft);
     await AircraftService.createAircraft(newAircraft);
 
     successMessage.value = 'Aircraft entry created succesfully!';
