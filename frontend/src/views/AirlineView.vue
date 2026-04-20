@@ -1,18 +1,18 @@
 <!-- Developed by Santiago Idárraga -->
 <script setup lang="ts">
 // External imports
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 
 // Internal imports
+import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import { AirlineService } from '@/services/AirlineService';
+import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import { AircraftService } from '@/services/AircraftService';
 import DisplayDataComponent from '@/components/DisplayDataComponent.vue';
 import FleetSizePolarChartComponent from '@/components/charts/FleetSizePolarChartComponent.vue';
 import TablePaginationComponent from '@/components/TablePaginationComponent.vue';
 
 // Non-reactive Variables
-const airlines = AirlineService.getAirlines();
-
 const tableDataKeys = ['Airline', 'Country', 'NumberOfDestinations', 'FavouriteAircraft'];
 const tableColumnCount = tableDataKeys.length;
 
@@ -21,6 +21,10 @@ const imageKey = 'ImageURL';
 const itemsPerPage = 5;
 
 // Reactive Variables
+const airlines = ref<AirlineInterface[]>([]);
+const aircrafts = ref<AircraftInterface[]>([]);
+
+const isLoading = ref(true);
 const currentPage = ref(1);
 const activeFilters = ref<Record<string, string | number>>({
   Country: 'All',
@@ -33,14 +37,14 @@ const totalPages = computed(() => {
 
 const tableData = computed(() => {
   const data: Record<string, unknown>[] = [];
-  airlines.forEach((airline) => {
+  airlines.value.forEach((airline) => {
     data.push({
       Id: airline.id,
       Name: airline.name,
       ImageURL: airline.imageURL,
       Country: airline.country,
-      NumberOfDestinations: AirlineService.getNumberOfDestinations(airline.id),
-      FavouriteAircraft: AirlineService.getMostCommonAircraft(airline.id),
+      NumberOfDestinations: getAirlineNumberOfDestinations(airline.id),
+      FavouriteAircraft: getAirlineMostCommonAircraft(airline.id),
     });
   });
   return data;
@@ -83,7 +87,7 @@ const paginatedData = computed(() => {
 const fleetChartData = computed(() => {
   return filteredTableData.value.map((airline) => ({
     airline: airline.Name as string,
-    aircraftCount: AircraftService.getAircraftsByAirlineId(airline.Id as string).length,
+    aircraftCount: getAircraftsByAirlineId(airline.Id as string).length,
   }));
 });
 
@@ -99,9 +103,51 @@ const countryOptions = computed(() => {
     value: country,
   }));
 });
+
+// Funciones
+function getAircraftsByAirlineId(airlineId: string): AircraftInterface[] {
+  return aircrafts.value.filter((aircraft) => aircraft.airline.id === airlineId);
+}
+
+function getAirlineNumberOfDestinations(airlineId: string): number {
+  return airlines.value.find((airline) => airline.id === airlineId)?.destinations.length || 0;
+}
+
+function getAirlineMostCommonAircraft(airlineId: string): string {
+  const airlineAircrafts: AircraftInterface[] | undefined = aircrafts.value.filter((aircraft) => aircraft.airline.id === airlineId);
+  if (!airlineAircrafts || airlineAircrafts.length === 0) return 'N/A';
+
+  const modelCount = new Map<string, number>();
+
+  airlineAircrafts.forEach((aircraft) => {
+    const currentCount = modelCount.get(aircraft.model) || 0;
+    modelCount.set(aircraft.model, currentCount + 1);
+  });
+
+  let mostRepeatedModel = '';
+  let maxCount = 0;
+
+  modelCount.forEach((count, model) => {
+    if (count > maxCount) {
+      maxCount = count;
+      mostRepeatedModel = model;
+    }
+  });
+
+  return mostRepeatedModel;
+}
+
+onMounted(async () => {
+  try {
+    airlines.value = await AirlineService.getAirlines();
+    aircrafts.value = await AircraftService.getAircrafts();
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
 <template>
-  <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
+  <div v-if="!isLoading" class="w-full max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-black-800">
     <header class="mb-8">
       <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Airlines Information</h2>
       <p>Get to know some of the most well known airlines in the world</p>
@@ -191,5 +237,8 @@ const countryOptions = computed(() => {
       :itemsPerPage="itemsPerPage"
       :dataLength="filteredTableData.length"
     />
+  </div>
+  <div v-else class="flex justify-center py-20">
+    <p>Obteniendo aerolineas...</p>
   </div>
 </template>

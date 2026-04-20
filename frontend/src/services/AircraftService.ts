@@ -37,10 +37,4 @@ export class AircraftService {
   static async deleteAircraft(id: string): Promise<void> {
     await axios.delete(`${AircraftService.apiUrl}aircrafts/${id}`);
   }
-
-  static async getAircraftsByAirlineId(airlineId: string): Promise<AircraftInterface[]> {
-    const aircrafts = await AircraftService.getAircrafts();
-
-    return aircrafts.filter((aircraft) => aircraft.airline.id === airlineId);
-  }
 }

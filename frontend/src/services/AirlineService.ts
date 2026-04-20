@@ -4,7 +4,6 @@ import axios from 'axios';
 
 // Internal imports
 import type { AirlineInterface } from '@/interfaces/AirlineInterface';
-import { AircraftService } from './AircraftService';
 import type { CreateAirlineDTO } from '@/dtos/airlineDTO/CreateAirlineDTO';
 import type { UpdateAirlineDTO } from '@/dtos/airlineDTO/UpdateAirlineDTO';
 
@@ -41,43 +40,5 @@ export class AirlineService {
 
   static async deleteAirline(id: string): Promise<void> {
     await axios.delete(`${AirlineService.apiUrl}airlines/${id}`);
-  }
-
-  // Dashboard helpers
-  static async getNumberOfDestinations(airlineId: string): Promise<number> {
-    const airline = await AirlineService.getAirlineById(airlineId);
-
-    if (!airline) {
-      return 0;
-    }
-
-    return airline.destinations.length;
-  }
-
-  static async getMostCommonAircraft(airlineId: string): Promise<string> {
-    const aircrafts = await AircraftService.getAircraftsByAirlineId(airlineId);
-
-    if (aircrafts.length === 0) {
-      return 'N/A';
-    }
-
-    const modelCount = new Map<string, number>();
-
-    aircrafts.forEach((aircraft) => {
-      const currentCount = modelCount.get(aircraft.model) || 0;
-      modelCount.set(aircraft.model, currentCount + 1);
-    });
-
-    let mostRepeatedModel = '';
-    let maxCount = 0;
-
-    modelCount.forEach((count, model) => {
-      if (count > maxCount) {
-        maxCount = count;
-        mostRepeatedModel = model;
-      }
-    });
-
-    return mostRepeatedModel;
   }
 }
