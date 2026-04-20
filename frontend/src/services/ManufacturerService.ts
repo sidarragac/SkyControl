@@ -1,6 +1,8 @@
 // Developed by Mateo Pineda, Juan Jara
+// External imports
+import axios from 'axios';
+
 // Internal imports
-import { apiRequest } from '@/api/api';
 import type { CreateManufacturerDTO } from '@/dtos/manufacturerDTO/CreateManufacturerDTO';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import type { UpdateManufacturerDTO } from '@/dtos/manufacturerDTO/UpdateManufacturerDTO';
@@ -8,6 +10,8 @@ import type { UpdateManufacturerDTO } from '@/dtos/manufacturerDTO/UpdateManufac
 let manufacturerCache: Map<string, ManufacturerInterface> = new Map();
 
 export class ManufacturerService {
+  private static readonly API_URL = 'http://localhost:3000/api/';
+
   static async loadCache(): Promise<void> {
     const manufacturers = await ManufacturerService.getManufacturers();
     manufacturerCache = new Map(manufacturers.map((m) => [m.id, m]));
@@ -18,32 +22,26 @@ export class ManufacturerService {
   }
 
   static async getManufacturers(): Promise<ManufacturerInterface[]> {
-    return await apiRequest<ManufacturerInterface[]>('/manufacturers');
+    const response = await axios.get(`${ManufacturerService.API_URL}manufacturers`);
+    return response.data;
   }
 
   static async getManufacturerById(id: string): Promise<ManufacturerInterface> {
-    return await apiRequest<ManufacturerInterface>(`/manufacturers/${id}`);
+    const response = await axios.get(`${ManufacturerService.API_URL}manufacturers/${id}`);
+    return response.data;
   }
 
-  static async createManufacturer(
-    manufacturer: CreateManufacturerDTO,
-  ): Promise<ManufacturerInterface> {
-    return await apiRequest<ManufacturerInterface>('/manufacturers', {
-      method: 'POST',
-      body: JSON.stringify(manufacturer),
-    });
+  static async createManufacturer(manufacturer: CreateManufacturerDTO): Promise<ManufacturerInterface> {
+    const response = await axios.post(`${ManufacturerService.API_URL}manufacturers`, manufacturer);
+    return response.data;
   }
 
-  static async updateManufacturer(
-    manufacturer: UpdateManufacturerDTO,
-  ): Promise<ManufacturerInterface> {
-    return await apiRequest<ManufacturerInterface>(`/manufacturers/${manufacturer.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(manufacturer),
-    });
+  static async updateManufacturer(manufacturer: UpdateManufacturerDTO): Promise<ManufacturerInterface> {
+    const response = await axios.patch(`${ManufacturerService.API_URL}manufacturers/${manufacturer.id}`, manufacturer);
+    return response.data;
   }
 
   static async deleteManufacturer(id: string): Promise<void> {
-    await apiRequest<void>(`/manufacturers/${id}`, { method: 'DELETE' });
+    await axios.delete(`${ManufacturerService.API_URL}manufacturers/${id}`);
   }
 }
