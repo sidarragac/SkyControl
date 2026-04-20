@@ -1,7 +1,5 @@
 // Developed by Mateo Pineda, Santiago Idárraga
 // External imports
-import { computed } from 'vue';
-import type { ComputedRef } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 
 // Internal imports
@@ -9,7 +7,6 @@ import type { CreateAircraftDTO } from '@/dtos/aircraftDTO/CreateAircraftDTO';
 import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import type { UpdateAircraftDTO } from '@/dtos/aircraftDTO/UpdateAircraftDTO';
 import { useAircraftStore } from '@/stores/AircraftStore';
-import { useAirlineStore } from '@/stores/AirlineStore';
 
 export class AircraftService {
   static getAircrafts(): AircraftInterface[] {
@@ -54,80 +51,5 @@ export class AircraftService {
 
   static getAircraftsByAirlineId(airlineId: string): AircraftInterface[] {
     return useAircraftStore().aircrafts.filter((aircraft) => aircraft.airlineId === airlineId);
-  }
-
-  static getTotalAircrafts(): ComputedRef<number> {
-    const store = useAircraftStore();
-
-    return computed(() => store.aircrafts.length);
-  }
-
-  static getFleetHealth(): ComputedRef<number> {
-    const store = useAircraftStore();
-
-    return computed(() => {
-      const total = store.aircrafts.length;
-      if (total === 0) return 0;
-      const active = store.aircrafts.filter((a) => a.status === 'active').length;
-      return Math.round((active / total) * 100 * 10) / 10;
-    });
-  }
-
-  static getRecentActivity(): ComputedRef<
-    {
-      id: string;
-      icon: string;
-      iconBg: string;
-      iconColor: string;
-      title: string;
-      subtitle: string;
-      time: string;
-    }[]
-  > {
-    const aircraftStore = useAircraftStore();
-    const airlineStore = useAirlineStore();
-
-    return computed(() =>
-      [...aircraftStore.aircrafts]
-        .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-        .slice(0, 4)
-        .map((aircraft) => {
-          const airline = airlineStore.airlines.find((al) => al.id === aircraft.airlineId);
-          const updatedAt = new Date(aircraft.updatedAt);
-          const createdAt = new Date(aircraft.createdAt);
-          const isNew = updatedAt.getTime() === createdAt.getTime();
-          const diffMs = Date.now() - updatedAt.getTime();
-          const diffMins = Math.floor(diffMs / 60000);
-          const diffHours = Math.floor(diffMins / 60);
-          let timeLabel = '';
-
-          if (diffMins < 60) timeLabel = `${diffMins} minutes ago`;
-          else if (diffHours < 24) timeLabel = `${diffHours} hours ago`;
-          else timeLabel = `${Math.floor(diffHours / 24)} days ago`;
-
-          return {
-            id: aircraft.id,
-            icon: isNew ? 'fa-plus' : 'fa-wrench',
-            iconBg: isNew ? 'bg-accent-500/20' : 'bg-primary-700',
-            iconColor: isNew ? 'text-accent-500' : 'text-neutral-100/70',
-            title: aircraft.model,
-            subtitle: `${isNew ? 'added to' : 'updated in'} ${airline?.name ?? 'Unknown'} • ${aircraft.registry}`,
-            time: timeLabel,
-          };
-        }),
-    );
-  }
-
-  static getFleetPresenceMap(): ComputedRef<Record<string, number>> {
-    const store = useAircraftStore();
-
-    return computed(() => {
-      const map: Record<string, number> = {};
-      store.aircrafts.forEach((a) => {
-        map[a.manufacturerId] = (map[a.manufacturerId] ?? 0) + 1;
-      });
-
-      return map;
-    });
   }
 }

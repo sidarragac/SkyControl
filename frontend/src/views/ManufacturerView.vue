@@ -13,13 +13,13 @@ import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 
 // Non-reactive variables
 const PAGE_SIZE = 6;
+const aircrafts = AircraftService.getAircrafts();
 
 // Reactive variables
 const manufacturers = ref<ManufacturerInterface[]>([]);
 const search = ref('');
 const selectedCountry = ref('All Countries');
 const currentPage = ref(1);
-const fleetPresenceMap = AircraftService.getFleetPresenceMap();
 
 // Computed — dashboard charts
 const marketShareData = computed(() => {
@@ -28,6 +28,14 @@ const marketShareData = computed(() => {
     name: m.name.split(' ')[0] ?? m.name,
     value: Math.round(((fleetPresenceMap.value[m.id] ?? 0) / total) * 100 * 10) / 10,
   }));
+});
+
+const fleetPresenceMap = computed(() => {
+  const map: Record<string, number> = {};
+  aircrafts.forEach((a) => {
+    map[a.manufacturerId] = (map[a.manufacturerId] ?? 0) + 1;
+  });
+  return map;
 });
 
 const productionVolumeData = computed(() =>
