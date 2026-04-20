@@ -5,50 +5,53 @@ import { computed, onMounted, ref } from 'vue';
 
 // Internal imports
 import { AircraftService } from '@/services/AircraftService';
+import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import { AirlineService } from '@/services/AirlineService';
+import type { AirlineInterface } from '@/interfaces/AirlineInterface';
 import DashboardManufacturersComponent from '@/components/dashboard/DashboardManufacturersComponent.vue';
 import DashboardMapComponent from '@/components/dashboard/DashboardMapComponent.vue';
 import DashboardStatsGridComponent from '@/components/dashboard/DashboardStatsGridComponent.vue';
 import { ManufacturerService } from '@/services/ManufacturerService';
 import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
-import type { AircraftInterface } from '@/interfaces/AircraftInterface';
 import type { Country } from '@/types/SharedTypes';
 import { COUNTRY_COORDINATES } from '@/types/SharedTypes';
 
 // Non Reactive Variables
-const aircrafts = AircraftService.getAircrafts();
-const airlines = AirlineService.getAirlines();
 const manufacturers = ref<ManufacturerInterface[]>([]);
+const airlines = ref<AirlineInterface[]>([]);
+const aircrafts = ref<AircraftInterface[]>([]);
 
 onMounted(async () => {
   manufacturers.value = await ManufacturerService.getManufacturers();
+  airlines.value = await AirlineService.getAirlines();
+  aircrafts.value = await AircraftService.getAircrafts();
 });
 
 // Reactive Variables
 // Computed — AirCrafts
-const totalAircrafts = computed(() => aircrafts.length);
+const totalAircrafts = computed(() => aircrafts.value.length);
 
 const fleetHealth = computed(() => {
-  const total = aircrafts.length;
+  const total = aircrafts.value.length;
   if (total === 0) return 0;
-  const active = aircrafts.filter((a: AircraftInterface) => a.status === 'active').length;
+  const active = aircrafts.value.filter((aircraft: AircraftInterface) => aircraft.status === 'active').length;
   return Math.round((active / total) * 100 * 10) / 10;
 });
 
 const fleetPresenceMap = computed(() => {
   const map: Record<string, number> = {};
-  aircrafts.forEach((a: AircraftInterface) => {
-    map[a.manufacturerId] = (map[a.manufacturerId] ?? 0) + 1;
+  aircrafts.value.forEach((aircraft: AircraftInterface) => {
+    map[aircraft.manufacturer.id] = (map[aircraft.manufacturer.id] ?? 0) + 1;
   });
   return map;
 });
 
 // Computed — Airline
-const activeAirlines = computed(() => airlines.length);
+const activeAirlines = computed(() => airlines.value.length);
 
 const airlinesMapData = computed(() => {
   const countryMap: Partial<Record<Country, number>> = {};
-  for (const airline of airlines) {
+  for (const airline of airlines.value) {
     const country = airline.country as Country;
     countryMap[country] = (countryMap[country] ?? 0) + 1;
   }
