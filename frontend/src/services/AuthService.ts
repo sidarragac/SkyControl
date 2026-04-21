@@ -5,7 +5,7 @@ import axios from 'axios';
 import type { BackendUserDTO } from '@/dtos/userDTO/BackendUserDTO';
 
 export class AuthService {
-  private static readonly API_URL = 'http://localhost:3000/api/';
+  private static readonly apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   public static async getLoggedInUser(): Promise<BackendUserDTO | null> {
     const access_token = localStorage.getItem('access_token');
@@ -15,7 +15,7 @@ export class AuthService {
     }
 
     try {
-      const response = await axios.get(`${this.API_URL}auth/profile`, {
+      const response = await axios.get(`${this.apiUrl}auth/profile`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   public static async logInUser(email: string, password: string): Promise<void> {
-    const response = await axios.post(`${this.API_URL}auth/login`, {
+    const response = await axios.post(`${this.apiUrl}auth/login`, {
       email,
       password,
     });
@@ -46,7 +46,7 @@ export class AuthService {
 
   public static async validateExistingEmail(email: string): Promise<boolean> {
     try {
-      await axios.get(this.API_URL + `users/${email}`);
+      await axios.get(`${this.apiUrl}users/${email}`);
       return true;
     } catch {
       return false;

@@ -11,36 +11,30 @@ export class AircraftService {
   private static readonly apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   static async getAircrafts(): Promise<AircraftInterface[]> {
-    return await axios.get(`${AircraftService.apiUrl}aircrafts`)
+    return await axios.get(`${this.apiUrl}aircrafts`)
       .then((response) => response.data);
   }
 
   static async getAircraftById(id: string): Promise<AircraftInterface | undefined> {
-    return await axios.get(`${AircraftService.apiUrl}aircrafts/${id}`)
+    return await axios.get(`${this.apiUrl}aircrafts/${id}`)
       .then((response) => response.data);
   }
 
   static async createAircraft(aircraft: CreateAircraftDTO): Promise<AircraftInterface> {
-    const createdAircraft = await axios.post(`${AircraftService.apiUrl}aircrafts`, aircraft)
+    const createdAircraft = await axios.post(`${this.apiUrl}aircrafts`, aircraft)
       .then((response) => response.data);
 
     return createdAircraft;
   }
 
   static async updateAircraft(aircraft: UpdateAircraftDTO, aircraftId: string): Promise<AircraftInterface> {
-    const updatedAircraft = await axios.patch(`${AircraftService.apiUrl}aircrafts/${aircraftId}`, aircraft)
+    const updatedAircraft = await axios.patch(`${this.apiUrl}aircrafts/${aircraftId}`, aircraft)
       .then((response) => response.data);
 
     return updatedAircraft;
   }
 
   static async deleteAircraft(id: string): Promise<void> {
-    await axios.delete(`${AircraftService.apiUrl}aircrafts/${id}`);
-  }
-
-  static async getAircraftsByAirlineId(airlineId: string): Promise<AircraftInterface[]> {
-    const aircrafts = await AircraftService.getAircrafts();
-
-    return aircrafts.filter((aircraft) => aircraft.airline.id === airlineId);
+    await axios.delete(`${this.apiUrl}aircrafts/${id}`);
   }
 }

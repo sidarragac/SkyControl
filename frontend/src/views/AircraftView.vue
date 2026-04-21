@@ -28,7 +28,12 @@ const itemsPerPage = 5;
 // Reactive Variables
 const aircrafts = ref<AircraftInterface[]>([]);
 const currentPage = ref(1);
-const activeFilters = ref<Record<string, string | number>>({});
+const activeFilters = ref<Record<string, string | number>>({
+  Manufacturer: 'All',
+  Airline: 'All',
+  CapacitySort: 'ALL',
+  DateSort: 'ALL',
+});
 const isLoading = ref(true);
 
 const totalPages = computed(() => {
@@ -152,9 +157,7 @@ const airlineOptions = computed(() => {
 // onMounted
 onMounted(async () => {
   try {
-    console.log('Fetching aircrafts...');
     aircrafts.value = await AircraftService.getAircrafts();
-    console.log('Aircrafts fetched:', aircrafts.value);
   } finally {
     isLoading.value = false;
   }
