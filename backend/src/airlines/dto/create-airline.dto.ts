@@ -1,7 +1,6 @@
 // External imports
 import { IsArray, IsNotEmpty, IsString, IsUrl, Length } from 'class-validator';
 
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 export class CreateAirlineDto {
   @IsString()
   @IsNotEmpty()

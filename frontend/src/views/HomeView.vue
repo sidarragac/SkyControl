@@ -34,7 +34,9 @@ const totalAircrafts = computed(() => aircrafts.value.length);
 const fleetHealth = computed(() => {
   const total = aircrafts.value.length;
   if (total === 0) return 0;
-  const active = aircrafts.value.filter((aircraft: AircraftInterface) => aircraft.status === 'active').length;
+  const active = aircrafts.value.filter(
+    (aircraft: AircraftInterface) => aircraft.status === 'active',
+  ).length;
   return Math.round((active / total) * 100 * 10) / 10;
 });
 

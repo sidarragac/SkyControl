@@ -114,7 +114,9 @@ function getAirlineNumberOfDestinations(airlineId: string): number {
 }
 
 function getAirlineMostCommonAircraft(airlineId: string): string {
-  const airlineAircrafts: AircraftInterface[] | undefined = aircrafts.value.filter((aircraft) => aircraft.airline.id === airlineId);
+  const airlineAircrafts: AircraftInterface[] | undefined = aircrafts.value.filter(
+    (aircraft) => aircraft.airline.id === airlineId,
+  );
   if (!airlineAircrafts || airlineAircrafts.length === 0) return 'N/A';
 
   const modelCount = new Map<string, number>();

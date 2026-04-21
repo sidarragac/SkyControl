@@ -11,28 +11,33 @@ export class AirlineService {
   private static readonly apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   static async getAirlines(): Promise<AirlineInterface[]> {
-    const airlines = await axios.get(`${this.apiUrl}airlines`)
-      .then((response) => response.data);
+    const airlines = await axios.get(`${this.apiUrl}airlines`).then((response) => response.data);
 
     return airlines;
   }
 
   static async getAirlineById(id: string): Promise<AirlineInterface> {
-    const airline = await axios.get(`${this.apiUrl}airlines/${id}`)
+    const airline = await axios
+      .get(`${this.apiUrl}airlines/${id}`)
       .then((response) => response.data);
 
     return airline;
   }
 
   static async createAirline(airline: CreateAirlineDTO): Promise<AirlineInterface> {
-    const createdAirline = await axios.post(`${this.apiUrl}airlines`, airline)
+    const createdAirline = await axios
+      .post(`${this.apiUrl}airlines`, airline)
       .then((response) => response.data);
 
     return createdAirline;
   }
 
-  static async updateAirline(airline: UpdateAirlineDTO, airlineId: string): Promise<AirlineInterface> {
-    const updatedAirline = await axios.patch(`${this.apiUrl}airlines/${airlineId}`, airline)
+  static async updateAirline(
+    airline: UpdateAirlineDTO,
+    airlineId: string,
+  ): Promise<AirlineInterface> {
+    const updatedAirline = await axios
+      .patch(`${this.apiUrl}airlines/${airlineId}`, airline)
       .then((response) => response.data);
 
     return updatedAirline;
