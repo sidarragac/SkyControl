@@ -8,22 +8,22 @@ import type { ManufacturerInterface } from '@/interfaces/ManufacturerInterface';
 import type { UpdateManufacturerDTO } from '@/dtos/manufacturerDTO/UpdateManufacturerDTO';
 
 export class ManufacturerService {
-  private static readonly API_URL = 'http://localhost:3000/api/';
+  private static readonly apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   static async getManufacturers(): Promise<ManufacturerInterface[]> {
-    const response = await axios.get(`${ManufacturerService.API_URL}manufacturers`);
+    const response = await axios.get(`${this.apiUrl}manufacturers`);
     return response.data;
   }
 
   static async getManufacturerById(id: string): Promise<ManufacturerInterface> {
-    const response = await axios.get(`${ManufacturerService.API_URL}manufacturers/${id}`);
+    const response = await axios.get(`${this.apiUrl}manufacturers/${id}`);
     return response.data;
   }
 
   static async createManufacturer(
     manufacturer: CreateManufacturerDTO,
   ): Promise<ManufacturerInterface> {
-    const response = await axios.post(`${ManufacturerService.API_URL}manufacturers`, manufacturer);
+    const response = await axios.post(`${this.apiUrl}manufacturers`, manufacturer);
     return response.data;
   }
 
@@ -32,13 +32,13 @@ export class ManufacturerService {
     manufacturerId: string,
   ): Promise<ManufacturerInterface> {
     const response = await axios.patch(
-      `${ManufacturerService.API_URL}manufacturers/${manufacturerId}`,
+      `${this.apiUrl}manufacturers/${manufacturerId}`,
       manufacturer,
     );
     return response.data;
   }
 
   static async deleteManufacturer(id: string): Promise<void> {
-    await axios.delete(`${ManufacturerService.API_URL}manufacturers/${id}`);
+    await axios.delete(`${this.apiUrl}manufacturers/${id}`);
   }
 }
