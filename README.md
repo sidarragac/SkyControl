@@ -28,12 +28,37 @@ Note: *The project is in a Single Page Application phase done in VUE3. Follow th
    npm intall
    ```
 
+4. **Open the 'backend' folder**:
+   ```bash
+   cd ..
+   cd backend
+   ```
+
+5. **Install depencencies**:
+   ```bash
+   npm intall
+   ```
+
 ---
 
 ## Run the application
-
+**Open the 'frontend' folder**:
+```bash
+cd frontend
+```
+**Run the 'frontend'**:
 ```bash
 npm run dev
+```
+
+**Open the 'backend' folder**:
+```bash
+cd ..
+cd frontend
+```
+**Run the 'backend'**:
+```bash
+npm run start:dev
 ```
 
 - **Local URL**: http://127.0.0.5173
