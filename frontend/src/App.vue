@@ -1,7 +1,7 @@
 <!-- Developed by Mateo Pineda -->
 <script setup lang="ts">
 // External imports
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 
 // Internal imports
@@ -33,10 +33,14 @@ async function loadUser() {
   loggedInUser.value = await AuthService.getLoggedInUser();
 }
 
-// Hooks
-onMounted(() => {
-  loadUser();
-});
+// Watchers
+watch(
+  () => route.fullPath,
+  async () => {
+    await loadUser();
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
