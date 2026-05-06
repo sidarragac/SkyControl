@@ -21,6 +21,9 @@ const airlinesData = data?.value?.airlines;
                     <li class="list-group-item">Destinations: {{ airline.destinations?.join(', ') }}</li>
                     <li class="list-group-item">Aircrafts: {{ airline.aircrafts?.join(', ') }}</li>
                 </ul>
+                <div class="card-body">
+                    <a :href="`/airlines/${airline.id}`" class="btn btn-primary">+ More Information</a>
+                </div>
             </div>
         </div>
     </div>
