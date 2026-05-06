@@ -6,8 +6,15 @@ const airlinesData = data?.value?.airlines;
 
 <template>
     <header class="mb-8">
-      <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Airlines Information</h2>
-      <p>Get to know some of the most well known airlines in the world</p>
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h2 class="text-3xl text-primary-900 font-black tracking-tight mb-2">Airlines Information</h2>
+                <p>Get to know some of the most well known airlines in the world</p>
+            </div>
+            <div class="ms-3">
+                <a href="/" class="btn btn-secondary">Back</a>
+            </div>
+        </div>
     </header>
     <div class="row g-4">
         <div v-for="airline in airlinesData" :key="airline.id" class="col-12 col-sm-6 col-lg-4 col-xl-3 d-flex">
@@ -18,8 +25,7 @@ const airlinesData = data?.value?.airlines;
                     <p class="card-text">{{ airline.country }}</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Destinations: {{ airline.destinations?.join(', ') }}</li>
-                    <li class="list-group-item">Aircrafts: {{ airline.aircrafts?.join(', ') }}</li>
+                    <li class="list-group-item">Destinations: {{ airline.destinations.join(', ') }}</li>
                 </ul>
                 <div class="card-body">
                     <a :href="`/airlines/${airline.id}`" class="btn btn-primary">+ More Information</a>
