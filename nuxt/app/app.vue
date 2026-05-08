@@ -7,7 +7,7 @@
       <nav aria-label="Main">
         <ul class="nav mb-0">
           <li class="nav-item">
-            <NuxtLink class="nav-link py-1 px-2" to="/" active-class="active">Airlines</NuxtLink>
+            <NuxtLink class="nav-link py-1 px-2" to="/airlines" active-class="active">Airlines</NuxtLink>
           </li>
           <li class="nav-item">
             <NuxtLink class="nav-link py-1 px-2" to="/blog" active-class="active">Blog</NuxtLink>
