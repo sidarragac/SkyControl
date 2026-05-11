@@ -3,8 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   routeRules: {
-    'airlines/**': { ssr: true },
-    '/blog': { prerender: true },
+    '/airlines/**': { ssr: true },
     '/blog/**': { prerender: true },
   },
   app: {

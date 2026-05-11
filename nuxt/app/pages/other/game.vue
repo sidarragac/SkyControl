@@ -3,8 +3,7 @@
 import { ref } from 'vue';
 
 // Internal imports
-import type Card from '@/interafces/CardInterface';
-import { length } from 'class-validator';
+import type Card from '~/interfaces/CardInterface';
 
 // Non-reactive variables
 const frontImages = [
