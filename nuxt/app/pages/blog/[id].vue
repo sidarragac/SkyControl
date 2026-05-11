@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import type Article from '@/interafces/ArticleInterface'
+import { articles } from '@/data/articles'
 
-const { data: response } = await useFetch<{ articles: Article[] }>('/api/articles')
-const articles = response.value?.articles
 const route = useRoute()
-const slug = String(route.params.slug)
-const article = articles?.find((article: Article) => article.slug === slug)
+const id = String(route.params.id)
+const article = articles.find((article) => article.id === id)
 
 if (!article) {
   throw createError({ statusCode: 404, statusMessage: 'Article not found', fatal: true })
@@ -36,7 +34,7 @@ if (!article) {
           </p>
           <p class="lead mb-4">{{ article.summary }}</p>
           <hr />
-          <p v-for="(paragraph, index) in article.content.split('\\n\\n')" :key="index" class="mb-3">
+          <p v-for="(paragraph, index) in article.content.split('\n\n')" :key="index" class="mb-3">
             {{ paragraph }}
           </p>
         </div>

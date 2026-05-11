@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import type Article from '@/interafces/ArticleInterface'
-
-interface ArticlesResponse {
-  articles: Article[]
-}
-
-const { data: response } = await useFetch<ArticlesResponse>('/api/articles')
-const articles = response.value?.articles
+import { articles } from '@/data/articles'
 </script>
 
 <template>
@@ -32,7 +25,7 @@ const articles = response.value?.articles
           <small class="text-muted mt-3">{{ article.author }} · {{ article.publishedAt }}</small>
         </div>
         <div class="card-body pt-0">
-          <NuxtLink :to="`/blog/${article.slug}`" class="btn btn-primary">Read Article</NuxtLink>
+          <NuxtLink :to="`/blog/${article.id}`" class="btn btn-primary">Read Article</NuxtLink>
         </div>
       </div>
     </div>
