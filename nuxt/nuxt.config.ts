@@ -4,6 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   routeRules: {
     'airlines/**': { ssr: true },
+    '/blog': { prerender: true },
+    '/blog/**': { prerender: true },
   },
   app: {
     head: {
